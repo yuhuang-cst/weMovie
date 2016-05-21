@@ -156,4 +156,21 @@ function checkNotLogin(req,res,next){
 	next();
 };
 
+
+//hy
+router.get('/search', function(req, res, next) {
+  res.render('search');
+});
+
+router.post('/search', function(req, res, next){
+  console.log(req.body);
+  return res.render('search');
+});
+
+
+
+
+
+
+
 module.exports = router;
