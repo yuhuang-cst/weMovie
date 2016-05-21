@@ -3,6 +3,7 @@ var router = express.Router();
 var crypto = require('crypto');
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
+var letvSdk = require('../models/letvServerAPI.js')
 
 router.get('/',function(req, res) {
   Post.get(null,function(err, posts){
@@ -164,6 +165,9 @@ router.get('/search', function(req, res, next) {
 
 router.post('/search', function(req, res, next){
   console.log(req.body);
+  letvSdk.videoList(req.body.videoName, function(data){
+  	console.log(data);
+  });
   return res.render('search');
 });
 
