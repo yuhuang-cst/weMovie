@@ -42,16 +42,6 @@ function onErr(err){
   console.log(err);
 }
 
-/*
-function onUploadInitData(data){
-  data = JSON.parse(data.toString());
-  console.log('code: ', data['code']);
-  if (data['code'] != 0)
-    return;
-  for (key in data){
-    console.log(key, ': ', data[key]);
-  }
-}*/
 
 function doGet(contents, onErr, handleData){
   var options = {
@@ -139,6 +129,7 @@ function videoList(videoName, callBack, index, size, status){
   if (size)  params['size'] = size;
 
   var contents = qs.stringify(params);
+  console.log(contents);
   doGet(contents, onErr, callBack);
 }
 
