@@ -134,7 +134,7 @@ function videoList(videoName, callBack, index, size, status){
   var SECRET_KEY = '4f4783bb2ef51291154f3db3d4f62ce5';
 
   var params = generateParams('video.list', USER_UNIQUE);
-  params['videoName'] = videoName;
+  params['video_name'] = videoName;
   if (index)  params['index'] = index;
   if (size)  params['size'] = size;
 
