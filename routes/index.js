@@ -166,8 +166,8 @@ router.get('/search', function(req, res, next) {
 router.post('/search', function(req, res, next){
   console.log(req.body);
   letvSdk.videoList(req.body.videoName, function(data){
-  	data = JSON.parse(data.toString());
-  	console.log(data);
+  	//data = JSON.parse(data.toString());
+  	console.log(data.toString());
   	res.write(data);
   });
 });
