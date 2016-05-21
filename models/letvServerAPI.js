@@ -128,7 +128,7 @@ function uploadInit(filename, filesize, uploadtype, callBack){
 }
 
 
-function videoList(videoName, index, size, status, callBack){
+function videoList(videoName, callBack, index, size, status){
   console.log('call videoList');
   var USER_UNIQUE = 'm9rv3asjdc';
   var SECRET_KEY = '4f4783bb2ef51291154f3db3d4f62ce5';
