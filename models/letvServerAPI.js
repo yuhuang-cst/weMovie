@@ -127,6 +127,7 @@ function videoList(videoName, callBack, index, size, status){
   params['video_name'] = videoName;
   if (index)  params['index'] = index;
   if (size)  params['size'] = size;
+  params['sign'] = generateSign(params, SECRET_KEY);
 
   var contents = qs.stringify(params);
   console.log(contents);
