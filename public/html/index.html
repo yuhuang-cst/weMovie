@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="../stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+  </head>
+  <body>
+  <header class="header">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="row">
+                <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden-xs visible-sm-block col-sm-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5">
+                    <!--<div class="navbar-search navbar-left">-->
+                        <form class="navbar-form-mc" method="get" action="/course/search" role="search">
+                            <div class="input-group input-group-nav">
+                                <input type="text" class="form-control" id="input-search" name="key" placeholder="搜索影片...">
+                                <span class="input-group-btn">
+                                    <a role="button" class="btn" onclick="$(this).closest('form').submit()">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </a>
+                                </span>
+                            </div>
+                        </form>
+                </div>
+                <div class="hidden-xs col-sm-5 col-md-4 col-lg-4">
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav pull-right">
+                            <li id="nav-index"><a href="index.html">首页</a></li>
+                            <li id="nav-course"><a href="movie.html">影片</a></li>
+                            <li id="nav-notice"><a href="/announcement">公告</a></li>
+                            <li><a href="/">登录</a></li>
+                                
+                        </ul>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="nav nav-hamburger pull-right">
+                        <a href="#ham" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="index.html">首页</a></li>
+                            <li><a href="movie.html">影片</a></li>
+                            <li id="xs-nav-notice"><a href="/announcement">公告</a></li>
+                            <li><a href="/">登录</a></li>
+                                
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="content">
+<br><br><br><br><br><br>
+        <div class="wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="wrapper-intro col-xs-0 col-sm-6 col-md-8 col-lg-8">
+                        <img src="../images/logo.png"/>
+                    </div>
+
+                    <!--<div class="wrapper-intro col-xs-0 col-sm-0 col-md-2 col-lg-2"></div>-->
+
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" id="tab-sl">
+                            <li role="presentation" class="active"><a href="#login" aria-controls="login" role="tab" data-toggle="tab" id="tri-login">登录</a></li>
+                            <li role="presentation"><a href="#register" aria-controls="register" role="tab" data-toggle="tab" id="tri-register">注册</a></li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <!-- Tab Log in -->
+                            <form role="tabpanel" class="tab-pane fade in active" id="login" onsubmit="return false;">
+                                <div class="tab-info" id="login-info"></div>
+                                <label for="login-email" class="sr-only">邮箱</label>
+                                <input type="email" id="login-email" class="form-control" placeholder="邮箱" required autofocus>
+                                <br>
+                                <label for="login-password" class="sr-only">密码</label>
+                                <input type="password" id="login-pwd" class="form-control" placeholder="密码" required>
+                                <div class="checkbox">
+                                <label class="f-white">
+                                <input type="checkbox" id="login-remember" checked> 记住我
+                                </label>
+                                <a class="pull-right forgot" href="/recover">忘记密码</a>
+                                </div>
+                                <button type="button" id="login-btn" data-loading-text="Loading..." class="btn btn-lg btn-primary btn-block" autocomplete="off">登录</button>
+                            </form>
+                            <!-- Tab Register -->
+                            <form role="tabpanel" class="tab-pane fade" id="register" onsubmit="return false;">
+                                <div class="tab-info" id="register-info"></div>
+                                <label for="register-email" class="sr-only">邮箱</label>
+                                <input type="email" id="register-email" class="form-control" placeholder="邮箱" required autofocus>
+                                <label for="register-password" class="sr-only">密码</label>
+                                <input type="password" id="register-password" class="form-control" placeholder="密码" required>
+                                <button class="btn btn-lg btn-primary btn-block register">注册</button>
+                            </form>
+                        </div>
+                    </div>               
+                </div>
+            </div>
+        </div>
+ </div>    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../javascripts/bootstrap.min.js"></script>
+    <script>
+      $('#login-btn').on('click', function () {
+        var $btn = $(this).button('loading')
+        // business logic...
+        $btn.button('reset')
+      })
+    </script>
+  </body>
+</html>
