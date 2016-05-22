@@ -10,6 +10,13 @@
     <!-- Bootstrap -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
     <link href="../stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
   </head>
   <body>
   <header class="header">
@@ -53,8 +60,8 @@
                 <div class="hidden-xs col-sm-5 col-md-4 col-lg-4">
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav pull-right">
-                            <li id="nav-index"><a href="index.html">首页</a></li>
-                            <li id="nav-course"><a href="movie.html">影片</a></li>
+                            <li id="nav-index"><a href="/">首页</a></li>
+                            <li id="nav-course"><a href="/course">影片</a></li>
                             <li id="nav-notice"><a href="/announcement">公告</a></li>
                             <li><a href="/">登录</a></li>
                                 
@@ -65,8 +72,8 @@
                     <div class="nav nav-hamburger pull-right">
                         <a href="#ham" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="index.html">首页</a></li>
-                            <li><a href="movie.html">影片</a></li>
+                            <li><a href="/">首页</a></li>
+                            <li><a href="/course">影片</a></li>
                             <li id="xs-nav-notice"><a href="/announcement">公告</a></li>
                             <li><a href="/">登录</a></li>
                                 
@@ -78,52 +85,37 @@
     </nav>
 </header>
 <div class="content">
-<br><br><br><br><br><br>
+<br>
+<br>
+<br>
+<br>
         <div class="wrapper">
             <div class="container">
                 <div class="row">
-                    <div class="wrapper-intro col-xs-0 col-sm-6 col-md-8 col-lg-8">
-                        <img src="../images/logo.png"/>
+                    <div class="btn-group-vertical col-xs-0 col-sm-6 col-md-3 col-lg-3" role="group">
+                      <button type="button" class="btn btn-default btn-lg">pic</button>
+                      <button type="button" class="btn btn-default btn-lg">pic</button>
+                      <button type="button" class="btn btn-default btn-lg">pic</button>
+                      <button type="button" class="btn btn-default btn-lg">pic</button>
+                      <button type="button" class="btn btn-default btn-lg">我的影片</button>
+                      <button type="button" class="btn btn-default btn-lg">消息提醒</button>
+                      <button type="button" class="btn btn-default btn-lg">账号信息</button>             
                     </div>
-
-                    <!--<div class="wrapper-intro col-xs-0 col-sm-0 col-md-2 col-lg-2"></div>-->
-
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs" id="tab-sl">
-                            <li role="presentation" class="active"><a href="#login" aria-controls="login" role="tab" data-toggle="tab" id="tri-login">登录</a></li>
-                            <li role="presentation"><a href="#register" aria-controls="register" role="tab" data-toggle="tab" id="tri-register">注册</a></li>
-                        </ul>
-
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                            <!-- Tab Log in -->
-                            <form role="tabpanel" class="tab-pane fade in active" id="login" onsubmit="return false;">
-                                <div class="tab-info" id="login-info"></div>
-                                <label for="login-email" class="sr-only">邮箱</label>
-                                <input type="email" id="login-email" class="form-control" placeholder="邮箱" required autofocus>
-                                <br>
-                                <label for="login-password" class="sr-only">密码</label>
-                                <input type="password" id="login-pwd" class="form-control" placeholder="密码" required>
-                                <div class="checkbox">
-                                <label class="f-white">
-                                <input type="checkbox" id="login-remember" checked> 记住我
-                                </label>
-                                <a class="pull-right forgot" href="/recover">忘记密码</a>
-                                </div>
-                                <button type="button" id="login-btn" data-loading-text="Loading..." class="btn btn-lg btn-primary btn-block" autocomplete="off">登录</button>
-                            </form>
-                            <!-- Tab Register -->
-                            <form role="tabpanel" class="tab-pane fade" id="register" onsubmit="return false;">
-                                <div class="tab-info" id="register-info"></div>
-                                <label for="register-email" class="sr-only">邮箱</label>
-                                <input type="email" id="register-email" class="form-control" placeholder="邮箱" required autofocus>
-                                <label for="register-password" class="sr-only">密码</label>
-                                <input type="password" id="register-password" class="form-control" placeholder="密码" required>
-                                <button class="btn btn-lg btn-primary btn-block register">注册</button>
-                            </form>
+                    <div class="col-xs-0 col-sm-6 col-md-9 col-lg-9">
+                        <h2>我的影片</h2>
+                        <div class="btn-group" role="group" aria-label="...">
+                          <button type="button" class="btn btn-link">已预约</button>
+                          <button type="button" class="btn btn-link">已观看</button>
+                          <button type="button" class="btn btn-link">已关注</button>
                         </div>
-                    </div>               
+
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                 <!--   <div class="col-xs-0 col-sm-1 col-md-0 col-lg-1"></div> -->
+                   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    </div>
                 </div>
             </div>
         </div>
@@ -132,12 +124,5 @@
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../javascripts/bootstrap.min.js"></script>
-    <script>
-      $('#login-btn').on('click', function () {
-        var $btn = $(this).button('loading')
-        // business logic...
-        $btn.button('reset')
-      })
-    </script>
   </body>
 </html>
