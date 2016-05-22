@@ -1,4 +1,5 @@
-.
-..
 .DS_Store
+.hide
 node_modules
+npm-debug.log
+nohup.out
