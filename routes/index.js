@@ -329,12 +329,11 @@ router.post('/updateMission', function(req, res, next){
 
 //观看视频，例如：127.0.0.1/letv?mid=57406e33a91aa1437275f8dd
 router.get('/letv', function(req, res, next){
-  Mission.get(req.query.mid, function(err, records){//获得任务信息
-  	if (err)
+  Mission.get(req.query.mid, function(err, ms){//获得任务信息
+  	if (err || !ms) {
   	  res.render('error', {message: 'mission not found', error: {} });
+		}
   	else{
-  	  var ms = records[0];
-  	  //检查时间
   	  var endTime = new Date(ms.beginTime);
   	  endTime.setSeconds(endTime.getSeconds() + ms.duration);
   	  if (Date.now() > endTime){

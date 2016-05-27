@@ -47,9 +47,9 @@ function get(mid, callback){
       mongodb.close();
       return callback(err);
     }
-    coll.find({_id : mid}).toArray(function(err, records){
+    coll.findOne({_id : mid}).toArray(function(err, record){
       mongodb.close();
-      callback(err, records);
+      callback(err, record);
     });
   });
 }
