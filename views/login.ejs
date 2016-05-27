@@ -98,29 +98,36 @@
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <!-- Tab Log in -->
-                            <form role="tabpanel" class="tab-pane fade in active" id="login" onsubmit="return false;">
+                            <form role="tabpanel" class="tab-pane fade in active" id="login" method="post" action="/login">
                                 <div class="tab-info" id="login-info"></div>
                                 <label for="login-email" class="sr-only">邮箱</label>
-                                <input type="email" id="login-email" class="form-control" placeholder="邮箱" required autofocus>
+                                <input type="email" id="login-email" name="username" class="form-control" placeholder="邮箱" required autofocus>
                                 <br>
                                 <label for="login-password" class="sr-only">密码</label>
-                                <input type="password" id="login-pwd" class="form-control" placeholder="密码" required>
+                                <input type="password" id="login-pwd" name="password" class="form-control" placeholder="密码" required>
                                 <div class="checkbox">
                                 <label class="f-white">
                                 <input type="checkbox" id="login-remember" checked> 记住我
                                 </label>
                                 <a class="pull-right forgot" href="/recover">忘记密码</a>
                                 </div>
-                                <button type="button" id="login-btn" data-loading-text="Loading..." class="btn btn-lg btn-primary btn-block" autocomplete="off">登录</button>
+																<div class="form-actions">
+                                	<!--<button type="button" id="login-btn" data-loading-text="Loading..." class="btn btn-lg btn-primary btn-block" autocomplete="off">登录</button>-->
+                                	<button class="btn btn-lg btn-primary btn-block" autocomplete="off">登录</button>
+																</div>	
                             </form>
                             <!-- Tab Register -->
-                            <form role="tabpanel" class="tab-pane fade" id="register" onsubmit="return false;">
+                            <form role="tabpanel" class="tab-pane fade" id="register" method="post" action="/reg">
                                 <div class="tab-info" id="register-info"></div>
                                 <label for="register-email" class="sr-only">邮箱</label>
-                                <input type="email" id="register-email" class="form-control" placeholder="邮箱" required autofocus>
+                                <input type="email" id="register-email" name="username" class="form-control" placeholder="邮箱" required autofocus>
                                 <label for="register-password" class="sr-only">密码</label>
-                                <input type="password" id="register-password" class="form-control" placeholder="密码" required>
-                                <button class="btn btn-lg btn-primary btn-block register">注册</button>
+                                <input type="password" id="register-password" name="password" class="form-control" placeholder="密码" required>
+																<label for="register-password-repeat" class="sr-only">密码</label>
+                                <input type="password" id="register-password-repeat" name="password-repeat" class="form-control" placeholder="再次输入密码" required>
+																<div class="form-actions">
+                                	<button class="btn btn-lg btn-primary btn-block register">注册</button>
+																</div>
                             </form>
                         </div>
                     </div>               

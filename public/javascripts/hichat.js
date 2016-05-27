@@ -143,9 +143,9 @@ HiChat.prototype = {
     _displayNewMsg: function(user, msg, color) {
         var container = document.getElementById('historyMsg'),
             msgToDisplay = document.createElement('p'),
-            date = new Date().toTimeString().substr(0, 8),
+            date = new Date().toTimeString().substr(0, 8);//,
             //determine whether the msg contains emoji
-            msg = this._showEmoji(msg);
+            //msg = this._showEmoji(msg);
         msgToDisplay.style.color = color || '#000';
         msgToDisplay.innerHTML = user + '<span class="timespan">(' + date + '): </span>' + msg;
         container.appendChild(msgToDisplay);

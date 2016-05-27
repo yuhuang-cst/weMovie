@@ -240,9 +240,9 @@ router.post('/login',checkNotLogin);
 router.post("/login",function(req,res){
 	//生成口令的散列值
 	var md5 = crypto.createHash('md5');
-	var password = md5.update(req.body.register-password).digest('base64');
+	var password = md5.update(req.body.password).digest('base64');
 
-	User.get(req.body.register-email,function(err,user){
+	User.get(req.body.username,function(err,user){
 		if(!user){
 			req.flash('error','用户不存在');
 			return res.redirect('/login');
