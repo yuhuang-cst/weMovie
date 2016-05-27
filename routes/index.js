@@ -95,31 +95,34 @@ router.get("/u/:user",function(req,res){
 });
 
 router.get('/m/:mid',checkLogin);
-router.get("/m/:mid",function(req,res){
-	Mission.get(req.params.mid, function(err, mission) {
-		console.log('Mission' + req.params.mid + mission);
-		if(!mission) {
-			req.flash('error','mission not exist.');
+router.get("/m/:mid",function(req,res) {
+	var user = req.session.user;
+	UserAct.get(user.name,function(err,useract) {
+		console.log("Show useract");
+		console.log(useract);
+		if (err) {
+			req.flash('error',err);
 			return res.redirect('/');
 		}
 
-		var user = req.session.user;
-		UserAct.get(user.name,function(err,useract) {
-			console.log("Show useract");
-			console.log(useract);
-			if(err){
-				req.flash('error',err);
-				return res.redirect('/');
-			}
-
-			for (var i = 0; i < useract.groupsid.length; i++) {
-				if (useract.groupsid[i] == req.params.mid) { //TODO I do not know why object == string
+		var count = 0;
+		for (var i = 0; i < useract.groupsid.length; i++) {
+			if (useract.groupsid[i] == req.params.mid) { //TODO I do not know why object == string
+				count ++;
+				Mission.get(useract.groupsid[i], function(err, mission) {
+					console.log('Mission' + req.params.mid + mission);
+					if (!mission) {
+						req.flash('error','mission not exist.');
+						return res.redirect('/');
+					}
 					return res.render('group');
-				}
+				});
 			}
+		}
+		if (!count) {
 			req.flash('error', 'Not permitted');
 			return res.redirect('/');
-		});
+		}
 	});
 });
 
@@ -290,7 +293,7 @@ router.post('/createMission', function(req, res, next){
   });
 });
 
-// 以下三项以在/u/username中按钮形式表示
+// 以下三项以在/u/:username中按钮形式表示
 /*
 //显示任务
 router.get('/showMission', function(req, res, next){

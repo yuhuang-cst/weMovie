@@ -47,7 +47,7 @@ function get(mid, callback){
       mongodb.close();
       return callback(err);
     }
-    coll.findOne({_id : mid}).toArray(function(err, record){
+    coll.findOne({_id : mid}, function(err, record){
       mongodb.close();
       callback(err, record);
     });
