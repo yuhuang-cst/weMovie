@@ -27,7 +27,7 @@ User.prototype.save = function save(callback){
 			//为name属性添加索引，新版本的ensureIndex方法需要一个回调函数
 			collection.ensureIndex('name',{unique:true},function(err){
 				//写入user文档
-				collection.insert(user,function(err,user){
+				collection.insert(user,{safe:true},function(err,user){
 					mongodb.close();
 					callback(err,user);
 				});

@@ -1,0 +1,57 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title><%= title %></title>
+    <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
+    <style type="text/css">
+        body {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<!-- 直播html代码-->
+    <script type="text/javascript" src="http://yuntv.letv.com/bcloud.js"></script>
+    <script type = "text/javascript" src="/javascripts/letv.js"> </script>
+
+    <script> 
+      //var beginTime = new Date('2016-5-6 15:40:00')
+
+      var beginTime = '<%=beginTime%>';     
+
+      var player = new CloudVodPlayer();      
+
+      var letvcloud_player_conf =  {uu:"m9rv3asjdc", vu:'<%=vu%>', auto_play: 1, gpcflag: 1, width: 640, height: 360, start: 13, callbackJs : "callBack"};      
+
+      //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:"86e12dca1b", "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};    
+
+      //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};      
+
+      player.init(letvcloud_player_conf);
+
+    </script>
+
+    <input type="text" id="playNewIdArg"> <button onclick = "playNewId()">playNewId</button><br>
+    <input type="text" id="seekToArg"> <button onclick = "seekTo()">seekTo</button><br>
+    <input type="text" id="setVolumeArg"> <button onclick = "setVolume()">setVolume</button><br>
+    <input type="text" id="setDefinitionArg"> <button onclick = "setDefinition">setDefinition</button><br>
+    <button onclick="pauseVideo()">pauseVideo</button><br>
+    <button onclick="resumeVideo()">resumeVideo</button><br>
+    <button onclick="replayVideo()">replayVideo</button><br>
+    <button onclick="closeVideo()">closeVideo</button><br>
+    <button onclick="startUp()">startUp</button><br>
+    <button onclick="shutDown()">shutDown</button><br>
+    <button onclick="getVideoSetting()">getVideoSetting</button><br>
+    <button onclick="getVideoTime()">getVideoTime</button><br>
+    <button onclick="getDefinition()">getDefinition</button><br>
+    <button onclick="getDefinitionList()">getDefinitionList</button><br>
+    <button onclick="getLoadPercent()">getLoadPercent</button><br>
+    <button onclick="getVersion()">getVersion</button><br>
+    <div id = "output"></div>
+    <div id = "log">------------------------------------------<br></div>
+</div>
+
+
+</body>
+</html>
