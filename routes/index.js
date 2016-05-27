@@ -3,18 +3,18 @@ var router = express.Router();
 var crypto = require('crypto');
 var User = require('../models/user.js');
 //var Post = require('../models/post.js');
-var Group = require('../models/group.js');
+//var Group = require('../models/group.js');
 var UserAct = require('../models/useract.js');
 
 var events = require("events");
 var letvSdk = require('../models/letvServerAPI.js');
-var mission = require('../models/mission.js');
+var Mission = require('../models/mission.js');
 var error = require('../models/error.js');
 
 router.get('/',function(req, res) {
   res.render('index',{
     title: '首页',
-    groups: []
+    missions: []
   });
   /*Post.get(null,function(err, posts){
   	if(err){
@@ -33,13 +33,13 @@ router.get("/u/:user",function(req,res){
 			req.flash('error','用户不存在');
 			return res.redirect('/');
 		}
-		if (req.session.groups) {
-			console.log('groups in session');
-			console.log(req.session.groups);
+		if (req.session.missions) {
+			console.log('missions in session');
+			console.log(req.session.missions);
 
 			return res.render('user',{
 				title: user.name,
-				groups: req.session.groups
+				missions: req.session.missions
 			});
 		}		
 
@@ -50,17 +50,17 @@ router.get("/u/:user",function(req,res){
 				req.flash('error',err);
 				return res.redirect('/');
 			}
-			console.log("Show groups");
+			console.log("Show missions");
 
-			var groups = [];
-			var proc = 0;
+			//var missions = [];
+			//var proc = 0;// TODO:???
 
-			Group.findAll(useract.groupsid, function(err,groups) {
-				if (!groups) groups = [];
-				req.session.groups = groups;
+			Mission.findAll(useract.groupsid, function(err,missions) {
+				if (!missions) missions = [];
+				req.session.missions = missions;
 				res.render('user',{
 					title:user.name,
-					groups:groups
+					missions:missions
 				});
 			});
 			/*var getAllGroupsEvent = new events.EventEmitter();
@@ -83,7 +83,7 @@ router.get("/u/:user",function(req,res){
 			getAllGroupsEvent.on(user.name + 'getallgroups', function() {
 				console.log('show ENd');
 				getAllGroupsEvent.removeAllListeners();
-				req.session.groups = groups;
+				req.session.missions = groups;
 				res.render('user',{
 					title:user.name,
 					groups:groups
@@ -94,12 +94,12 @@ router.get("/u/:user",function(req,res){
 	});
 });
 
-router.get('/g/:gid',checkLogin);
-router.get("/g/:gid",function(req,res){
-	Group.get(Number(req.params.gid), function(err, group) {
-		console.log('Group' + req.params.gid + group);
-		if(!group) {
-			req.flash('error','Group not exist.');
+router.get('/m/:mid',checkLogin);
+router.get("/m/:mid",function(req,res){
+	Mission.get(req.params.mid, function(err, mission) {
+		console.log('Mission' + req.params.mid + mission);
+		if(!mission) {
+			req.flash('error','mission not exist.');
 			return res.redirect('/');
 		}
 
@@ -112,16 +112,13 @@ router.get("/g/:gid",function(req,res){
 				return res.redirect('/');
 			}
 
-			if (!(req.params.gid in useract.groupsid)) {
-				req.flash('error', 'Not permitted');
-				return res.redirect('/');
+			for (var i = 0; i < useract.groupsid.length; i++) {
+				if (useract.groupsid[i] == req.params.mid) { //TODO I do not know why object == string
+					return res.render('group');
+				}
 			}
-
-			/*res.render('user', {
-				title:req.params.gid,
-				groups: []
-			});*/
-			res.render('group');
+			req.flash('error', 'Not permitted');
+			return res.redirect('/');
 		});
 	});
 });
@@ -132,38 +129,6 @@ router.get('/friends',function(req,res) {
 		title:req.params.user,
 		groups: []
 	});
-});
-
-router.post('/post',checkLogin);
-router.post("/post",function(req,res){
-	var currentUser = req.session.user;
-	var gid = global.groupid; global.groupid = global.groupid + 1;
-	var group = new Group(gid, currentUser.name, {}, req.body.mid/*, req.body.movie*/);
-	console.log(group);
-
-	req.session.groups = null;
-	console.log('i am mid');
-	UserAct.add(currentUser.name, gid, function(err,usersact) {
-		console.log('line135');
-		if(err) {
-			console.log('err in UserAct.add');
-			req.flash('error',err);
-			return res.redirect('/');
-		}
-		group.save(function(err) {
-			console.log('line142');
-			if(err) {
-				console.log('err in group.save');
-				req.flash('error',err);
-				return res.redirect('/');
-			}
-
-			req.flash('success','新建group: ' + group.gid);
-			res.redirect('/u/'+currentUser.name);
-		});
-	});
-	
-
 });
 
 router.get('/reg',checkNotLogin);
@@ -271,7 +236,7 @@ function checkLogin(req,res,next){
 		req.flash('error',"未登入");
 		return res.redirect('/login');
 	}
-	req.session.groups = null;
+	req.session.missions = null;
 	next();
 };
 
@@ -304,15 +269,29 @@ router.get('/createMission', function(req, res, next){
 	res.render('missionTest');
 })
 
+router.post('/createMission',checkLogin);
 router.post('/createMission', function(req, res, next){
-  mission.create(mission.postReqToMission(req), function(err, mid){
-  	if (err){
+	var currentUser = req.session.user;
+	Mission.create(Mission.postReqToMission(currentUser, req), function(err, mid){
+		if (err){
   	  res.send(JSON.stringify({code : error.DB_ERROR, message : 'error'}));
   	}
-  	res.send(JSON.stringify({code : 0, message : 'success', data : {mid : mid}}));
+		// 将任务mid加入个人信息
+		console.log('mid='+mid);
+		UserAct.add(currentUser.name, mid, function(err,usersact) {
+			if(err) {
+				console.log('err in UserAct.add');
+				req.flash('error',err);
+				return res.redirect('/');
+			}
+			req.flash('success', JSON.stringify({code : 0, message : 'success', data : {mid : mid}}));
+			return res.redirect('/u/'+currentUser.name);
+		});
   });
 });
 
+// 以下三项以在/u/username中按钮形式表示
+/*
 //显示任务
 router.get('/showMission', function(req, res, next){
   mission.get(req.query.mid, function(err, records){
@@ -339,18 +318,18 @@ router.get('/updateMission', function(req, res, next){
 });
 
 router.post('/updateMission', function(req, res, next){
-  mission.update(req.body.mid, mission.postReqToMission(req), function(err, ret){
+  mission.update(req.body.mid, mission.postReqToMission(req.session.user, req), function(err, ret){
   	if (err)
   	  res.send(JSON.stringify({code : error.DB_ERROR, message : 'error'}));
   	else
   	  res.send(JSON.stringify({code : 0, message : 'success'}));
   });
 });
-
+*/
 
 //观看视频，例如：127.0.0.1/letv?mid=57406e33a91aa1437275f8dd
 router.get('/letv', function(req, res, next){
-  mission.get(req.query.mid, function(err, records){//获得任务信息
+  Mission.get(req.query.mid, function(err, records){//获得任务信息
   	if (err)
   	  res.render('error', {message: 'mission not found', error: {} });
   	else{
@@ -359,7 +338,7 @@ router.get('/letv', function(req, res, next){
   	  var endTime = new Date(ms.beginTime);
   	  endTime.setSeconds(endTime.getSeconds() + ms.duration);
   	  if (Date.now() > endTime){
-  	  	mission.remove(req.query.mid, function(err){});//删除任务
+  	  	Mission.remove(req.query.mid, function(err){});//删除任务
   	  	res.render('error', {message: 'mission not found', error: {} });
   	  }
   	  //渲染

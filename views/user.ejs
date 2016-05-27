@@ -1,34 +1,29 @@
 <% include layout.ejs %>
 
 <% if(user) {%>
-<form action="/post" method="post" style="text-align:center;" class="well form-inline center">
-	F:<input type="text" name="friends" class="col-sm-8 col-sm-offset-1">
-	T:<input type="text" name="time" class="col-sm-8 col-sm-offset-1">
-	M:<input type="text" name="movie" class="col-sm-8 col-sm-offset-1">
-	<button type="submit" style="float:left;margin-left:10px;" class="btn btn-success">
-		<i class="glyphicon glyphicon-comment">发言</i>
-	</button>
-	<div style="clear:both;"></div>
-</form>
-<% } %>
-
-<% groups.forEach(function(group,index){ %>
-	<% if(index%3 == 0){ %>
-				<div class="row">
+	<a href="/createMission">创建观影任务</a>
+	
+	<% missions.forEach(function(mission,index){ %>
+		<% if(index%3 == 0){ %>
+					<div class="row">
+		<% } %>
+		<div class="col-sm-4">
+			<h2>
+				Movie: <a href="/m/<%= mission._id.toString() %>"><%= mission.videoName %></a>
+			</h2>
+			<h4>
+				by: <a href="/u/<%= mission.creator %>"><%= mission.creator %></a>
+			</h4>
+			<p><small><%= mission.vu %></small></p>
+			<p><small><%= mission.beginTime %></small></p>
+			<p><small><%= mission.duration %></small></p>
+			<p><small><%= mission.member %></small></p>
+		</div>
+		<% if(index%3 == 2) {%>
+			</div> <!-- end row -->
+		<% } %>
+	<% }) %>
+	<% if(missions.length % 3 != 0) {%>
+	</div>  <!-- end row -->
 	<% } %>
-	<div class="col-sm-4">
-		<h2>
-			Host: <a href="/u/<%= group.host %>"><%= group.host %></a>
-		</h2>
-		<p><a href="/g/<%= group.gid %>">Cave Entrance<%= group.gid %></a><p>
-		<p><small><%= group.friends %></small></p>
-		<p><small><%= group.time %></small></p>
-		<p><small><%= group.movie %></small></p>
-	</div>
-	<% if(index%3 == 2) {%>
-		</div> <!-- end row -->
-	<% } %>
-<% }) %>
-<% if(groups.length % 3 != 0) {%>
-</div>  <!-- end row -->
 <% } %>
