@@ -13,14 +13,16 @@ function openColl(callback){
 }
 
 //提取post请求中的任务信息
-function postReqToMission(req){
+function postReqToMission(user, req){
   mission = {};
-  mission['creator'] = req.body.creator;
+  mission['creator'] = user.name;
   mission['videoName'] = req.body.videoName;
   mission['vu'] = req.body.vu;
   mission['beginTime'] = new Date(req.body.beginTime)
   mission['duration'] = parseInt(req.body.duration);
   mission['member'] = JSON.parse(req.body.members);
+	console.log('mission:');
+	console.log(mission);
   return mission;
 }
 
@@ -33,7 +35,7 @@ function create(mission, callback){
       }  
       coll.insert(mission, {safe:true}, function(err, ret){
         mongodb.close();
-        callback(err, ret['insertedIds'][0].toString());
+        callback(err, ret['insertedIds'][0]/*.toString()*/);
       });
   });
 }
@@ -45,12 +47,25 @@ function get(mid, callback){
       mongodb.close();
       return callback(err);
     }
-    coll.find({_id : ObjectID(mid)}).toArray(function(err, records){
+    coll.find({_id : mid}).toArray(function(err, records){
       mongodb.close();
       callback(err, records);
     });
   });
 }
+
+//获取所有任务
+function findAll(mids,callback) {
+	openColl(function(err, coll) {
+		if(err) { mongodb.close(); return callback(err); }
+		coll.find({_id : {$in: mids}}).sort({time:-1}).toArray(function(err,records) {
+			mongodb.close();
+			console.log(records);
+			callback(err, records); 
+		});
+	});
+}
+
 
 //删除任务
 function remove(mid, callback){
@@ -85,15 +100,6 @@ function update(mid, mission, callback){
 module.exports.postReqToMission = postReqToMission;
 module.exports.create = create;
 module.exports.get = get;
+module.exports.findAll = findAll;
 module.exports.remove = remove;
 module.exports.update = update;
-
-
-
-
-
-
-
-
-
-

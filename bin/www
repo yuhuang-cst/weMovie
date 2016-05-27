@@ -19,15 +19,16 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-global.server = http.createServer(app);
+var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-global.server.listen(port);
-global.server.on('error', onError);
-global.server.on('listening', onListening);
+var io = require('socket.io').listen(server);
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -82,9 +83,46 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = global.server.address();
+  var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+//handle the socket
+users = []
+io.sockets.on('connection', function(socket) {
+	//new user login
+	socket.on('login', function(nickname) {
+		if (users.indexOf(nickname) > -1) {
+			socket.emit('nickExisted');
+		}
+		else {
+			socket.userIndex = users.length;
+			socket.nickname = nickname;
+			users.push(nickname);
+			socket.emit('loginSuccess');
+			io.sockets.emit('system', nickname, users.length, 'login');
+		};
+	});
+  
+	//user leaves
+	socket.on('disconnect', function() {
+		users.splice(socket.userIndex, 1);
+		socket.broadcast.emit('system', socket.nickname, users.length, 'logout');
+	});
+  
+	//new message get
+	socket.on('postMsg', function(msg, color) {
+		socket.broadcast.emit('newMsg', socket.nickname, msg, color);
+	});
+  
+	//new image get
+	socket.on('img', function(imgData, color) {
+		socket.broadcast.emit('newImg', socket.nickname, imgData, color);
+	});
+});
+
+
+module.exports = io;

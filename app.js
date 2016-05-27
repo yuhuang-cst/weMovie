@@ -15,6 +15,9 @@ var users = require('./routes/users');
 
 var app = express();
 
+global.groupid = 0;
+//emitter.setMaxListeners(100);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -94,16 +97,5 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
-
-
-//handle the socket
-//global.io.on('connection', function(socket) {
-//  //接收并处理客户端发送的foo事件
-//  socket.on('foo', function(data) {
-//    //将消息输出到控制台
-//    console.log(data);
-//  })
-//});
 
 module.exports = app;
