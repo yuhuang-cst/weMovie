@@ -8,20 +8,21 @@
 					<div class="row">
 		<% } %>
 		<div id="mission<%= index %>" class="col-sm-4">
-			<h2>
-				Movie: <a href="/m/<%= mission._id.toString() %>"><%= mission.videoName %></a>
-			</h2>
-			<h4>
-				by: <a href="/u/<%= mission.creator %>"><%= mission.creator %></a>
-			</h4>
 			
-			<form class="form-horizontal" method="post">
-			<p id="vu<%= index %>" ><%= mission.vu %></p>
-			<p id="beginTime<%= index %>" ><%= mission.beginTime %></p>
-			<p id="duration<%= index %>" ><%= mission.duration %></p>
-			<p id="member<%= index %>" ><%= mission.member %></p>
-			<button id="mbutton<%= index %>" type="button" onclick="ModifyMission(<%= index %>)">修改</button>
-			<button id="dbutton<%= index %>" type="button" onclick="DeleteMission(<%= index %>)">删除</button>
+			<form class="form-horizontal" method="post" action="/updateMission/<%= mission._id %>">	
+				<h2>
+					Movie: <a id="movie<%= index %>" href="/m/<%= mission._id.toString() %>"><%= mission.videoName %></a>
+				</h2>
+				<h4>
+					by: <a href="/u/<%= mission.creator %>"><%= mission.creator %></a>
+				</h4>
+				<p id="vu<%= index %>" ><%= mission.vu %></p>
+				<p id="beginTime<%= index %>" ><%= mission.beginTime %></p>
+				<p id="duration<%= index %>" ><%= mission.duration %></p>
+				<p id="member<%= index %>" ><%= JSON.stringify(mission.member) %></p>
+				<button id="mbutton<%= index %>" type="button" onclick="ModifyMission(<%= index %>)">修改</button>
+			
+				<button id="dbutton<%= index %>" type="button" onclick="DeleteMission('<%= mission._id %>')">删除</button>
 			</form>
 
 		</div>
@@ -36,28 +37,31 @@
 
 <script>
 function ModifyMission(id) {
+	movie_id = "movie" + id;
+	movie_value = document.getElementById(movie_id).innerHTML;
+	$("a[id^='movie']").eq(id).replaceWith('<p><input type="text" value=\"' + movie_value + '\" class="input-xlarge" id=\"' + movie_id + '\" name="videoName"></p>');
+
 	vu_id = "vu" + id;
 	vu_value = document.getElementById(vu_id).innerHTML;
-	$("p[id^='vu']").eq(id).replaceWith('<input type="text" value=\"' + vu_value + '\" class="input-xlarge" id=\"' + vu_id + '\" name="vu">');
+	$("p[id^='vu']").eq(id).replaceWith('<p><input type="text" value=\"' + vu_value + '\" class="input-xlarge" id=\"' + vu_id + '\" name="vu"></p>');
 
 	bt_id = "beginTime" + id;
 	bt_value = document.getElementById(bt_id).innerHTML;
-	$("p[id^='beginTime']").eq(id).replaceWith('<input type="text" value=\"' + bt_value + '\" class="input-xlarge" id=\"' + bt_id + '\" name="beginTime">');
+	$("p[id^='beginTime']").eq(id).replaceWith('<p><input type="text" value=\"' + bt_value + '\" class="input-xlarge" id=\"' + bt_id + '\" name="beginTime"></p>');
 
 	dt_id = "duration" + id;
 	dt_value = document.getElementById(dt_id).innerHTML;
-	$("p[id^='duration']").eq(id).replaceWith('<input type="text" value=\"' + dt_value + '\" class="input-xlarge" id=\"' + dt_id + '\" name="duration">');
+	$("p[id^='duration']").eq(id).replaceWith('<p><input type="text" value=\"' + dt_value + '\" class="input-xlarge" id=\"' + dt_id + '\" name="duration"></p>');
 	
 	mm_id = "member" + id;
 	mm_value = document.getElementById(mm_id).innerHTML;
-	$("p[id^='member']").eq(id).replaceWith('<input type="text" value=\"' + mm_value + '\" class="input-xlarge" id=\"' + mm_id + '\" name="member">');
+	$("p[id^='member']").eq(id).replaceWith('<p><input type="text" value=\'' + mm_value + '\' class="input-xlarge" id=\"' + mm_id + '\" name="members"></p>');
 
-	/*mb_id = "mbutton" + id;
-	$("button[id^='member']").eq(id).replaceWith('<input type="text" value=\"' + mm_value + '\" class="input-xlarge" id=\"' + mm_id + '\" name="member">');*/
+	mb_id = "mbutton" + id;
+	$("button[id^='mbutton']").eq(id).replaceWith('<div class="form-actions"><button>确认修改</button></div>');
 }
 
 function DeleteMission(id) {
-	$("div[name^='mission']").eq(id).replaceWith('');
-	window.location.assign("/");
+	window.location.assign("/removeMission/" + id);
 }
 </script>

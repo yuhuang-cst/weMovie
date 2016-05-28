@@ -301,42 +301,64 @@ router.post('/createMission', function(req, res, next){
   });
 });
 
-// 以下三项以在/u/:username中按钮形式表示
-/*
-//显示任务
-router.get('/showMission', function(req, res, next){
-  mission.get(req.query.mid, function(err, records){
-  	if (err)
-  	  res.send(JSON.stringify({code : Error.MISSION_NOT_FOUND, message : Error.MISSION_NOT_FOUND_MESSAGE}));
-  	else
-  	  res.send(JSON.stringify({code : 0, message : 'success', data : {records : records}}))
+//更新任务
+router.post('/updateMission/:mid', function(req, res, next){
+  console.log(req.body);
+	console.log(req.params.mid);
+	var currentUser = req.session.user;
+	Mission.update(req.params.mid, Mission.postReqToMission(req.session.user, req), function(err, mission) {
+  	if (err || !mission) {
+			console.log('err in mission.update');
+			req.flash('error', err);
+			req.session.missions = null;
+			return res.redirect('/')
+		}
+  	req.session.missions = null;
+		return res.redirect('/u/'+currentUser.name);
   });
 });
 
 //删除任务
-router.get('/removeMission', function(req, res, next){
-  mission.remove(req.query.mid, function(err){
-  	if (err)
-  	  res.send(JSON.stringify({code : Error.DB_ERROR, message : Error.DB_ERROR_MESSAGE}));
-  	else
-  	  res.send(JSON.stringify({code : 0, message : 'success'}));
-  });
-});
+router.get('/removeMission/:mid', function(req, res, next){
+	console.log(req.params.mid);
+	var user = req.session.user;
+	UserAct.get(user.name,function(err,useract) {
+		console.log("Show useract");
+		console.log(useract);
+		if (err) {
+			req.flash('error',err);
+			return res.redirect('/');
+		}
 
-//更新任务
-router.get('/updateMission', function(req, res, next){
-  res.render('missionTest');
+		var count = 0;
+		for (var i = 0; i < useract.groupsid.length; i++) {
+			if (useract.groupsid[i] == req.params.mid) { //TODO I do not know why object == string
+				count ++;
+				Mission.remove(useract.groupsid[i], function(err) {
+					if (err) {
+						console.log('err in Mission.remove');
+						req.flash('error', err);
+						req.session.missions = null;
+						return res.redirect('/')
+					}
+  				UserAct.del(user.name, useract.groupsid[i], function(err,usersact) {
+						if (err || !usersact) {
+							console.log('err in UserAct.del');
+							req.flash('error',err);
+							return res.redirect('/');
+						}
+						req.session.missions = null;
+						return res.redirect('/u/'+user.name);
+					});
+				});
+			}
+		}
+		if (!count) {
+			req.flash('error', 'Not permitted');
+			return res.redirect('/');
+		}
+	});
 });
-
-router.post('/updateMission', function(req, res, next){
-  mission.update(req.body.mid, mission.postReqToMission(req.session.user, req), function(err, ret){
-  	if (err)
-  	  res.send(JSON.stringify({code : Error.DB_ERROR, message : Error.DB_ERROR_MESSAGE}));
-  	else
-  	  res.send(JSON.stringify({code : 0, message : 'success'}));
-  });
-});
-*/
 
 //观看视频，例如：127.0.0.1/letv?mid=57406e33a91aa1437275f8dd
 router.get('/letv', function(req, res, next){

@@ -21,8 +21,6 @@ function postReqToMission(user, req){
   mission['beginTime'] = new Date(req.body.beginTime)
   mission['duration'] = parseInt(req.body.duration);
   mission['member'] = JSON.parse(req.body.members);
-	console.log('mission:');
-	console.log(mission);
   return mission;
 }
 
@@ -74,7 +72,7 @@ function remove(mid, callback){
       mongodb.close();
       return callback(err);
     }
-    coll.remove({_id : ObjectID(mid)}, function(err){
+    coll.remove({_id : mid}, function(err){
       mongodb.close();
       callback(err);
     });
