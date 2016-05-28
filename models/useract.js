@@ -110,7 +110,7 @@ Array.prototype.removeByValue = function(val) {
 }
 */
 
-UserAct.del = function del(username, actid, callback) {
+UserAct.del = function del(username, val, callback) {
 	mongodb.open(function(err,db){
 		if(err){
 			return callback(err);
@@ -137,11 +137,11 @@ UserAct.del = function del(username, actid, callback) {
 					collection.save(doc);
 					
 					mongodb.close();
-					callback(err,usersact);
+					callback(err,doc);
 				}
 				else {
 					mongodb.close();
-					callback(err,usersact);
+					callback(err,doc);
 				}
 			});
 		});
