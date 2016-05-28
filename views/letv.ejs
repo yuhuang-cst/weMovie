@@ -18,15 +18,15 @@
     <script> 
       //var beginTime = new Date('2016-5-6 15:40:00')
 
-      var beginTime = '<%=beginTime%>';     
+      var beginTime = '<%=beginTime%>';   
 
       var player = new CloudVodPlayer();      
 
-      var letvcloud_player_conf =  {uu:"m9rv3asjdc", vu:'<%=vu%>', auto_play: 1, gpcflag: 1, width: 640, height: 360, start: 13, callbackJs : "callBack"};      
+      //var letvcloud_player_conf =  {uu:"m9rv3asjdc", vu:'<%=vu%>', auto_play: 1, gpcflag: 1, width: 640, height: 360, start: 13, callbackJs : "callBack"};      
 
       //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:"86e12dca1b", "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};    
 
-      //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};      
+      var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};      
 
       player.init(letvcloud_player_conf);
 
