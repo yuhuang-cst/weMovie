@@ -19,7 +19,7 @@
 				<p id="vu<%= index %>" ><%= mission.vu %></p>
 				<p id="beginTime<%= index %>" ><%= mission.beginTime %></p>
 				<p id="duration<%= index %>" ><%= mission.duration %></p>
-				<p id="member<%= index %>" ><%= mission.member %></p>
+				<p id="member<%= index %>" ><%= JSON.stringify(mission.member) %></p>
 				<button id="mbutton<%= index %>" type="button" onclick="ModifyMission(<%= index %>)">修改</button>
 			
 				<button id="dbutton<%= index %>" type="button" onclick="DeleteMission('<%= mission._id %>')">删除</button>
@@ -55,7 +55,7 @@ function ModifyMission(id) {
 	
 	mm_id = "member" + id;
 	mm_value = document.getElementById(mm_id).innerHTML;
-	$("p[id^='member']").eq(id).replaceWith('<p><input type="text" value=\"' + mm_value + '\" class="input-xlarge" id=\"' + mm_id + '\" name="members"></p>');
+	$("p[id^='member']").eq(id).replaceWith('<p><input type="text" value=\'' + mm_value + '\' class="input-xlarge" id=\"' + mm_id + '\" name="members"></p>');
 
 	mb_id = "mbutton" + id;
 	$("button[id^='mbutton']").eq(id).replaceWith('<div class="form-actions"><button>确认修改</button></div>');
