@@ -254,36 +254,23 @@ function checkNotLogin(req,res,next){
 
 
 //hy
-//搜索
-router.get('/search', function(req, res, next) {
-  res.render('search');
-});
 
 /*
+* 搜索影片
 * videoName (string): 视频名称
 * index (int): 页索引
 */
-router.post('/search/s', function(req, res, next){
-  console.log(req.body);
-  letvSdk.videoList(req.body.videoName || '', req.body.index || 1, Contant.RECORD_NUM, function(data){
-  	//data = JSON.parse(data.toString());
-  	console.log(data.toString());
+router.get('/search', function(req, res, next){
+  var index = parseInt(req.query.index) || 1;
+  var videoName = req.query.videoName || '';
+  letvSdk.videoList(videoName, index, Contant.RECORD_NUM, function(data){
+  	var data = JSON.parse(data.toString());
+  	var maxIndex = Math.ceil(data['total'] / Contant.RECORD_NUM);//取上整
   	res.render('searchResult', {
-  	  	records: data['data'],
-  	  });
-  	res.send(data.toString());
-  });
-});
-
-/*
-* videoName (string): 视频名称
-* index (int): 页索引
-*/
-router.get('/search/s', function(req, res, next){
-  letvSdk.videoList(req.query.videoName || '', req.query.index || 1, Contant.RECORD_NUM, function(data){
-  	//data = JSON.parse(data.toString());
-  	console.log(data.toString());
-  	res.send(data.toString());
+  	  records : data['data'],
+  	  prePage : '/search/s?videoName=' + videoName + '&index=' + (index <= 1 ? 1 : index - 1) ,
+  	  nextPage : '/search/s?videoName=' + videoName + '&index=' + (index >= maxIndex ? maxIndex : index + 1)
+  	});
   });
 });
 
