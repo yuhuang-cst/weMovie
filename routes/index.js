@@ -9,7 +9,8 @@ var UserAct = require('../models/useract.js');
 var events = require("events");
 var letvSdk = require('../models/letvServerAPI.js');
 var Mission = require('../models/mission.js');
-var error = require('../models/error.js');
+var Error = require('../models/error.js');
+var Contant = require('../models/constant.js')
 
 router.get('/',function(req, res) {
   res.render('index',{
@@ -258,26 +259,46 @@ router.get('/search', function(req, res, next) {
   res.render('search');
 });
 
-router.post('/search', function(req, res, next){
+/*
+* videoName (string): 视频名称
+* index (int): 页索引
+*/
+router.post('/search/s', function(req, res, next){
   console.log(req.body);
-  letvSdk.videoList(req.body.videoName, function(data){
+  letvSdk.videoList(req.body.videoName || '', req.body.index || 1, Contant.RECORD_NUM, function(data){
+  	//data = JSON.parse(data.toString());
+  	console.log(data.toString());
+  	res.render('searchResult', {
+  	  	records: data['data'],
+  	  });
+  	res.send(data.toString());
+  });
+});
+
+/*
+* videoName (string): 视频名称
+* index (int): 页索引
+*/
+router.get('/search/s', function(req, res, next){
+  letvSdk.videoList(req.query.videoName || '', req.query.index || 1, Contant.RECORD_NUM, function(data){
   	//data = JSON.parse(data.toString());
   	console.log(data.toString());
   	res.send(data.toString());
   });
 });
 
+
 //创建观影任务
 router.get('/createMission', function(req, res, next){
 	res.render('missionTest');
 })
 
-router.post('/createMission',checkLogin);
+router.post('/createMission', checkLogin);
 router.post('/createMission', function(req, res, next){
 	var currentUser = req.session.user;
 	Mission.create(Mission.postReqToMission(currentUser, req), function(err, mid){
 		if (err){
-  	  res.send(JSON.stringify({code : error.DB_ERROR, message : 'error'}));
+  	  res.send(JSON.stringify({code : Error.DB_ERROR, message : Error.DB_ERROR_MESSAGE}));
   	}
 		// 将任务mid加入个人信息
 		console.log('mid='+mid);
@@ -354,16 +375,22 @@ router.get('/removeMission/:mid', function(req, res, next){
 
 //观看视频，例如：127.0.0.1/letv?mid=57406e33a91aa1437275f8dd
 router.get('/letv', function(req, res, next){
+  res.render('letv', {
+  	title: '云中歌',
+  	vu: '86e12dca1b',
+  	beginTime: new Date('2016-05-28 19:30:00')
+  });
+
+  /*
   Mission.get(req.query.mid, function(err, ms){//获得任务信息
-  	if (err || !ms) {
-  	  res.render('error', {message: 'mission not found', error: {} });
-		}
+  	if (err || !ms)
+  	  res.render('error', {message: Error.MISSION_NOT_FOUND_MESSAGE, error: {} });
   	else{
   	  var endTime = new Date(ms.beginTime);
   	  endTime.setSeconds(endTime.getSeconds() + ms.duration);
+  	  //若影片已经结束
   	  if (Date.now() > endTime){
-  	  	Mission.remove(req.query.mid, function(err){});//删除任务
-  	  	res.render('error', {message: 'mission not found', error: {} });
+  	  	res.render('error', {message: Error.VIDEO_FINISHED_MESSAGE, error: {} });
   	  }
   	  //渲染
   	  res.render('letv', {
@@ -372,8 +399,9 @@ router.get('/letv', function(req, res, next){
   	  	beginTime: ms.beginTime
   	  });
   	}
-  });
+  });*/
 });
+
 
 //初始化上传视频
 router.post('/html5UploadInit', function(req, res, next){

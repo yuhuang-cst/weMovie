@@ -1,0 +1,1 @@
+exports.RECORD_NUM = 10;	//搜索返回结果的分页大小

@@ -87,32 +87,35 @@ function getVersion(){
     output(version);
 }
 
-function seekToImprove(){
+//播放同步
+function synchronize(){
   var time = ( Date.now() - beginTime.getTime() ) / 1000;
-  log('time = ');
-  log(time);
   player.sdk.seekTo(time);
   var seekTotime = getVideoTime();
-  log('seekTotime = ');
-  log(seekTotime);
-  log('seekTotime = ' + seekTotime + '; time = ', time);
   if (Math.abs(seekTotime - time) > 2){
-    log('pauseVideo');
     player.sdk.pauseVideo();
   }
   else{
-    log('clearInterval')
     clearInterval(interval);
   }
 }
+
 function callBack(type, data){
     var log = document.getElementById("log");
     var myDate = new Date();
     log.innerHTML += "<span>" + myDate.toLocaleTimeString() + "</span>" + "===>" + "type: " + type + ";data: " + JSON.stringify(data) + "<br>";
+    console.log('beginTime = ', beginTime);
+    console.log('beginTime - now = ', beginTime - Date.now());
+    console.log('beginTime.getTime()', beginTime.getTime());
     if (type == 'playerStart'){
-      interval = setInterval(seekToImprove, 1000);
+      interval = setInterval(synchronize, 1000);
+    }
+    else if (type == 'videoResume'){
+      interval = setInterval(synchronize, 1000)
     }
 }
+
+
 
 
 
