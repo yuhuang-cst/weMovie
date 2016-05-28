@@ -87,6 +87,34 @@ function getVersion(){
     output(version);
 }
 
+//播放同步
+function synchronize(){
+  var time = ( Date.now() - beginTime.getTime() ) / 1000;
+  player.sdk.seekTo(time);
+  var seekTotime = getVideoTime();
+  if (Math.abs(seekTotime - time) > 2){
+    player.sdk.pauseVideo();
+  }
+  else{
+    clearInterval(interval);
+  }
+}
+
+function callBack(type, data){
+    var log = document.getElementById("log");
+    var myDate = new Date();
+    log.innerHTML += "<span>" + myDate.toLocaleTimeString() + "</span>" + "===>" + "type: " + type + ";data: " + JSON.stringify(data) + "<br>";
+    console.log('beginTime = ', beginTime);
+    console.log('beginTime - now = ', beginTime - Date.now());
+    console.log('beginTime.getTime()', beginTime.getTime());
+    if (type == 'playerStart'){
+      interval = setInterval(synchronize, 1000);
+    }
+    else if (type == 'videoResume'){
+      interval = setInterval(synchronize, 1000)
+    }
+}
+
 
 
 
