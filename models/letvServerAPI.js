@@ -20,8 +20,11 @@ function md5 (text) {
 function generateSign(params, secretKey){
   var keys = getKeys(params).sort();
   var keyStr = '';
-  for (var i in keys)
+  for (var i in keys){
+    if (typeof(keys[i]) == 'function')
+      continue;
     keyStr += keys[i] + params[keys[i]];
+  }
   keyStr += secretKey;
   return md5(keyStr)
 }
@@ -118,22 +121,24 @@ function uploadInit(filename, filesize, uploadtype, callBack){
 }
 
 
-function videoList(videoName, callBack, index, size, status){
+function videoList(videoName, index, size, callBack, status){
   console.log('call videoList');
   var USER_UNIQUE = 'm9rv3asjdc';
   var SECRET_KEY = '4f4783bb2ef51291154f3db3d4f62ce5';
 
   var params = generateParams('video.list', USER_UNIQUE);
+  console.log(params)
   params['video_name'] = videoName;
-  if (index)  params['index'] = index;
-  if (size)  params['size'] = size;
+  console.log('videoName = ', videoName)
+  params['index'] = index;
+  params['size'] = size;
   params['sign'] = generateSign(params, SECRET_KEY);
 
   var contents = qs.stringify(params);
   console.log(contents);
   doGet(contents, onErr, callBack);
-}
 
+}
 
 module.exports.uploadInit = uploadInit;
 module.exports.videoList = videoList;
