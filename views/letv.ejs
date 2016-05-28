@@ -16,17 +16,49 @@
     <script type = "text/javascript" src="/javascripts/letv.js"> </script>
 
     <script> 
+        //播放同步
+        function synchronize(){
+          var time = ( Date.now() - beginTime.getTime() ) / 1000;
+          player.sdk.seekTo(time);
+          var seekTotime = getVideoTime();
+          if (Math.abs(seekTotime - time) > 2){
+            player.sdk.pauseVideo();
+          }
+          else{
+            clearInterval(interval);
+          }
+        }
+
+        function callBack(type, data){
+            var log = document.getElementById("log");
+            var myDate = new Date();
+            log.innerHTML += "<span>" + myDate.toLocaleTimeString() + "</span>" + "===>" + "type: " + type + ";data: " + JSON.stringify(data) + "<br>";
+            console.log('beginTime = ', beginTime);
+            console.log('beginTime - now = ', beginTime - Date.now());
+            console.log('beginTime.getTime()', beginTime.getTime());
+            if (type == 'playerStart'){
+              interval = setInterval(synchronize, 1000);
+            }
+            else if (type == 'videoResume'){
+              interval = setInterval(synchronize, 1000)
+            }
+        }
+    </script>
+
+    <script> 
       //var beginTime = new Date('2016-5-6 15:40:00')
 
-      var beginTime = '<%=beginTime%>';     
+      //var beginTime = '<%=beginTime%>';   
+
+      var beginTime = new Date('2016-05-28 19:30:00');
 
       var player = new CloudVodPlayer();      
 
-      var letvcloud_player_conf =  {uu:"m9rv3asjdc", vu:'<%=vu%>', auto_play: 1, gpcflag: 1, width: 640, height: 360, start: 13, callbackJs : "callBack"};      
+      //var letvcloud_player_conf =  {uu:"m9rv3asjdc", vu:'<%=vu%>', auto_play: 1, gpcflag: 1, width: 640, height: 360, start: 13, callbackJs : "callBack"};      
 
       //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:"86e12dca1b", "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};    
 
-      //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};      
+      var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};      
 
       player.init(letvcloud_player_conf);
 
