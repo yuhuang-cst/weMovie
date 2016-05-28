@@ -193,13 +193,15 @@
                                             </div>
                                             <div class="item-subheader"></div>
 
-                                            <div class="item-tags">
-                                                <button type="button" class="btn btn-info btn-default btn-xs" >青春</button>
-                                                <button type="button" class="btn btn-info btn-default btn-xs">爱情</button>
-                                                <button type="button" class="btn btn-info btn-default btn-xs">喜剧</button>
+                                            tags.forEach(function(tag, index){
+                                                <div class="item-tags">
+                                                    <button type="button" class="btn btn-info btn-default btn-xs" ><% =tag %> </button>
+                                                </div>
+                                            });
+                                            
+                                            <div class="item-content"> <% =record['video_desc'] %> </div>
                                             </div>
-                                                <div class="item-content">《怦然心动》是由罗伯·莱纳执导，玛德琳·卡罗尔、卡兰·麦克奥利菲主演影片。该片根据文德琳·范·德拉安南的同名原著小说改编，描述了青春期中男孩女孩之间的有趣战争。于2010年8月6日在美国上映。</div>
-                                            </div>
+
                                         </div>
                                     </div>
                             </li>
