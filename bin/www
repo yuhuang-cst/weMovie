@@ -91,37 +91,42 @@ function onListening() {
 }
 
 //handle the socket
-users = []
+
 io.sockets.on('connection', function(socket) {
-	//new user login
-	socket.on('login', function(nickname) {
-		if (users.indexOf(nickname) > -1) {
-			socket.emit('nickExisted');
+	var url_splited = socket.request.headers.referer.split('/');
+	var mid = url_splited[url_splited.length - 1];
+	var username = '';
+
+	// user join in
+	socket.on('join', function (nickname) {
+    username = nickname;
+		if (!global.mission_info[mid]) {
+			global.mission_info[mid] = []
 		}
-		else {
-			socket.userIndex = users.length;
-			socket.nickname = nickname;
-			users.push(nickname);
-			socket.emit('loginSuccess');
-			io.sockets.emit('system', nickname, users.length, 'login');
-		};
-	});
-  
+		global.mission_info[mid].push(username);
+		
+		socket.join(mid);
+		io.sockets.to(mid).emit('system', username + '加入了房间', global.mission_info[mid]); 
+  });
+	
 	//user leaves
 	socket.on('disconnect', function() {
-		users.splice(socket.userIndex, 1);
-		socket.broadcast.emit('system', socket.nickname, users.length, 'logout');
+		var index = global.mission_info[mid].indexOf(username);
+    if (index !== -1) {
+      global.mission_info[mid].splice(index, 1);
+    }
+
+    socket.leave(mid);    // 退出房间
+    io.sockets.to(mid).emit('system', username + '退出了房间', global.mission_info[mid]);
 	});
-  
-	//new message get
-	socket.on('postMsg', function(msg, color) {
-		socket.broadcast.emit('newMsg', socket.nickname, msg, color);
-	});
-  
-	//new image get
-	socket.on('img', function(imgData, color) {
-		socket.broadcast.emit('newImg', socket.nickname, imgData, color);
-	});
+ 
+	//send message
+	socket.on('message', function (msg) {
+    if (global.mission_info[mid].indexOf(username) === -1) {  
+      return false;
+    }
+    io.sockets.to(mid).emit('msg', username, msg);
+  });
 });
 
 

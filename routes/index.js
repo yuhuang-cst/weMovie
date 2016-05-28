@@ -12,6 +12,8 @@ var Mission = require('../models/mission.js');
 var Error = require('../models/error.js');
 var Contant = require('../models/constant.js')
 
+global.mission_info = {};
+
 router.get('/',function(req, res) {
   res.render('index',{
     title: '首页',
@@ -116,7 +118,12 @@ router.get("/m/:mid",function(req,res) {
 						req.flash('error','mission not exist.');
 						return res.redirect('/');
 					}
-					return res.render('group');
+
+					if (!global.mission_info[req.params.mid]) { global.mission_info[req.params.mid] = []; }
+					return res.render('group', {
+						username: user.name,
+						members: global.mission_info[req.params.mid]
+					});
 				});
 			}
 		}
