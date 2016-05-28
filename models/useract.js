@@ -99,6 +99,7 @@ UserAct.add = function add(username, actid, callback) {
 
 }
 
+/*
 Array.prototype.removeByValue = function(val) {
   for(var i=0; i<this.length; i++) {
     if(this[i] == val) {
@@ -107,6 +108,7 @@ Array.prototype.removeByValue = function(val) {
     }
   }
 }
+*/
 
 UserAct.del = function del(username, actid, callback) {
 	mongodb.open(function(err,db){
@@ -124,7 +126,14 @@ UserAct.del = function del(username, actid, callback) {
 			collection.findOne({name:username},function(err,doc){
 				if(doc){
 					//封装文档为User对象
-					doc.groupsid.removeByValue(actid);
+					// doc.groupsid.removeByValue(actid);
+					for (var i = 0; i < doc.groupsid.length; i++) {
+    				if (doc.groupsid[i] == val) {
+							this.splice(i, 1);
+    				  break;
+    				}
+  				}
+
 					collection.save(doc);
 					
 					mongodb.close();
