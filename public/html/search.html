@@ -10,6 +10,7 @@
     <!-- Bootstrap -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
     <link href="../stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+    <script language="JavaScript" src="../javascripts/jquery.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -84,6 +85,7 @@
         </div>
     </nav>
 </header>
+
 <div class="content">
 <br>
 <br>
@@ -108,15 +110,16 @@
                                     <div class="item-main">
                                         <div class="item-header">
                                         <a class="f-main f-16" href="/Course/148" target="_blank"><font size="6">怦然心动</font></a>
-                                        <a href="/Course/148#anchor-comments" class="f-light">
+                                        <button type="button" class="btn btn-link">
                                             <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                                        </a>
-                                        <a href="/Course/148#anchor-comments" class="f-light">
+                                        </button>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-link">
                                             <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-                                        </a>
-                                        <a href="/Course/148#anchor-comments" class="f-light">
+                                        </button>
+                                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#plusModal">
                                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                        </a>
+                                        </button>
                                         </div>
                                         <div class="item-subheader"></div>
 
@@ -166,10 +169,6 @@
                                     </div>
                                 </div>
                         </li>  
-
-                        
-
-
                     </ul>
                     <ul id="cache" style="display: none"> </ul>
                 </div>
@@ -177,7 +176,45 @@
                 </div>
             </div>
         </div>
- </div>  
+ </div> 
+ <!-- Modal -->
+<div class="modal fade" id="plusModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">新建任务</h4>
+      </div>
+      <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label for="labName" class="col-sm-3 control-label">视频名称</label>
+                <div class="col-sm-7">
+                  <input type="text" class="form-control" id="inputName" placeholder="怦然心动">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="labTime" class="col-sm-3 control-label">视频时长</label>
+                <div class="col-sm-7">
+                  <input type="text" class="form-control" id="inputTime" placeholder="怦然心动">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="labName" class="col-sm-3 control-label">视频名称</label>
+                <div class="col-sm-7">
+                  <input type="text" class="form-control" id="inputName" placeholder="怦然心动">
+                </div>
+              </div>
+            </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> 
+
  <div class="footer">
      
  </div>>  

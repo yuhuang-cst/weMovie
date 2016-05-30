@@ -3,6 +3,8 @@ var qs = require("querystring");
 var crypto = require('crypto');
 var Buffer = require("buffer").Buffer
 
+var USER_UNIQUE = 'm9rv3asjdc';
+var SECRET_KEY = '4f4783bb2ef51291154f3db3d4f62ce5';
 
 function getKeys(dict){
   keys = [];
@@ -103,11 +105,9 @@ function doPost(contents, onErr, handleData){
   req.end();
 }
 
-
-function uploadInit(filename, filesize, uploadtype, callBack){
+//上传初始化
+function uploadInit(filename, filesize, uploadtype, callback){
   console.log('call uploadInit()');
-  var USER_UNIQUE = 'm9rv3asjdc'
-  var SECRET_KEY = '4f4783bb2ef51291154f3db3d4f62ce5'
 
   var params = generateParams('video.upload.init', USER_UNIQUE);
   params['video_name'] = filename;
@@ -117,14 +117,25 @@ function uploadInit(filename, filesize, uploadtype, callBack){
   params['sign'] = generateSign(params, SECRET_KEY);
 
   var contents = qs.stringify(params);
-  doGet(contents, onErr, callBack);
+  doGet(contents, onErr, callback);
 }
 
+//视频断点续传
+function uploadResume(token, uploadtype, callback){
+  console.log('call uploadResume');
 
-function videoList(videoName, index, size, callBack, status){
+  var params = generateParams('video.upload.resume', USER_UNIQUE);
+  params['token'] = token;
+  params['uploadtype'] = uploadtype;
+  params['sign'] = generateSign(params, SECRET_KEY);
+
+  var contents = qs.stringify(params);
+  doGet(contents, onErr, callback);
+}
+
+//模糊搜索，获取视频列表
+function videoList(videoName, index, size, callback){
   console.log('call videoList');
-  var USER_UNIQUE = 'm9rv3asjdc';
-  var SECRET_KEY = '4f4783bb2ef51291154f3db3d4f62ce5';
 
   var params = generateParams('video.list', USER_UNIQUE);
   console.log(params)
@@ -136,12 +147,55 @@ function videoList(videoName, index, size, callBack, status){
 
   var contents = qs.stringify(params);
   console.log(contents);
-  doGet(contents, onErr, callBack);
-
+  doGet(contents, onErr, callback);
 }
 
+//获取单个视频的信息
+function videoGet(videoID, callback){
+  console.log('call videoGet');
+
+  var params = generateParams('video.get');
+  params['video_id'] = videoID;
+  params['sign'] = generateSign(params, SECRET_KEY);
+
+  var contents = qs.stringify(params);
+  doGet(contents, onErr, callback);
+}
+
+//更新视频信息
+function videoUpdate(videoID, videoName, videoDesc, tag, callback){
+  console.log('call videoUpdate');
+
+  var params = generateParams('video.update', USER_UNIQUE);
+  params['video_id'] = videoID;
+  if (videoName) params['video_name'] = videoName;
+  if (videoDesc) params['video_desc'] = videoDesc;
+  if (tag) params['tag'] = tag;
+  params['sign'] = generateSign(params, SECRET_KEY);
+
+  var contents = qs.stringify(params);
+  doGet(contents, onErr, callback);
+}
+
+//删除视频
+function videoDel(videoID, callback){
+  console.log('call videoDel');
+
+  var params = generateParams('video.del');
+  params['video_id'] = videoID;
+  params['sign'] = generateSign(params, SECRET_KEY);
+
+  var contents = qs.stringify(params);
+  doGet(contents, onErr, callback);
+}
+
+
 module.exports.uploadInit = uploadInit;
+module.exports.uploadResume = uploadResume;
 module.exports.videoList = videoList;
+module.exports.videoGet = videoGet;
+module.exports.videoUpdate = videoUpdate;
+module.exports.videoDel = videoDel;
 
 //module.exports = uploadInit;
 

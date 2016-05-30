@@ -87,33 +87,118 @@ function getVersion(){
     output(version);
 }
 
-//播放同步
-function synchronize(){
-  var time = ( Date.now() - beginTime.getTime() ) / 1000;
-  player.sdk.seekTo(time);
-  var seekTotime = getVideoTime();
-  if (Math.abs(seekTotime - time) > 2){
-    player.sdk.pauseVideo();
-  }
-  else{
-    clearInterval(interval);
+
+var lastType = '';
+var syn = false;
+var videoOn = false;
+
+var BEFORE_PLAYING = -1;
+var PLAYING = 0;
+var AFTER_PLAYING = 1;
+
+var startUp = false; //视频刚刚从开头开始播放
+
+function getTimeStatus(){
+  if (Date.now() < beginTime)
+    return BEFORE_PLAYING;
+  else if (Date.now() > endTime)
+    return AFTER_PLAYING;
+  else
+    return PLAYING;
+}
+
+function secondsToDD_HH_MM_SS(seconds){
+  var timeDict = {};
+  timeDict['days'] = Math.floor(seconds / 86400);
+  seconds -= timeDict['days'] * 86400;
+  timeDict['hours'] = Math.floor(seconds / 3600);
+  seconds -= timeDict['hours'] * 3600;
+  timeDict['minutes'] = Math.floor(seconds / 60);
+  seconds -= timeDict['minutes'] * 60;
+  timeDict['seconds'] = Math.floor(seconds);
+  return timeDict;
+}
+
+function beginTimeMonitor(){
+  var timeDict = secondsToDD_HH_MM_SS( (beginTime.getTime() - Date.now()) / 1000);
+  console.log('距离播放还有：%d天%d时%d分%d秒', timeDict['days'], timeDict['hours'], timeDict['minutes'], timeDict['seconds']);
+  if (getTimeStatus() == PLAYING){
+    player.sdk.resumeVideo();
+    clearInterval(beginTimeCounter);
   }
 }
 
-function callBack(type, data){
-    var log = document.getElementById("log");
-    var myDate = new Date();
-    log.innerHTML += "<span>" + myDate.toLocaleTimeString() + "</span>" + "===>" + "type: " + type + ";data: " + JSON.stringify(data) + "<br>";
-    console.log('beginTime = ', beginTime);
-    console.log('beginTime - now = ', beginTime - Date.now());
-    console.log('beginTime.getTime()', beginTime.getTime());
-    if (type == 'playerStart'){
-      interval = setInterval(synchronize, 1000);
+
+//播放同步
+function synchronize(){
+  var elapsed = ( Date.now() - beginTime.getTime() ) / 1000;
+  player.sdk.seekTo(elapsed);
+  var synJudge = setTimeout(function(){//由于seekTo似乎为非阻塞，导致有时getVideoTime所得为seekTo之前的时间，故设置延迟函数
+    var seekTotime = getVideoTime();
+    //console.log('elapsed = ', Math.floor(elapsed / 60), elapsed - Math.floor(elapsed / 60) * 60);
+    //console.log('seekTotime = ', Math.floor(seekTotime / 60), seekTotime - Math.floor(seekTotime / 60) * 60);
+    if (Math.abs(seekTotime - elapsed) > 2)  { //同步到误差小于1秒停止
+      if (syn == true)
+        return
+      player.sdk.pauseVideo();
+    } 
+    else{
+      syn = true;
+      console.log('同步完毕！');
+      clearTimeout(synJudge);
+      clearInterval(synchroCounter);
     }
-    else if (type == 'videoResume'){
-      interval = setInterval(synchronize, 1000)
-    }
+  },150);
 }
+
+function synchro(){
+  console.log('开始同步');
+  syn = false;
+  synchroCounter = setInterval(synchronize, 600);
+}
+
+//播放的回调函数
+function playCallBack(type, data){
+  var log = document.getElementById("log");
+  var myDate = new Date();
+  log.innerHTML += "<span>" + myDate.toLocaleTimeString() + "</span>" + "===>" + "type: " + type + ";data: " + JSON.stringify(data) + "<br>";
+  //console.log('lastType = ', lastType);
+
+  if (type == 'playerStart'){//若视频从开头开始播放
+    var timeStatus = getTimeStatus();
+
+    if (timeStatus == BEFORE_PLAYING){//播放时间未到
+      startUp == true;
+      player.sdk.pauseVideo();
+      beginTimeCounter = setInterval(beginTimeMonitor, 1000);//监听时间，准备播放
+    }
+    else if (timeStatus == AFTER_PLAYING){//播放已经结束
+      console.log('播放结束');
+      player.sdk.closeVideo();
+    }
+    else { //正在播放
+      synchro();
+    }
+  }
+
+  if (type == 'videoResume' && !startUp){ //若视频由暂停恢复 且 非视频开头
+    synchro();
+  }
+
+  if (lastType == 'videoEmpty' && type == 'videoFull'){//若视频从缓存不足中恢复
+    synchro();
+  } 
+
+  lastType = type;
+  startUp = false;
+}
+
+
+
+
+
+
+
 
 
 

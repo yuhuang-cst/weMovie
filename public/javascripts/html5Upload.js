@@ -1,10 +1,13 @@
 window.html5Upload = (function () {
+
     function html5Upload() {
     }
+
     //添加文件的Option对象
     var addFileOption = {};
     //点击上传的Option对象
     var uploadOption = {};
+
     //拓展函数
     (function () {
         //使用jq拓展文件添加函数
@@ -17,13 +20,16 @@ window.html5Upload = (function () {
 
                 }
             };
-            $.fn.addFile = function (options) {
-                addFileOption = $.extend(defaults, options || {});
+
+            //对jquery扩展了一个addFile方法，可以这样使用：$("button").addFile(); 
+            $.fn.addFile = function (options) {//$.fn: jquery的命名空间
+                addFileOption = $.extend(defaults, options || {});//将options合并到defalut中
                 return this.each(function () {
                     $(this).click(uploadFileOperation.addFile);
                 });
             };
-        })(jQuery);
+        })(jQuery);//end of 使用jq拓展文件添加函数
+
         //使用jq拓展上传函数
         (function ($) {
             var defaults = {
@@ -50,8 +56,11 @@ window.html5Upload = (function () {
                     });
                 });
             };
-        })(jQuery);
-    })();
+        })(jQuery);//end of 使用jq拓展上传函数
+
+    })();//end of 拓展函数
+
+
     //cookie操作
     var uploadCookie = (function () {
         function uploadCookie() {
@@ -78,7 +87,9 @@ window.html5Upload = (function () {
             uploadCookie.setCookie(key, "", -1);
         };
         return uploadCookie;
-    })();
+    })();//end of cookie操作
+
+
     //ajax
     var uploadAjax = (function () {
         function uploadAjax() {
@@ -99,17 +110,21 @@ window.html5Upload = (function () {
             });
         };
         return uploadAjax;
-    })();
+    })();//end of ajax
+
+
     //上传回调函数
     var xhrEventCallback = (function () {
         function xhrEventCallback() {
         }
+
         xhrEventCallback.loadstart = function (e) {
             var currStack = videoUpload.cellStack;
             currStack.inittime = (new Date()).getTime(); //标记开始 即时的 时间
             var transferedsize = videoUpload.cellStack ? videoUpload.cellStack.transferedsize : 0;
             currStack.transferedsize = transferedsize;
-        };
+        };//end of xhrEventCallback.loadstart
+
         xhrEventCallback.load = function (e) {
             var res = eval("(" + e.target.responseText + ")");
             if (!!res.transferedsize) {
@@ -135,7 +150,8 @@ window.html5Upload = (function () {
                 uploadCookie.removeCookie(html5Upload.exportObject.selectFile.fileKey);
                 videoUpload.xhrAbort();
             }
-        };
+        };//end of xhrEventCallback.load
+
         xhrEventCallback.progress = function (e) {
             var cellstack = videoUpload.cellStack, filetransfered = parseInt(cellstack.transferedsize);
             var pc = parseInt((filetransfered + e.loaded) / html5Upload.exportObject.selectFile.file.size * 100), delttime = ((new Date()).getTime() - (cellstack.starttime || cellstack.inittime)) / 1000, rate = e.loaded / delttime;
@@ -152,16 +168,22 @@ window.html5Upload = (function () {
                 }
                 uploadOption.uploadProgress({ progress: pc + "%", speed: rate });
             }
-        };
+        };//end of xhrEventCallback.progress
+
         xhrEventCallback.error = function (e) {
             uploadOption.uploadError({ code: 404, msg: "网络异常" });
             videoUpload.xhrAbort();
         };
+
         xhrEventCallback.abort = function (e) {
             uploadOption.uploadAbort({ code: 202, msg: "中断上传" });
         };
+
         return xhrEventCallback;
-    })();
+
+    })();//end of 上传回调函数
+
+
     //上传
     var videoUpload = (function () {
         function videoUpload() {
@@ -169,6 +191,7 @@ window.html5Upload = (function () {
         var cellSize = 10485760;
         var xhr = null;
         var tryNum = 0;
+
         var sliceFile = function (file, start) {
             var blob;
             start = start || 0;
@@ -192,8 +215,10 @@ window.html5Upload = (function () {
             }
             return blob;
         };
+
         videoUpload.cellStack = {};
         videoUpload.uploadUrl = "";
+
         videoUpload.streamUpload = function (loadedsize) {
             videoUpload.cellStack.transferedsize = loadedsize;
             xhr = new XMLHttpRequest();
@@ -210,9 +235,11 @@ window.html5Upload = (function () {
             xhr.setRequestHeader("Content-Range", content);
             xhr.send(cellFile);
         };
+
         videoUpload.xhrAbort = function () {
             xhr && xhr.abort();
         };
+
         videoUpload.tryUpload = function () {
             var video_name = encodeURIComponent(html5Upload.exportObject.selectFile.file.name);
             var uploadtype = 1;
@@ -274,24 +301,32 @@ window.html5Upload = (function () {
                     uploadOption.uploadAbort({ code: 207, msg: e.message });
                     tryNum = 0;
                 }
-            }
-        };
+            }// end of try & catch 
+
+        };//end of videoUpload.tryUpload
+
         return videoUpload;
-    })();
+    })();//end of 上传
+
+
     //文件操作
     var uploadFileOperation = (function () {
         function uploadFileOperation() {
         }
+        
         //允许上传的文件类型
         var fileTypes = "wmv|avi|dat|asf|rm|rmvb|ram|mpg|mpeg|mp4|mov|m4v|mkv|flv|vob|qt|divx|cpk|fli|flc|mod|dvix|dv|ts";
+        
         //获取文件的类型
         var getFileType = function (file) {
             return file.name.split(".").pop();
         };
+
         //获取文件的key
         var getFileKey = function (file) {
             return [getFileType(file), file.size, file.lastModifiedDate || file.name].join('_');
         };
+
         //选中文件的时候
         var inputFileChange = function (e) {
             var file = e.target.files[0];
@@ -306,6 +341,7 @@ window.html5Upload = (function () {
                 html5Upload.exportObject.selectFile.fileKey = getFileKey(file);
             }
         };
+
         //添加文件
         uploadFileOperation.addFile = function (e) {
             var inpfile = document.getElementById("fileUploadId_Hsc");
@@ -321,8 +357,11 @@ window.html5Upload = (function () {
                 inpfile.click && e.target != inpfile && inpfile.click();
             }
         };
+
         return uploadFileOperation;
-    })();
+    })();//end of 文件操作
+
+
     //可供用户访问的属性
     html5Upload.exportObject = (function () {
         function exportObject() {
@@ -331,5 +370,10 @@ window.html5Upload = (function () {
         exportObject.selectFile = {};
         return exportObject;
     })();
+
     return html5Upload;
-})();
+
+})();//end of window.html5Upload
+
+
+
