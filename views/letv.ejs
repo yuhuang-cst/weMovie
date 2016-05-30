@@ -1,55 +1,138 @@
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
     <title><%= title %></title>
     <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
-    <style type="text/css">
-        body {
-            padding: 0;
-            margin: 0;
-        }
-    </style>
+    <!-- Bootstrap -->
+    <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="../stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
 </head>
 <body>
-<!-- 直播html代码-->
-    <script type="text/javascript" src="http://yuntv.letv.com/bcloud.js"></script>
-    <script type = "text/javascript" src="/javascripts/letv.js"> </script>
+  <header class="header">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="row">
+                <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden-xs visible-sm-block col-sm-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5" style="position: relative;">
+                        <form class="navbar-form-mc center-vertical" method="get" action="/course/search" role="search">
+                            <div class="input-group input-group-nav">
+                                <input type="text" class="form-control" id="input-search" name="key" placeholder="搜索影片...">
+                                <span class="input-group-btn">
+                                    <a role="button" class="btn" onclick="$(this).closest('form').submit()">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </a>
+                                </span>
+                            </div>
+                        </form>
+                </div>
+                <div class="hidden-xs col-sm-5 col-md-4 col-lg-4">
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav pull-right">
+                            <li id="nav-index"><a href="index.html">首页</a></li>
+                            <li id="nav-course"><a href="movie.html">影片</a></li>
+                            <li id="nav-notice"><a href="/announcement">公告</a></li>
+                            <li><a href="/">登录</a></li>
+                                
+                        </ul>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="nav nav-hamburger pull-right">
+                        <a href="#ham" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="index.html">首页</a></li>
+                            <li><a href="movie.html">影片</a></li>
+                            <li id="xs-nav-notice"><a href="/announcement">公告</a></li>
+                            <li><a href="/">登录</a></li>
+                                
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="content">
+<br><br><br><br>
+    <div class="wrapper">
+        <div class="container">
+            <div class="row">
+            <div class="wrapper-intro col-xs-0 col-sm-6 col-md-4 col-lg-5">
+            <!-- 直播html代码-->
+                <script type="text/javascript" src="http://yuntv.letv.com/bcloud.js"></script>
+                <script type = "text/javascript" src="/javascripts/letv.js"> </script>
 
-    <script> 
-      //var beginTime = new Date('2016-5-6 15:40:00')
+                <script> 
+                  //var beginTime = new Date('2016-5-6 15:40:00')
 
-      var beginTime = '<%=beginTime%>';   
+                  var beginTime = '<%=beginTime%>';   
 
-      var player = new CloudVodPlayer();      
+                  var player = new CloudVodPlayer();      
 
-      //var letvcloud_player_conf =  {uu:"m9rv3asjdc", vu:'<%=vu%>', auto_play: 1, gpcflag: 1, width: 640, height: 360, start: 13, callbackJs : "callBack"};      
+                  //var letvcloud_player_conf =  {uu:"m9rv3asjdc", vu:'<%=vu%>', auto_play: 1, gpcflag: 1, width: 640, height: 360, start: 13, callbackJs : "callBack"};      
 
-      //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:"86e12dca1b", "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};    
+                  //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:"86e12dca1b", "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};    
 
-      var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};      
+                  var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":590,"height":400, start : 13, callbackJs : "callBack"};      
 
-      player.init(letvcloud_player_conf);
+                  player.init(letvcloud_player_conf);
 
-    </script>
+                </script>
+            </div>
+                    <div class="wrapper-intro col-xs-0 col-sm-0 col-md-3 col-lg-1"></div>
+                    <div class="log-or-sign col-xs-12 col-sm-6 col-md-5 col-lg-6">
+                    <div class="panel panel-default">
+                    <div class="panel-heading">Panel heading without title</div>
+                    <div class="panel-body">
+                      <div id="convo" data-from="Sonu Joshi">  
+                        <ul class="chat-thread">
+                            <li>Are we meeting today?</li>
+                            <li>yes, what time suits you?</li>
+                            <li>I was thinking after lunch, I have a meeting in the morning</li>
+                            <li>Are we meeting today?</li>
+                            <li>yes, what time suits you?</li>
+                            <li>I was thinking after lunch, I have a meeting in the morning</li>
+                            <li>Are we meeting today?</li>
+                            <li>yes, what time suits you?</li>
+                            <li>I was thinking after lunch, I have a meeting in the morning</li>
+                            <li>Are we meeting today?</li>
+                            <li>yes, what time suits you?</li>
+                            <li>I was thinking after lunch, I have a meeting in the morning</li>
+                        </ul>
+                      </div>
+                        </div>
+                    </div>
+                    </div>
 
-    <input type="text" id="playNewIdArg"> <button onclick = "playNewId()">playNewId</button><br>
-    <input type="text" id="seekToArg"> <button onclick = "seekTo()">seekTo</button><br>
-    <input type="text" id="setVolumeArg"> <button onclick = "setVolume()">setVolume</button><br>
-    <input type="text" id="setDefinitionArg"> <button onclick = "setDefinition">setDefinition</button><br>
-    <button onclick="pauseVideo()">pauseVideo</button><br>
-    <button onclick="resumeVideo()">resumeVideo</button><br>
-    <button onclick="replayVideo()">replayVideo</button><br>
-    <button onclick="closeVideo()">closeVideo</button><br>
-    <button onclick="startUp()">startUp</button><br>
-    <button onclick="shutDown()">shutDown</button><br>
-    <button onclick="getVideoSetting()">getVideoSetting</button><br>
-    <button onclick="getVideoTime()">getVideoTime</button><br>
-    <button onclick="getDefinition()">getDefinition</button><br>
-    <button onclick="getDefinitionList()">getDefinitionList</button><br>
-    <button onclick="getLoadPercent()">getLoadPercent</button><br>
-    <button onclick="getVersion()">getVersion</button><br>
-    <div id = "output"></div>
-    <div id = "log">------------------------------------------<br></div>
+                    
+
+    </div>
+    </div>
 </div>
 
 

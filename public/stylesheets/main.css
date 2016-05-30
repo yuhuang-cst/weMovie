@@ -1,25 +1,3 @@
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  border-radius: 10px;
-  background-color: rgba(25, 147, 147, 0.1);
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: rgba(25, 147, 147, 0.2);
-}
-
-.chat-thread {
-  margin: 24px auto 0 auto;
-  padding: 0 20px 0 0;
-  list-style: none;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-
 .chat-thread li {
   position: relative;
   clear: both;
@@ -29,6 +7,13 @@
   font: 16px/20px 'Noto Sans', sans-serif;
   border-radius: 10px;
   background-color: rgba(25, 147, 147, 0.2);
+}
+.center-vertical {
+  position: absolute;
+  top: 14px;
+  bottom: 0;
+  height: 30%;
+  margin: auto;
 }
 /* Medium and large screens */
 @media all and (min-width: 768px) {
