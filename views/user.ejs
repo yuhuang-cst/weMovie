@@ -33,6 +33,17 @@
 	<% if(missions.length % 3 != 0) {%>
 	</div>  <!-- end row -->
 	<% } %>
+
+	<% if (friends) { %>
+		<% friends.forEach(function(friend, friend_index) { %>
+			<p id="friend<%= friend_index %>" ><%= friend %></p>
+		<% }) %>
+	<% } %>
+
+	<form method="post" action="/invite">
+		添加好友：<input type="text" name="inviteByName"><br>
+		<button type="submit">ok</button>
+	</form>
 <% } %>
 
 <script>

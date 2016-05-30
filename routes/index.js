@@ -5,6 +5,7 @@ var User = require('../models/user.js');
 //var Post = require('../models/post.js');
 //var Group = require('../models/group.js');
 var UserAct = require('../models/useract.js');
+var Friends = require('../models/friends.js');
 
 var events = require("events");
 var letvSdk = require('../models/letvServerAPI.js');
@@ -36,13 +37,17 @@ router.get("/u/:user",function(req,res){
 			req.flash('error','用户不存在');
 			return res.redirect('/');
 		}
-		if (req.session.missions) {
+		if (req.session.missions && req.session.friends) {
 			console.log('missions in session');
 			console.log(req.session.missions);
 
+			console.log('missions in friends');
+			console.log(req.session.friends);
+			
 			return res.render('user',{
 				title: user.name,
-				missions: req.session.missions
+				missions: req.session.missions,
+				friends: req.session.friends
 			});
 		}		
 
@@ -61,38 +66,24 @@ router.get("/u/:user",function(req,res){
 			Mission.findAll(useract.groupsid, function(err,missions) {
 				if (!missions) missions = [];
 				req.session.missions = missions;
-				res.render('user',{
-					title:user.name,
-					missions:missions
+
+				Friends.get(user.name, function(err, friends) {
+					if (err) {
+						req.flash('error', 'In Friends.get: ' + err);
+						return res.redirect('/');
+					}
+					console.log("Show friends");
+					console.log(friends);
+					if (!friends) friends = [];
+					req.session.friends = friends;
+
+					res.render('user',{
+						title: user.name,
+						missions: missions,
+						friends: friends.friends
+					});
 				});
 			});
-			/*var getAllGroupsEvent = new events.EventEmitter();
-			getAllGroupsEvent.setMaxListeners(30);
-			for (var i = 0; i < useract.groupsid.length; i++) {
-				Group.get(useract.groupsid[i], function(err, group) {
-					if (group != null) {
-						groups.push(group);
-						console.log(group);
-					}
-					proc ++;
-					console.log('one group ' + proc + ' find');
-					console.log(group);
-					if (proc == useract.groupsid.length) {
-						getAllGroupsEvent.emit(user.name + 'getallgroups');
-					}
-				});
-			}
-			
-			getAllGroupsEvent.on(user.name + 'getallgroups', function() {
-				console.log('show ENd');
-				getAllGroupsEvent.removeAllListeners();
-				req.session.missions = groups;
-				res.render('user',{
-					title:user.name,
-					groups:groups
-				});
-			});*/
-
 		});
 	});
 });
@@ -172,6 +163,11 @@ router.post("/reg",function(req,res){
 		groupsid: []
 	});
 
+	var friends = new Friends({
+		name: newUser.name,
+		friends: []
+	});
+
 	//检查用户名是否已经存在
 	User.get(newUser.name,function(err,user){
 		if(user){
@@ -197,11 +193,18 @@ router.post("/reg",function(req,res){
 					req.flash('error',err);
 					console.log("save useract err");
 					console.log(err);
-					return res.redirect('/reg');
-				}
+				}	
+				friends.save(function(err,doc) {
+					console.log('注册成功');
+					console.log(doc);
+					if (err) {
+						req.flash('error',err);
+						console.log("save friends-list err");
+					}
+					req.flash('success','注册成功');
+					return res.redirect('/');
+				});
 			});
-			req.flash('success','注册成功');
-			return res.redirect('/');
 		});
 		
 	});
@@ -242,12 +245,40 @@ router.get("/logout",function(req,res){
 	res.redirect('/');
 });
 
+// 好友邀请
+router.post('/invite', checkLogin);
+router.post('/invite', function(req, res) {
+	var user = req.session.user;
+	User.get(req.body.inviteByName, function(err, invitedUser) {
+		if (err) {
+			req.flash('error',err);
+			return res.redirect('/u/' + user.name);
+		}
+		if (!invitedUser) {
+			req.flash('error', 'user \"' + req.body.inviteByName + ' \" not exist');
+			return res.redirect('/u/' + user.name);
+		}
+
+		Friends.add(user.name, req.body.inviteByName, function(err, friends) {
+			if(err) {
+				console.log('err in Friends.add');
+				req.flash('error',err);
+				return res.redirect('/');
+			}
+			req.session.friends = null;
+			req.flash('success', friends);
+			return res.redirect('/u/' + user.name);
+		});
+	});
+});
+
 function checkLogin(req,res,next){
 	if(!req.session.user){
 		req.flash('error',"未登入");
 		return res.redirect('/login');
 	}
 	req.session.missions = null;
+	req.session.friends = null;
 	next();
 };
 
@@ -318,9 +349,11 @@ router.post('/updateMission/:mid', function(req, res, next){
 			console.log('err in mission.update');
 			req.flash('error', err);
 			req.session.missions = null;
+			req.session.friends = null;
 			return res.redirect('/')
 		}
   	req.session.missions = null;
+		req.session.friends = null;
 		return res.redirect('/u/'+currentUser.name);
   });
 });
@@ -346,6 +379,7 @@ router.get('/removeMission/:mid', function(req, res, next){
 						console.log('err in Mission.remove');
 						req.flash('error', err);
 						req.session.missions = null;
+						req.session.friends = null;
 						return res.redirect('/')
 					}
   				UserAct.del(user.name, useract.groupsid[i], function(err,usersact) {
@@ -355,6 +389,7 @@ router.get('/removeMission/:mid', function(req, res, next){
 							return res.redirect('/');
 						}
 						req.session.missions = null;
+						req.session.friends = null;
 						return res.redirect('/u/'+user.name);
 					});
 				});
