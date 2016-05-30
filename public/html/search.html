@@ -18,6 +18,23 @@
       <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script type="text/javascript">
+
+    function addFri(name)
+    {
+        var mydiv=document.getElementById("friBtns");
+        var btn=document.createElement("input");
+        btn.type="button";
+        btn.value=name;
+        btn.id=name;
+        btn.setAttribute("class","btn btn-primary btn-sm");
+        btn.setAttribute("className","btn btn-primary");
+        mydiv.appendChild(btn);
+        btn.onclick=function() {
+            mydiv.removeChild(btn);
+        };
+    }
+    </script>
   </head>
   <body>
   <header class="header">
@@ -188,23 +205,29 @@
       <div class="modal-body">
             <form class="form-horizontal">
               <div class="form-group">
-                <label for="labName" class="col-sm-3 control-label">视频名称</label>
+                <label for="labBegint" class="col-sm-3 control-label">开始播放时间</label>
                 <div class="col-sm-7">
-                  <input type="text" class="form-control" id="inputName" placeholder="怦然心动">
+                  <input type="datetime" class="form-control" id="inputName" placeholder="">
                 </div>
               </div>
               <div class="form-group">
-                <label for="labTime" class="col-sm-3 control-label">视频时长</label>
+                <label for="labFri" class="col-sm-3 control-label">邀请好友</label>
                 <div class="col-sm-7">
-                  <input type="text" class="form-control" id="inputTime" placeholder="怦然心动">
-                </div>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">我的好友<span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a href="javascript:void(0);" onclick="addFri('Amy')">Amy</a></li>
+                        <li><a href="javascript:void(0);" onclick="addFri('Bob')">Bob</a></li>
+                        <li><a href="javascript:void(0);" onclick="addFri('Cindy')">Cindy</a></li>
+                      </ul>
+                    </div>
               </div>
               <div class="form-group">
-                <label for="labName" class="col-sm-3 control-label">视频名称</label>
-                <div class="col-sm-7">
-                  <input type="text" class="form-control" id="inputName" placeholder="怦然心动">
-                </div>
-              </div>
+                <label for="labFri" class="col-sm-3 control-label"></label>
+                <div id="friBtns"class="col-sm-7">
+ 
+                </div>            
             </form>
       </div>
       <div class="modal-footer">
