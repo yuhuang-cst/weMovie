@@ -15,6 +15,12 @@ var Contant = require('../models/constant.js')
 
 global.mission_info = {};
 
+function reset(req) {
+	req.session.missions = null;
+	req.session.invited = null;
+	req.session.friends = null;
+}
+
 router.get('/',function(req, res) {
   res.render('index',{
     title: '首页',
@@ -32,6 +38,7 @@ router.get('/',function(req, res) {
 });
 
 router.get("/u/:user",function(req,res){
+	reset(req);
 	User.get(req.params.user,function(err,user){
 		if(!user){
 			req.flash('error','用户不存在');
@@ -47,6 +54,7 @@ router.get("/u/:user",function(req,res){
 			return res.render('user',{
 				title: user.name,
 				missions: req.session.missions,
+				invited: req.session.missions,
 				friends: req.session.friends
 			});
 		}		
@@ -68,18 +76,17 @@ router.get("/u/:user",function(req,res){
 				req.session.missions = missions;
 
 				Friends.get(user.name, function(err, friends) {
+					console.log(friends);
 					if (err) {
 						req.flash('error', 'In Friends.get: ' + err);
 						return res.redirect('/');
 					}
-					console.log("Show friends");
-					console.log(friends);
-					if (!friends) friends = [];
-					req.session.friends = friends;
-
+					req.session.invited = friends.invited;
+					req.session.friends = friends.friends;
 					res.render('user',{
 						title: user.name,
 						missions: missions,
+						invited: friends.invited,
 						friends: friends.friends
 					});
 				});
@@ -165,7 +172,8 @@ router.post("/reg",function(req,res){
 
 	var friends = new Friends({
 		name: newUser.name,
-		friends: []
+		friends: [],
+		invited: []
 	});
 
 	//检查用户名是否已经存在
@@ -259,14 +267,69 @@ router.post('/invite', function(req, res) {
 			return res.redirect('/u/' + user.name);
 		}
 
-		Friends.add(user.name, req.body.inviteByName, function(err, friends) {
-			if(err) {
-				console.log('err in Friends.add');
+		Friends.invite(user.name, req.body.inviteByName, function(err, doc) {
+			if (err) {
+				console.log('err in Friends.invite');
 				req.flash('error',err);
-				return res.redirect('/');
 			}
-			req.session.friends = null;
-			req.flash('success', friends);
+			else {
+				reset(req);
+				req.flash('success', '好友邀请已发送');
+			}
+			return res.redirect('/u/' + user.name);
+		});
+	});
+});
+
+router.get('/accept/:src', checkLogin);
+router.get('/accept/:src', function(req, res) {
+	var user = req.session.user;
+	User.get(req.params.src, function(err, src_user) {
+		if (err) {
+			req.flash('error',err);
+			return res.redirect('/u/' + user.name);
+		}
+		if (!src_user) {
+			req.flash('error', 'user \"' + req.params.src + ' \" not exist');
+			return res.redirect('/u/' + user.name);
+		}
+
+		Friends.accept(req.params.src, user.name, function(err, doc) {
+			if (err) {
+				console.log('err in Friends.accept' + err);
+				req.flash('error',err);
+			}
+			else {
+				reset(req);
+				req.flash('success', '已接受来自 ' + req.params.src + ' 的好友邀请');
+			}
+			return res.redirect('/u/' + user.name);
+		});
+	});
+});
+
+router.get('/reject/:src', checkLogin);
+router.get('/reject/:src', function(req, res) {
+	var user = req.session.user;
+	User.get(req.params.src, function(err, src_user) {
+		if (err) {
+			req.flash('error',err);
+			return res.redirect('/u/' + user.name);
+		}
+		if (!src_user) {
+			req.flash('error', 'user \"' + req.params.src + ' \" not exist');
+			return res.redirect('/u/' + user.name);
+		}
+
+		Friends.reject(req.params.src, user.name, function(err, doc) {
+			if (err) {
+				console.log('err in Friends.reject');
+				req.flash('error',err);
+			}
+			else {
+				reset(req);
+				req.flash('success', '已拒绝来自 ' + req.params.src + ' 的好友邀请');
+			}
 			return res.redirect('/u/' + user.name);
 		});
 	});
@@ -275,10 +338,9 @@ router.post('/invite', function(req, res) {
 function checkLogin(req,res,next){
 	if(!req.session.user){
 		req.flash('error',"未登入");
+		reset(req);
 		return res.redirect('/login');
 	}
-	req.session.missions = null;
-	req.session.friends = null;
 	next();
 };
 
@@ -469,3 +531,4 @@ router.get('/updateVideoInfo', function(req, res, next){
 
 
 module.exports = router;
+
