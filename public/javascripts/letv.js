@@ -162,7 +162,7 @@ function playCallBack(type, data){
   var log = document.getElementById("log");
   var myDate = new Date();
   log.innerHTML += "<span>" + myDate.toLocaleTimeString() + "</span>" + "===>" + "type: " + type + ";data: " + JSON.stringify(data) + "<br>";
-  console.log('lastType = ', lastType);
+  //console.log('lastType = ', lastType);
 
   if (type == 'playerStart'){//若视频从开头开始播放
     var timeStatus = getTimeStatus();

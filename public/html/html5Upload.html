@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-    <title>乐视云 html5 上传DEMO</title>
+    <title>上传视频</title>
     <link rel="stylesheet" href="/stylesheets/bootstrap.css" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
 </head>
@@ -33,6 +33,16 @@
 <script type="text/javascript" src="/javascripts/jquery.js"></script>
 <script type="text/javascript" src="/javascripts/html5Upload.js"></script>
 <script type="text/javascript">
+
+    function disableClick(){
+      $("#uploadBtn").attr("disabled", true); 
+      $("#fileSelecter").attr("disabled", true); 
+    }
+    function enableClick(){
+      $("#uploadBtn").removeAttr("disabled");
+      $("#fileSelecter").removeAttr("disabled");
+    }
+
     $(function () {
         //添加视频
         $("#fileSelecter").addFile({
@@ -54,17 +64,20 @@
                 $("#videoProgress").html(data.progress);
                 $("#videoSpeed").html(data.speed);
                 $("#videoStatus").html("上传中");
+                disableClick();
             },
             uploadFinish: function (data) { //上传完成回调
                 $("#videoProgress").html("100%");
                 $("#videoSpeed").html("0");
                 $("#videoStatus").html("已上传");
+                enableClick();
             },
             uploadError: function (data) { //上传错误回调
                 $("#videoStatus").html("上传错误！错误码：" + data.code + ";错误消息：" + data.msg);
+                enableClick();
             },
             uploadAbort:function(data){ //中断
-
+                enableClick();
             }
         });
     });

@@ -268,8 +268,8 @@ router.get('/search', function(req, res, next){
   	var maxIndex = Math.ceil(data['total'] / Contant.RECORD_NUM);//取上整
   	res.render('searchResult', {
   	  records : data['data'],
-  	  prePage : '/search/s?videoName=' + videoName + '&index=' + (index <= 1 ? 1 : index - 1) ,
-  	  nextPage : '/search/s?videoName=' + videoName + '&index=' + (index >= maxIndex ? maxIndex : index + 1)
+  	  prePage : '/search?videoName=' + videoName + '&index=' + (index <= 1 ? 1 : index - 1) ,
+  	  nextPage : '/search?videoName=' + videoName + '&index=' + (index >= maxIndex ? maxIndex : index + 1)
   	});
   });
 });
@@ -362,11 +362,14 @@ router.get('/removeMission/:mid', function(req, res, next){
 
 //观看视频，例如：127.0.0.1/letv?mid=57406e33a91aa1437275f8dd
 router.get('/letv', function(req, res, next){
+  var beginTime = new Date(Date.now());
+  var endTime = new Date(beginTime);
+  endTime.setMinutes(endTime.getMinutes() + 40);
   res.render('letv', {
   	title: '云中歌',
   	vu: '86e12dca1b',
-  	beginTime: new Date('2016-05-29 21:58:00'),
-  	endTime: new Date('2016-05-29 22:05:00')
+  	beginTime: beginTime,
+  	endTime: endTime
   });
 
   /*
@@ -394,12 +397,18 @@ router.get('/letv', function(req, res, next){
 //初始化上传视频
 router.post('/html5UploadInit', function(req, res, next){
   console.log('req.query', req.query);
-  letvSdk.uploadInit(req.query.video_name, parseInt(req.query.file_size), parseInt(req.query.uploadtype), function(data){
-    data = JSON.parse(data.toString());
-    if (data['code'] != 0)
-      return;
-    res.send(data);
-  });
+
+  if (req.query.token){//断点续传
+  	letvSdk.uploadResume(req.query.token, parseInt(req.query.uploadtype), function(data){
+  	  data = JSON.parse(data.toString());
+      res.send(data);
+    });
+  }else{//从头开始传输
+    letvSdk.uploadInit(req.query.video_name, parseInt(req.query.file_size), parseInt(req.query.uploadtype), function(data){
+      data = JSON.parse(data.toString());
+      res.send(data);
+    });
+  }
 });
 
 
@@ -408,6 +417,13 @@ router.get('/upload', function(req, res, next){
 	res.redirect('/html/html5Upload.html');
 })
 
+//更新视频信息
+router.get('/updateVideoInfo', function(req, res, next){
+  letvSdk.videoUpdate(req.query.videoID, req.query.videoName, req.query.videoDesc, req.query.tag, function(data){
+    var data = JSON.parse(data.toString());
+    console.log(data);
+  });
+});
 
 
 module.exports = router;
