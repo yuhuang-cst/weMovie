@@ -11,6 +11,18 @@
     <!-- Bootstrap -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
     <link href="../stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+    <script language="JavaScript" src="/javascripts/jquery.js"></script>
+    <script language="JavaScript" src="/javascripts/jquery.mask.js"></script>
+    <script type="text/javascript" src="http://yuntv.letv.com/bcloud.js"></script>
+    <script type = "text/javascript" src="/javascripts/letv.js"> </script>
+        <script type="text/javascript">
+         var tvDiv;
+            $(function(){
+                tvDiv=$("#tvShow");
+                tvDiv.openMask();
+
+            });
+        </script>
 </head>
 <body>
   <header class="header">
@@ -82,39 +94,27 @@
     <div class="wrapper">
         <div class="container">
             <div class="row">
-            <div class="wrapper-intro col-xs-0 col-sm-6 col-md-4 col-lg-5">
-            <!-- 直播html代码-->
-                <script type="text/javascript" src="http://yuntv.letv.com/bcloud.js"></script>
-                <script type = "text/javascript" src="/javascripts/letv.js"> </script>
+                <div id="tvShow" class="wrapper-intro col-xs-0 col-sm-6 col-md-4 col-lg-5">
+                <!-- 直播html代码-->
 
-                <script> 
-                  //var beginTime = new Date('2016-5-6 15:40:00')
 
-                  var beginTime = '<%=beginTime%>';   
+                    <script> 
+                      //var beginTime = new Date('2016-5-6 15:40:00')
 
-<<<<<<< HEAD
-                  var player = new CloudVodPlayer();      
+                      var beginTime = '<%=beginTime%>';   
 
-                  //var letvcloud_player_conf =  {uu:"m9rv3asjdc", vu:'<%=vu%>', auto_play: 1, gpcflag: 1, width: 640, height: 360, start: 13, callbackJs : "callBack"};      
-=======
-      var beginTime = new Date('<%=beginTime%>');   
-      var endTime = new Date('<%=endTime%>');
+                      var beginTime = new Date('<%=beginTime%>');   
+                      var endTime = new Date('<%=endTime%>');
 
-      var player = new CloudVodPlayer();
->>>>>>> 73a95739d4aa9acca0165c63c49de9883193a48e
+                      var player = new CloudVodPlayer();
 
-                  //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:"86e12dca1b", "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};    
+                      //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:"86e12dca1b", "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};    
 
-                  var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":590,"height":400, start : 13, callbackJs : "callBack"};      
+                      var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":590,"height":400, start : 13, callbackJs : "callBack"};      
+                      player.init(letvcloud_player_conf);
 
-<<<<<<< HEAD
-                  player.init(letvcloud_player_conf);
-=======
-      var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"start":1,"gpcflag":1,"width":640,"height":360, callbackJs : "playCallBack"};  
->>>>>>> 73a95739d4aa9acca0165c63c49de9883193a48e
-
-                </script>
-            </div>
+                    </script>
+                </div>
                     <div class="wrapper-intro col-xs-0 col-sm-0 col-md-3 col-lg-1"></div>
                     <div class="log-or-sign col-xs-12 col-sm-6 col-md-5 col-lg-6">
                     <div class="panel panel-default">
@@ -136,20 +136,18 @@
                             <li>I was thinking after lunch, I have a meeting in the morning</li>
                         </ul>
                       </div>
-                        </div>
+                        </div>o
                     </div>
                     </div>
-
-<<<<<<< HEAD
-                    
-=======
-      
-
-    </script>
->>>>>>> 73a95739d4aa9acca0165c63c49de9883193a48e
-
-    </div>
-    </div>
+   
+            </div>
+            <!-- 测试mask按钮，整合结束后删掉-->
+            <div class="row">
+            <button type="button" onclick="tvDiv.openMask();">open</button> 
+            <button type="button" onclick="tvDiv.closeMask();">close</button>
+            </div> 
+            <!-- 测试mask按钮，整合结束后删掉-->
+        </div>
 </div>
 
 
