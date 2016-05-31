@@ -9,9 +9,12 @@
 
     <!-- Bootstrap -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="../stylesheets/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="../stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
-    <script language="JavaScript" src="../javascripts/jquery.js"></script>
-
+    <script language="JavaScript" src="../javascripts/bootstrap.min.js"></script>
+    <script language="JavaScript" src="../javascripts/jquery.js"></script>  
+    <script language="JavaScript" src="../javascripts/bootstrap-datetimepicker.js"></script>
+    <script language="JavaScript" src="../javascripts/locales/bootstrap-datetimepicker.fr.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -19,20 +22,34 @@
       <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script type="text/javascript">
-
+    var members = new Array()
+    function removeA(name) 
+    {
+        for (var i=0;i<members.length;i++)
+        {
+            if (members[i] == name) {
+                members.splice(i,1);
+            }
+        }
+    }
     function addFri(name)
     {
-        var mydiv=document.getElementById("friBtns");
-        var btn=document.createElement("input");
-        btn.type="button";
-        btn.value=name;
-        btn.id=name;
-        btn.setAttribute("class","btn btn-primary btn-sm");
-        btn.setAttribute("className","btn btn-primary");
-        mydiv.appendChild(btn);
-        btn.onclick=function() {
-            mydiv.removeChild(btn);
-        };
+        var btn0=document.getElementById(name);
+        if (btn0 == null) {
+            members.push(name);
+            var mydiv=document.getElementById("friBtns");
+            var btn=document.createElement("input");
+            btn.type="button";
+            btn.value=name;
+            btn.id=name;
+            btn.setAttribute("class","btn btn-primary btn-sm");
+            btn.setAttribute("className","btn btn-primary");
+            mydiv.appendChild(btn);
+            btn.onclick=function() {
+                removeA(btn.id);
+                mydiv.removeChild(btn);
+            };
+        }
     }
     </script>
   </head>
@@ -206,10 +223,23 @@
             <form class="form-horizontal">
               <div class="form-group">
                 <label for="labBegint" class="col-sm-3 control-label">开始播放时间</label>
-                <div class="col-sm-7">
-                  <input type="datetime" class="form-control" id="inputName" placeholder="">
-                </div>
+                  <div class="col-sm-9 input-append date form_datetime" id="datetimepicker" data-date="2013-02-21T15:25:00Z">
+                    <input class="col-sm-9" type="text" value="" readonly>
+                    <span class="add-on"><i class="icon-remove"></i></span>
+                    <span class="add-on"><i class="icon-calendar"></i></span>
+                 </div>
+                 <script type="text/javascript">
+                    $(".form_datetime").datetimepicker({
+                        language: "zh-CN",
+                        format: "yyyy MM dd - hh:ii",
+                        autoclose: true,
+                        todayBtn: true,
+                        startDate: "2013-02-14 10:00",
+                        minuteStep: 10
+                    });
+                </script>     
               </div>
+
               <div class="form-group">
                 <label for="labFri" class="col-sm-3 control-label">邀请好友</label>
                 <div class="col-sm-7">
@@ -226,13 +256,12 @@
               <div class="form-group">
                 <label for="labFri" class="col-sm-3 control-label"></label>
                 <div id="friBtns"class="col-sm-7">
- 
                 </div>            
             </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary" onclick="alert(members.toString());">Submit</button>
       </div>
     </div>
   </div>
