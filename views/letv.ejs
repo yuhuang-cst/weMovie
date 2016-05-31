@@ -123,30 +123,27 @@
                     <div class="panel-heading">Panel heading without title</div>
                     <div class="panel-body">
                       <div id="convo" class="row" data-from="Sonu Joshi">  
-                        <ul class="chat-thread">
-                            <li>Are we meeting today?</li>
-                            <li>yes, what time suits you?</li>
-                            <li>I was thinking after lunch, I have a meeting in the morning</li>
-                            <li>Are we meeting today?</li>
-                            <li>yes, what time suits you?</li>
-                            <li>I was thinking after lunch, I have a meeting in the morning</li>
-                            <li>Are we meeting today?</li>
-                            <li>yes, what time suits you?</li>
-                            <li>I was thinking after lunch, I have a meeting in the morning</li>
-                            <li>Are we meeting today?</li>
-                            <li>yes, what time suits you?</li>
-                            <li>I was thinking after lunch, I have a meeting in the morning</li>
-                        </ul>
+                        <ul class="chat-thread" id="msglog">
+                       		用户名: <div id="username"><%= username %></div> <br/>
+  												当前在线人数: <span id="count"><%= members.length %></span> <br/>
+  												在线用户: 
+	  													-- 待完善
+													<% members.forEach(function(member,index) { %>
+														<div id="member<%= index %>"><%= member %></div>
+													<% }) %> 
+												</ul>
                       </div>
                       <div class="row">
                         <form class="form-horizontal" style="position: relative; margin: 10px auto auto auto">
                           <div class="form-group">
                           <div class="col-xs-1 col-sm-1"></div>
                             <div class="col-xs-6 col-sm-8">
-                              <input type="text" class="form-control" id="inputInfo">
+                              <input type="text" class="form-control" id="Msg">
+															<br/>
+  														按Enter键发送
                             </div>
                             <div class="col-xs-5 col-sm-3">
-                            <button type="submit" class="btn btn-primary">Send</button>
+                            <button id="Quit" class="btn btn-primary">退出房间</button>
                             </div>
                           </div>
                         </form>
@@ -167,6 +164,56 @@
         </div>
 </div>
 </div>
+
+	<script src="/socket.io/socket.io.js"></script>
+  <script>
+		$(function () {
+			var socket = io.connect();
+      
+      // 加入房间
+      socket.on('connect', function () {
+        socket.emit('join', document.getElementById("username").innerHTML);
+      });
+
+      // 监听消息
+      socket.on('msg', function (sender, msg) {
+        var message = '' +
+            '<div class="message">' +
+            '  <span class="sender">' + sender + ': </span>' +
+            '  <span class="msg">' + msg + '</span>' +
+            '</div>';
+        $('#msglog').append(message);
+        // 滚动条保持最下方
+        $('#msglog').scrollTop($('#msglog')[0].scrollHeight);  
+      });
+
+      // 监听系统消息
+      socket.on('system', function (sysMsg, members) {
+        var message = '<div class="sysMsg">' + sysMsg + '</div>';
+        $('#msglog').append(message);
+
+        $('#count').text(members.length);
+        $('#members').text(members);
+      });
+
+      // 发送消息
+      $('#Msg').keydown(function (e) {
+        if (e.which === 13) {
+          e.preventDefault();
+          var msg = $(this).val();
+          $(this).val('');
+
+          socket.send(msg);
+        }
+      });
+
+      // 退出房间
+      $('#Quit').click(function () {
+      	window.location.assign("/u/" + document.getElementById("username"));  
+			});
+    });
+  </script>
+
 
 </body>
 </html>

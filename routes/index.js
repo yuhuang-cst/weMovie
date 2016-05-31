@@ -118,9 +118,13 @@ router.get("/m/:mid",function(req,res) {
 					}
 
 					if (!global.mission_info[req.params.mid]) { global.mission_info[req.params.mid] = []; }
-					return res.render('group', {
+					return res.render('letv', {
 						username: user.name,
-						members: global.mission_info[req.params.mid]
+						members: global.mission_info[req.params.mid],
+						title: '云中歌',
+  					vu: '86e12dca1b',
+  					beginTime: new Date('2016-05-31 20:13:00'),
+  					endTime: new Date('2016-05-31 20:53:00')
 					});
 				});
 			}
@@ -463,41 +467,6 @@ router.get('/removeMission/:mid', function(req, res, next){
 		}
 	});
 });
-
-
-//观看视频，例如：127.0.0.1/letv?mid=57406e33a91aa1437275f8dd
-router.get('/letv', function(req, res, next){
-  var beginTime = new Date(Date.now());
-  var endTime = new Date(beginTime);
-  endTime.setMinutes(endTime.getMinutes() + 40);
-  res.render('letv', {
-  	title: '云中歌',
-  	vu: '86e12dca1b',
-  	beginTime: new Date('2016-05-31 20:13:00'),
-  	endTime: new Date('2016-05-31 20:53:00')
-  });
-
-  /*
-  Mission.get(req.query.mid, function(err, ms){//获得任务信息
-  	if (err || !ms)
-  	  res.render('error', {message: Error.MISSION_NOT_FOUND_MESSAGE, error: {} });
-  	else{
-  	  var endTime = new Date(ms.beginTime);
-  	  endTime.setSeconds(endTime.getSeconds() + ms.duration);
-  	  //若影片已经结束
-  	  if (Date.now() > endTime){
-  	  	res.render('error', {message: Error.VIDEO_FINISHED_MESSAGE, error: {} });
-  	  }
-  	  //渲染
-  	  res.render('letv', {
-  	  	title: ms.videoName,
-  	  	vu: ms.vu,
-  	  	beginTime: ms.beginTime
-  	  });
-  	}
-  });*/
-});
-
 
 //初始化上传视频
 router.post('/html5UploadInit', function(req, res, next){
