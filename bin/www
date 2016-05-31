@@ -103,10 +103,18 @@ io.sockets.on('connection', function(socket) {
 		if (!global.mission_info[mid]) {
 			global.mission_info[mid] = []
 		}
-		global.mission_info[mid].push(username);
+		var flag = false;
+		for (var i = 0; i < global.mission_info[mid].length; i++) {
+			if (username == global.mission_info[mid][i]) {
+				flag = true; break;
+			}
+		}
+		if (!flag) {
+			global.mission_info[mid].push(username);
 		
-		socket.join(mid);
-		io.sockets.to(mid).emit('system', username + '加入了房间', global.mission_info[mid]); 
+			socket.join(mid);
+			io.sockets.to(mid).emit('system', username + '加入了房间', global.mission_info[mid]);
+		}
   });
 	
 	//user leaves

@@ -136,7 +136,7 @@ Friends.invite = function invite(src, dst, callback) {
 					return callback(err + ': 所邀请的用户不存在');
 				}
 				for (var i = 0; i < dst_user.invited.length; i++) {
-					if (src == dst_user.invited[0]) {
+					if (src == dst_user.invited[i]) {
 						flag = true;
 						dst_user.invited.push(src);
 						coll.update({name: dst}, dst_user, function(err, doc){
@@ -169,7 +169,7 @@ Friends.accept = function accept(src, dst, callback) {
 			}
 			var flag = false;
 			for (var i = 0; i < dst_user.invited.length; i++) {
-				if (src == dst_user.invited[0]) {
+				if (src == dst_user.invited[i]) {
 					flag = true;
 					coll.findOne({name: src}, function(err, src_user) {
 						if (err || !src_user) {
@@ -218,7 +218,7 @@ Friends.reject = function reject(src, dst, callback) {
 			}
 			var flag = false;
 			for (var i = 0; i < dst_user.invited.length; i++) {
-				if (src == dst_user.invited[0]) {
+				if (src == dst_user.invited[i]) {
 					flag = true;
 					coll.findOne({name: dst}, function(err, src_user) {
 						if (err || !src_user) {

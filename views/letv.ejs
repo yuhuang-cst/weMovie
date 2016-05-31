@@ -17,10 +17,11 @@
     <script type="text/javascript" src="http://yuntv.letv.com/bcloud.js"></script>
     <script type = "text/javascript" src="/javascripts/letv.js"> </script>
         <script type="text/javascript">
-         var tvDiv;
+         var tvDiv = $("#tvShow");
             $(function(){
                 tvDiv=$("#tvShow");
-                tvDiv.openMask("loading");
+                //tvDiv.openMask();
+                //tvDiv.openMask("loading");
 
             });
         </script>
@@ -52,9 +53,9 @@
                     </div>
                 </div>
                 <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5" style="position: relative;">
-                        <form class="navbar-form-mc center-vertical" method="get" action="/course/search" role="search">
+                        <form class="navbar-form-mc center-vertical" method="get" action="/search" role="search">
                             <div class="input-group input-group-nav">
-                                <input type="text" class="form-control" id="input-search" name="key" placeholder="搜索影片...">
+                                <input type="text" class="form-control" id="input-search" name="videoName" placeholder="搜索影片...">
                                 <span class="input-group-btn">
                                     <a role="button" class="btn" onclick="$(this).closest('form').submit()">
                                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -98,6 +99,7 @@
                 <div id="tvShow" class="wrapper-intro col-xs-10 col-sm-9 col-md-7 col-lg-6">
                 <!-- 直播html代码-->
                     <script> 
+
                       //var beginTime = new Date('2016-5-6 15:40:00')
 
                       var beginTime = '<%=beginTime%>';   
@@ -107,9 +109,10 @@
 
                       var player = new CloudVodPlayer();
 
-                      //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:"86e12dca1b", "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};    
+                      //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:"86e12dca1b", "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "playCallBack"};    
 
-                      var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":590,"height":400, start : 13, callbackJs : "callBack"};      
+                      var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":590,"height":400, start : 13, callbackJs : "playCallBack"};
+
                       player.init(letvcloud_player_conf);
 
                     </script>
@@ -120,30 +123,27 @@
                     <div class="panel-heading">Panel heading without title</div>
                     <div class="panel-body">
                       <div id="convo" class="row" data-from="Sonu Joshi">  
-                        <ul class="chat-thread">
-                            <li>Are we meeting today?</li>
-                            <li>yes, what time suits you?</li>
-                            <li>I was thinking after lunch, I have a meeting in the morning</li>
-                            <li>Are we meeting today?</li>
-                            <li>yes, what time suits you?</li>
-                            <li>I was thinking after lunch, I have a meeting in the morning</li>
-                            <li>Are we meeting today?</li>
-                            <li>yes, what time suits you?</li>
-                            <li>I was thinking after lunch, I have a meeting in the morning</li>
-                            <li>Are we meeting today?</li>
-                            <li>yes, what time suits you?</li>
-                            <li>I was thinking after lunch, I have a meeting in the morning</li>
-                        </ul>
+                        <ul class="chat-thread" id="msglog">
+                       		用户名: <div id="username"><%= username %></div> <br/>
+  												当前在线人数: <span id="count"><%= members.length %></span> <br/>
+  												在线用户: 
+	  													-- 待完善
+													<% members.forEach(function(member,index) { %>
+														<div id="member<%= index %>"><%= member %></div>
+													<% }) %> 
+												</ul>
                       </div>
                       <div class="row">
                         <form class="form-horizontal" style="position: relative; margin: 10px auto auto auto">
                           <div class="form-group">
                           <div class="col-xs-1 col-sm-1"></div>
                             <div class="col-xs-6 col-sm-8">
-                              <input type="text" class="form-control" id="inputInfo">
+                              <input type="text" class="form-control" id="Msg">
+															<br/>
+  														按Enter键发送
                             </div>
                             <div class="col-xs-5 col-sm-3">
-                            <button type="submit" class="btn btn-primary">Send</button>
+                            <button id="Quit" class="btn btn-primary">退出房间</button>
                             </div>
                           </div>
                         </form>
@@ -164,6 +164,56 @@
         </div>
 </div>
 </div>
+
+	<script src="/socket.io/socket.io.js"></script>
+  <script>
+		$(function () {
+			var socket = io.connect();
+      
+      // 加入房间
+      socket.on('connect', function () {
+        socket.emit('join', document.getElementById("username").innerHTML);
+      });
+
+      // 监听消息
+      socket.on('msg', function (sender, msg) {
+        var message = '' +
+            '<div class="message">' +
+            '  <span class="sender">' + sender + ': </span>' +
+            '  <span class="msg">' + msg + '</span>' +
+            '</div>';
+        $('#msglog').append(message);
+        // 滚动条保持最下方
+        $('#msglog').scrollTop($('#msglog')[0].scrollHeight);  
+      });
+
+      // 监听系统消息
+      socket.on('system', function (sysMsg, members) {
+        var message = '<div class="sysMsg">' + sysMsg + '</div>';
+        $('#msglog').append(message);
+
+        $('#count').text(members.length);
+        $('#members').text(members);
+      });
+
+      // 发送消息
+      $('#Msg').keydown(function (e) {
+        if (e.which === 13) {
+          e.preventDefault();
+          var msg = $(this).val();
+          $(this).val('');
+
+          socket.send(msg);
+        }
+      });
+
+      // 退出房间
+      $('#Quit').click(function () {
+      	window.location.assign("/u/" + document.getElementById("username"));  
+			});
+    });
+  </script>
+
 
 </body>
 </html>
