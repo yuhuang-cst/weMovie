@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+    <title><%= title %></title>
+    <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
+    <!-- Bootstrap -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="row">
+                <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden-xs visible-sm-block col-sm-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5" style="position: relative;">
+                        <form class="navbar-form-mc center-vertical" method="get" action="/course/search" role="search">
+                            <div class="input-group input-group-nav">
+                                <input type="text" class="form-control" id="input-search" name="key" placeholder="搜索影片...">
+                                <span class="input-group-btn">
+                                    <a role="button" class="btn" onclick="$(this).closest('form').submit()">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </a>
+                                </span>
+                            </div>
+                        </form>
+                </div>
+                <div class="hidden-xs col-sm-5 col-md-4 col-lg-4">
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav pull-right">
+                            <li id="nav-index"><a href="index.html">首页</a></li>
+                            <li id="nav-course"><a href="movie.html">影片</a></li>
+                            <li id="nav-notice"><a href="/announcement">公告</a></li>
+                            <li><a href="/">登录</a></li>
+                                
+                        </ul>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="nav nav-hamburger pull-right">
+                        <a href="#ham" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="index.html">首页</a></li>
+                            <li><a href="movie.html">影片</a></li>
+                            <li id="xs-nav-notice"><a href="/announcement">公告</a></li>
+                            <li><a href="/">登录</a></li>
+                                
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+</body>
+</html>
