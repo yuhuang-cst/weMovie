@@ -20,7 +20,7 @@
          var tvDiv;
             $(function(){
                 tvDiv=$("#tvShow");
-                tvDiv.openMask();
+                tvDiv.openMask("loading");
 
             });
         </script>
@@ -155,7 +155,9 @@
             </div>
             <!-- 测试mask按钮，整合结束后删掉-->
             <div class="row">
-            <button type="button" onclick="tvDiv.openMask("loading");">open</button> 
+            <button type="button" onclick="tvDiv.openMask('notBegin');">begin</button> 
+            <button type="button" onclick="tvDiv.openMask('loading');">load</button> 
+            <button type="button" onclick="tvDiv.openMask('over');">over</button> 
             <button type="button" onclick="tvDiv.closeMask();">close</button>
             </div> 
             <!-- 测试mask按钮，整合结束后删掉-->
