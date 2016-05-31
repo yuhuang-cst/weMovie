@@ -16,10 +16,10 @@
     <script type="text/javascript" src="http://yuntv.letv.com/bcloud.js"></script>
     <script type = "text/javascript" src="/javascripts/letv.js"> </script>
         <script type="text/javascript">
-         var tvDiv;
+         var tvDiv = $("#tvShow");
             $(function(){
                 tvDiv=$("#tvShow");
-                tvDiv.openMask();
+                //tvDiv.openMask();
 
             });
         </script>
@@ -96,9 +96,8 @@
             <div class="row">
                 <div id="tvShow" class="wrapper-intro col-xs-0 col-sm-6 col-md-4 col-lg-5">
                 <!-- 直播html代码-->
-
-
                     <script> 
+
                       //var beginTime = new Date('2016-5-6 15:40:00')
 
                       var beginTime = '<%=beginTime%>';   
@@ -108,9 +107,10 @@
 
                       var player = new CloudVodPlayer();
 
-                      //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:"86e12dca1b", "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "callBack"};    
+                      //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:"86e12dca1b", "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "playCallBack"};    
 
-                      var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":590,"height":400, start : 13, callbackJs : "callBack"};      
+                      var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":590,"height":400, start : 13, callbackJs : "playCallBack"};
+
                       player.init(letvcloud_player_conf);
 
                     </script>

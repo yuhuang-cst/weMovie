@@ -464,6 +464,7 @@ router.get('/removeMission/:mid', function(req, res, next){
 	});
 });
 
+
 //观看视频，例如：127.0.0.1/letv?mid=57406e33a91aa1437275f8dd
 router.get('/letv', function(req, res, next){
   var beginTime = new Date(Date.now());
@@ -472,8 +473,8 @@ router.get('/letv', function(req, res, next){
   res.render('letv', {
   	title: '云中歌',
   	vu: '86e12dca1b',
-  	beginTime: beginTime,
-  	endTime: endTime
+  	beginTime: new Date('2016-05-31 16:42:00'),
+  	endTime: new Date('2016-05-31 17:20:00')
   });
 
   /*
