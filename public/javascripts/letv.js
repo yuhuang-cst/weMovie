@@ -127,6 +127,7 @@ function beginTimeMonitor(){
   console.log('距离播放还有：%d天%d时%d分%d秒', timeDict['days'], timeDict['hours'], timeDict['minutes'], timeDict['seconds']);
   if (getTimeStatus() == PLAYING){
     player.sdk.resumeVideo();
+    player.sdk.setVolume(0.5);
     tvDiv.closeMask();
     clearInterval(beginTimeCounter);
   }
@@ -149,6 +150,7 @@ function synchronize(){
     else{
       synchronized = true;
       console.log('同步完毕！');
+      player.sdk.setVolume(0.5);
       tvDiv.closeMask();
       clearTimeout(synJudge);
       clearInterval(synchroCounter);
@@ -157,11 +159,12 @@ function synchronize(){
 }
 
 function synchro(){
-  console.log('开始同步');
-  tvDiv.openMask();
   if (synchronized == false)//正在执行同步函数
     return;
+  console.log('开始同步');
+  tvDiv.openMask('loading');
   synchronized = false;
+  player.sdk.setVolume(0);
   synchroCounter = setInterval(synchronize, 600);
 }
 
@@ -178,13 +181,14 @@ function playCallBack(type, data){
 
     if (timeStatus == BEFORE_PLAYING){//播放时间未到
       startUp == true;
-      tvDiv.openMask();
+      console.log('播放时间未到');
+      tvDiv.openMask('notBegin');
       player.sdk.pauseVideo();
       beginTimeCounter = setInterval(beginTimeMonitor, 1000);//监听时间，准备播放
     }
     else if (timeStatus == AFTER_PLAYING){//播放已经结束
       console.log('播放结束');
-      tvDiv.openMask();
+      tvDiv.openMask('over');
       player.sdk.closeVideo();
     }
     else { //正在播放

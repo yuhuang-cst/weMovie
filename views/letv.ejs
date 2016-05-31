@@ -9,8 +9,9 @@
     <title><%= title %></title>
     <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
     <!-- Bootstrap -->
-    <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
-    <link href="../stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="/stylesheets/style.css" rel="stylesheet" media="screen" type="text/css">
     <script language="JavaScript" src="/javascripts/jquery.js"></script>
     <script language="JavaScript" src="/javascripts/jquery.mask.js"></script>
     <script type="text/javascript" src="http://yuntv.letv.com/bcloud.js"></script>
@@ -20,6 +21,7 @@
             $(function(){
                 tvDiv=$("#tvShow");
                 //tvDiv.openMask();
+                //tvDiv.openMask("loading");
 
             });
         </script>
@@ -32,28 +34,28 @@
                 <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
                     <div class="navbar-header navbar-left">
                         <a class="navbar-brand-mc" href="/">
-                            <img src="../images/Brand_S.png" alt="logo"/>
+                            <img src="/images/Brand.png" alt="logo"/>
                         </a>
                     </div>
                 </div>
                 <div class="hidden-xs visible-sm-block col-sm-2">
                     <div class="navbar-header navbar-left">
                         <a class="navbar-brand-mc" href="/">
-                            <img src="../images/Brand_S.png" alt="logo"/>
+                            <img src="/images/Brand_S.png" alt="logo"/>
                         </a>
                     </div>
                 </div>
                 <div class="visible-xs-block col-xs-2">
                     <div class="navbar-header navbar-left">
                         <a class="navbar-brand-mc" href="/">
-                            <img src="../images/Brand_S.png" alt="logo"/>
+                            <img src="/images/Brand_S.png" alt="logo"/>
                         </a>
                     </div>
                 </div>
                 <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5" style="position: relative;">
-                        <form class="navbar-form-mc center-vertical" method="get" action="/course/search" role="search">
+                        <form class="navbar-form-mc center-vertical" method="get" action="/search" role="search">
                             <div class="input-group input-group-nav">
-                                <input type="text" class="form-control" id="input-search" name="key" placeholder="搜索影片...">
+                                <input type="text" class="form-control" id="input-search" name="videoName" placeholder="搜索影片...">
                                 <span class="input-group-btn">
                                     <a role="button" class="btn" onclick="$(this).closest('form').submit()">
                                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -94,7 +96,7 @@
     <div class="wrapper">
         <div class="container">
             <div class="row">
-                <div id="tvShow" class="wrapper-intro col-xs-0 col-sm-6 col-md-4 col-lg-5">
+                <div id="tvShow" class="wrapper-intro col-xs-10 col-sm-9 col-md-7 col-lg-6">
                 <!-- 直播html代码-->
                     <script> 
 
@@ -115,12 +117,12 @@
 
                     </script>
                 </div>
-                    <div class="wrapper-intro col-xs-0 col-sm-0 col-md-3 col-lg-1"></div>
-                    <div class="log-or-sign col-xs-12 col-sm-6 col-md-5 col-lg-6">
-                    <div class="panel panel-default">
+                    <div class="wrapper-intro col-xs-1 col-sm-3 col-md-1 col-lg-1"></div>
+                    <div class="log-or-sign col-xs-10 col-sm-9 col-md-4 col-lg-5">
+                    <div class="panel panel-primary">
                     <div class="panel-heading">Panel heading without title</div>
                     <div class="panel-body">
-                      <div id="convo" data-from="Sonu Joshi">  
+                      <div id="convo" class="row" data-from="Sonu Joshi">  
                         <ul class="chat-thread">
                             <li>Are we meeting today?</li>
                             <li>yes, what time suits you?</li>
@@ -136,20 +138,35 @@
                             <li>I was thinking after lunch, I have a meeting in the morning</li>
                         </ul>
                       </div>
-                        </div>o
+                      <div class="row">
+                        <form class="form-horizontal" style="position: relative; margin: 10px auto auto auto">
+                          <div class="form-group">
+                          <div class="col-xs-1 col-sm-1"></div>
+                            <div class="col-xs-6 col-sm-8">
+                              <input type="text" class="form-control" id="inputInfo">
+                            </div>
+                            <div class="col-xs-5 col-sm-3">
+                            <button type="submit" class="btn btn-primary">Send</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
                     </div>
                     </div>
    
             </div>
             <!-- 测试mask按钮，整合结束后删掉-->
             <div class="row">
-            <button type="button" onclick="tvDiv.openMask();">open</button> 
+            <button type="button" onclick="tvDiv.openMask('notBegin');">begin</button> 
+            <button type="button" onclick="tvDiv.openMask('loading');">load</button> 
+            <button type="button" onclick="tvDiv.openMask('over');">over</button> 
             <button type="button" onclick="tvDiv.closeMask();">close</button>
             </div> 
             <!-- 测试mask按钮，整合结束后删掉-->
         </div>
 </div>
-
+</div>
 
 </body>
 </html>

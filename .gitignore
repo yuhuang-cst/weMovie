@@ -5,3 +5,4 @@ nohup.out
 *.log
 *.orig
 .*
+._.DS_Store

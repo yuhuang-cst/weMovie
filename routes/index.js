@@ -473,8 +473,8 @@ router.get('/letv', function(req, res, next){
   res.render('letv', {
   	title: '云中歌',
   	vu: '86e12dca1b',
-  	beginTime: new Date('2016-05-31 16:42:00'),
-  	endTime: new Date('2016-05-31 17:20:00')
+  	beginTime: new Date('2016-05-31 20:13:00'),
+  	endTime: new Date('2016-05-31 20:53:00')
   });
 
   /*
