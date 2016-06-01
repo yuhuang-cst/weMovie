@@ -21,20 +21,21 @@ function reset(req) {
 	req.session.friends = null;
 }
 
-router.get('/searchTest', checkLogin);
 router.get('/searchTest', function(req, res) {
 	var user = req.session.user;
 	var friends = req.session.friends;
+	console.log(friends);
+	console.log(user);
 	return res.render('searchTest', {
 		user: user,
   	friends: friends
 	});
 });
 
-router.post('/createMission2', checkLogin);
 router.post('/createMission2', function(req, res) {
-	console.log(req.body.startTime);
-	console.log(req.body.members);
+	console.log('233---------');
+	console.log(req.body.startTime.toString());
+	console.log(req.body.members.toString());
 	return res.redirect('/');
 });
 		
@@ -49,7 +50,7 @@ router.get('/login', function(req, res) {
 });
 
 router.get("/u/:user",function(req,res){
-	reset(req);
+	//TODO 为测试删除此句 reset()
 	User.get(req.params.user,function(err,user){
 		if(!user){
 			req.flash('error','用户不存在');
@@ -64,7 +65,7 @@ router.get("/u/:user",function(req,res){
 			
 			return res.render('user',{
 				title: user.name,
-				user: user.name,
+				user: user,
 				missions: req.session.missions,
 				invited: req.session.missions,
 				friends: req.session.friends
@@ -97,7 +98,7 @@ router.get("/u/:user",function(req,res){
 					req.session.friends = friends.friends;
 					res.render('user',{
 						title: user.name,
-						user: user.name,
+						user: user,
 						missions: missions,
 						invited: friends.invited,
 						friends: friends.friends
@@ -132,6 +133,8 @@ router.get("/m/:mid",function(req,res) {
 
 					if (!global.mission_info[req.params.mid]) { global.mission_info[req.params.mid] = []; }
 					return res.render('letv', {
+						title: user.name,
+						user: user,
 						username: user.name,
 						members: global.mission_info[req.params.mid],
 						title: '云中歌',
@@ -152,7 +155,8 @@ router.get("/m/:mid",function(req,res) {
 router.get('/friends',checkLogin);
 router.get('/friends',function(req,res) {
 	res.render('user', {
-		title:req.params.user,
+		title: req.session.user,
+		user: req.session.user,
 		groups: []
 	});
 });
@@ -160,7 +164,8 @@ router.get('/friends',function(req,res) {
 router.get('/reg',checkNotLogin);
 router.get('/reg',function(req,res){
 	res.render('reg',{
-		title:"用户注册"
+		title: "用户注册",
+		user: req.session.user
 	});
 });
 
@@ -377,6 +382,7 @@ router.get('/search', function(req, res, next){
   	var data = JSON.parse(data.toString());
   	var maxIndex = Math.ceil(data['total'] / Contant.RECORD_NUM);//取上整
   	res.render('searchResult', {
+			user: req.session.user,
   	  records : data['data'],
   	  prePage : '/search?videoName=' + videoName + '&index=' + (index <= 1 ? 1 : index - 1) ,
   	  nextPage : '/search?videoName=' + videoName + '&index=' + (index >= maxIndex ? maxIndex : index + 1)
