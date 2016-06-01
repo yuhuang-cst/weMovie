@@ -57,7 +57,7 @@
                             <li id="nav-course"><a href="movie.html">影片</a></li>
                             <li id="nav-notice"><a href="/announcement">公告</a></li>
                             <% if (user) { %>
-															<li><a href="/u/<%= user %>">个人中心</a></li>
+															<li><a href="/u/<%= user.name %>">个人中心</a></li>
 														<% } else { %>
                             	<li><a href="/">登录</a></li>
 														<% } %>   
@@ -72,7 +72,7 @@
                             <li><a href="movie.html">影片</a></li>
                             <li id="xs-nav-notice"><a href="/announcement">公告</a></li>
                             <% if (user) { %>
-															<li><a href="/u/<%= user %>">个人中心</a></li>
+															<li><a href="/u/<%= user.name %>">个人中心</a></li>
 														<% } else { %>
                             	<li><a href="/">登录</a></li>
 														<% } %>   
