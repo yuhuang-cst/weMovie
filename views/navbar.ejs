@@ -56,8 +56,11 @@
                             <li id="nav-index"><a href="index.html">首页</a></li>
                             <li id="nav-course"><a href="movie.html">影片</a></li>
                             <li id="nav-notice"><a href="/announcement">公告</a></li>
-                            <li><a href="/">登录</a></li>
-                                
+                            <% if (user) { %>
+															<li><a href="/u/<%= user %>">个人中心</a></li>
+														<% } else { %>
+                            	<li><a href="/">登录</a></li>
+														<% } %>   
                         </ul>
                     </div>
                 </div>
@@ -68,8 +71,11 @@
                             <li><a href="index.html">首页</a></li>
                             <li><a href="movie.html">影片</a></li>
                             <li id="xs-nav-notice"><a href="/announcement">公告</a></li>
-                            <li><a href="/">登录</a></li>
-                                
+                            <% if (user) { %>
+															<li><a href="/u/<%= user %>">个人中心</a></li>
+														<% } else { %>
+                            	<li><a href="/">登录</a></li>
+														<% } %>   
                         </ul>
                     </div>
                 </div>

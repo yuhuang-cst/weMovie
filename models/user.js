@@ -64,3 +64,24 @@ User.get = function get(username,callback){
 		});
 	});
 };
+
+User.findAll = function findAll(users,callback){
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		//读取users集合
+		db.collection('users',function(err,collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+
+			//查找name属性为username的文档
+			collection.findOne({name:{$in: users}}, function(err,docs) {
+				mongodb.close();
+				return callback(err,docs);
+			});
+		});
+	});
+};

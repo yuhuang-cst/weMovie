@@ -80,14 +80,16 @@ UserAct.add = function add(username, actid, callback) {
 			//查找name属性为username的文档
 			collection.findOne({name:username},function(err,doc){
 				if(doc){
-					//封装文档为User对象
-					if (!(actid in doc.groupsid)) {
-						doc.groupsid.push(actid);
-						collection.save(doc);
-					}
-					
-					mongodb.close();
-					callback(err,doc);
+					var flag = false;
+					for (var i = 0; i < doc.groupsid.length; i++) {
+    				if (doc.groupsid[i] == actid) {
+							mongodb.close();
+    				  return callback('已在邀请列表中',doc);
+    				}
+  				}
+					doc.groupsid.push(actid);
+					collection.save(doc);
+					return callback(err,doc);
 				}
 				else {
 					mongodb.close();
