@@ -15,6 +15,13 @@ var Contant = require('../models/constant.js')
 
 global.mission_info = {};
 
+function getRetDict(code, message, data){
+  var retDict = {code : code, message : message};
+  if (data)
+  	retDict['data'] = data;
+  return retDict;
+}
+
 function reset(req) {
 	req.session.missions = null;
 	req.session.invited = null;
@@ -34,9 +41,11 @@ router.get('/searchTest', function(req, res) {
 
 router.post('/createMission2', function(req, res) {
 	console.log('233---------');
-	console.log(req.body.startTime.toString());
-	console.log(req.body.members.toString());
-	return res.redirect('/');
+	console.log(req.body);
+	//console.log(req.body.startTime.toString());
+	//console.log(req.body.members.toString());
+	res.send(getRetDict(0, '创建任务成功'));
+	//return res.redirect('/');
 });
 		
 router.get('/',function(req, res) {
@@ -400,7 +409,8 @@ router.get('/search', function(req, res, next){
   	var data = JSON.parse(data.toString());
   	var maxIndex = Math.ceil(data['total'] / Contant.RECORD_NUM);//取上整
   	res.render('searchResult', {
-			user: req.session.user,
+	  user: req.session.user,
+	  friends: req.session.friends,
   	  records : data['data'],
   	  prePage : '/search?videoName=' + videoName + '&index=' + (index <= 1 ? 1 : index - 1) ,
   	  nextPage : '/search?videoName=' + videoName + '&index=' + (index >= maxIndex ? maxIndex : index + 1)
@@ -416,6 +426,7 @@ router.get('/createMission', function(req, res, next){
 
 router.post('/createMission', checkLogin);
 router.post('/createMission', function(req, res, next){
+	console.log(req.body);
 	var currentUser = req.session.user;
 	mission = Mission.postReqToMission(currentUser, req);
 	// 对被邀请人员的操作
@@ -423,8 +434,9 @@ router.post('/createMission', function(req, res, next){
 	if (!inviteds) inviteds = [];
 	User.findAll(inviteds, function(err, friends) {
 		if (err) {
-			req.flash('error',err);
-			return res.redirect('/');
+			res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
+			//req.flash('error',err);
+			//return res.redirect('/');
 		}
 		mission.member = [];
 		for (var i = 0; i < friends.length; i++) {
@@ -433,18 +445,20 @@ router.post('/createMission', function(req, res, next){
 
 		Mission.create(mission, function(err, mid){
 			if (err) {
-  	 		req.flash('error',err);
-				return res.redirect('/');
+			res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
+  	 		//req.flash('error',err);
+			//return res.redirect('/');
   		}
 			// 将任务mid加入个人信息
 			console.log('mid='+mid);
 			UserAct.add(currentUser.name, mid, function(err,usersact) {
 				if (err) {
 					console.log('err in UserAct.add');
-					req.flash('error',err);
-					return res.redirect('/');
+					res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
+					//req.flash('error',err);
+					//return res.redirect('/');
 				}
-				req.flash('success', '创建任务成功');
+				//req.flash('success', '创建任务成功');
 
 				for (var i = 0; i < mission.member.length; i++) {
 					UserAct.add(mission.member[i], usersact.groupsid, function(err, useract) {
@@ -453,8 +467,8 @@ router.post('/createMission', function(req, res, next){
 						}
 					});	
 				}
-	
-				return res.redirect('/u/'+currentUser.name);
+				res.send(getRetDict(0, '创建任务成功'));
+				//return res.redirect('/u/'+currentUser.name);
 			});
 		});
 	});
