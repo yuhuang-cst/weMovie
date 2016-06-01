@@ -118,14 +118,32 @@ router.get("/m/:mid",function(req,res) {
 					}
 
 					if (!global.mission_info[req.params.mid]) { global.mission_info[req.params.mid] = []; }
+					
+					/*<---hy----->*/
+					var beginTime = new Date(Date.now());
+  					var endTime = new Date(beginTime);
+  					endTime.setMinutes(endTime.getMinutes() + 40);
+  					
 					return res.render('letv', {
 						username: user.name,
 						members: global.mission_info[req.params.mid],
 						title: '云中歌',
-  					vu: '86e12dca1b',
-  					beginTime: new Date('2016-05-31 20:13:00'),
-  					endTime: new Date('2016-05-31 20:53:00')
+  						vu: '86e12dca1b',
+  						beginTime: beginTime,
+  						endTime: endTime
 					});
+					/*
+					return res.render('letv', {
+						username: user.name,
+						members: global.mission_info[req.params.mid],
+						title: mission['videoName'],
+  						vu: mission['vu'],
+  						beginTime: mission['beginTime'],
+  						endTime: mission['endTime']
+					});*/
+
+					/*<---hy----->*/
+
 				});
 			}
 		}
