@@ -11,6 +11,17 @@
     <!-- Bootstrap -->
     <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
     <link href="/stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="/stylesheets/BootSideMenu.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="/stylesheets/default.css" rel="stylesheet" media="screen" type="text/css">
+    <style type="text/css">
+      .user{
+        padding:10px;
+        margin-bottom: 5px;
+      }
+      a:hover{text-decoration: none;}
+      #searchForm{display:none;}
+    </style>
+
 </head>
 <body>
   <header class="header">
@@ -20,21 +31,21 @@
                 <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
                     <div class="navbar-header navbar-left">
                         <a class="navbar-brand-mc" href="/">
-                            <img src="../images/Brand_S.png" alt="logo"/>
+                            <img src="/images/brand.png" alt="logo"/>
                         </a>
                     </div>
                 </div>
                 <div class="hidden-xs visible-sm-block col-sm-2">
                     <div class="navbar-header navbar-left">
                         <a class="navbar-brand-mc" href="/">
-                            <img src="../images/Brand_S.png" alt="logo"/>
+                            <img src="/images/brand_S.png" alt="logo"/>
                         </a>
                     </div>
                 </div>
                 <div class="visible-xs-block col-xs-2">
                     <div class="navbar-header navbar-left">
                         <a class="navbar-brand-mc" href="/">
-                            <img src="../images/Brand_S.png" alt="logo"/>
+                            <img src="/images/brand_S.png" alt="logo"/>
                         </a>
                     </div>
                 </div>
@@ -55,7 +66,6 @@
                         <ul class="nav navbar-nav pull-right">
                             <li id="nav-index"><a href="index.html">首页</a></li>
                             <li id="nav-course"><a href="movie.html">影片</a></li>
-                            <li id="nav-notice"><a href="/announcement">公告</a></li>
                             <% if (user) { %>
 															<li><a href="/u/<%= user.name %>">个人中心</a></li>
 														<% } else { %>
@@ -83,6 +93,55 @@
         </div>
     </nav>
 </header>
-
+<div class="content">
+    <div id="test">
+        <div class="user">
+            <img src="/images/face_japan_01.gif" alt="Esempio" class="img-thumbnail">
+            <a href="#" target="_blank" class="navbar-link">我的好友</a>
+            <button type="button" class="btn btn-link" onclick="show();">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div id="searchForm">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="搜索新的好友……">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                </span>    
+            </div>
+        </div>
+        <div class="list-group">
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+        </div>
+      </div> 
+</div>
+    <script src="/javascripts/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/BootSideMenu.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+          $('#test').BootSideMenu({side:"right", autoClose:true});
+      });
+      function show(){
+        document.getElementById("searchForm").style.display="block";
+      }
+    </script>
 </body>
 </html>

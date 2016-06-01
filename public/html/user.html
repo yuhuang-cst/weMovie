@@ -10,6 +10,8 @@
     <!-- Bootstrap -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
     <link href="../stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="../stylesheets/BootSideMenu.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="../stylesheets/default.css" rel="stylesheet" media="screen" type="text/css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -17,6 +19,14 @@
       <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+      .user{
+        padding:5px;
+        margin-bottom: 5px;
+      }
+      a:hover{text-decoration: none;}
+    </style>
+
   </head>
   <body>
   <header class="header">
@@ -89,19 +99,44 @@
 <br>
 <br>
 <br>
-        <div class="wrapper">
-            <div class="container">
-                <div class="row">
+    <div class="wrapper">
+        <!--Test -->
+      <div id="test">
+        <div class="user">
+          <img src="../images/face_japan_01.gif" alt="Esempio" class="img-thumbnail">
+          <a href="http://www.htmleaf.com" target="_blank" class="navbar-link">我的好友</a>
+        </div>
+        <div class="list-group">
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+        </div>
+
+      </div>
+        <div class="container">
+            <div class="row">
                     <div class="btn-group-vertical col-xs-0 col-sm-6 col-md-3 col-lg-3" role="group">
                       <button type="button" class="btn btn-default btn-lg">pic</button>
                       <button type="button" class="btn btn-default btn-lg">pic</button>
                       <button type="button" class="btn btn-default btn-lg">pic</button>
                       <button type="button" class="btn btn-default btn-lg">pic</button>
                       <button type="button" class="btn btn-default btn-lg">我的上传</button>
-                      //点击出现我已上传的视频，可进行修改信息，并增加“上传视频”按钮，以及影片状态
+                      <!-- 点击出现我已上传的视频，可进行修改信息，并增加“上传视频”按钮，以及影片状态 -->
                       <button type="button" class="btn btn-default btn-lg">观影任务</button>
-                      //我发起——可修改时间，并增加好友，我被约——时间，影片
-                      <button type="button" class="btn btn-default btn-lg">消息提醒</button> //
+                      <!-- 我发起——可修改时间，并增加好友，我被约——时间，影片 -->
+                      <button type="button" class="btn btn-default btn-lg">消息提醒</button> 
                       <button type="button" class="btn btn-default btn-lg">个人中心</button>            
                     </div>
                     <div class="col-xs-0 col-sm-6 col-md-9 col-lg-9">
@@ -120,12 +155,18 @@
                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     </div>
                 </div>
-            </div>
         </div>
+    </div>
  </div>    
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../javascripts/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../javascripts/bootstrap.min.js"></script>
+    <script src="../javascripts/BootSideMenu.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+          $('#test').BootSideMenu({side:"right", autoClose:true});
+      });
+    </script>
   </body>
 </html>

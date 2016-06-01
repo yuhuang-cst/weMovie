@@ -14,6 +14,7 @@ var Error = require('../models/error.js');
 var Contant = require('../models/constant.js')
 
 global.mission_info = {};
+global.user_info = [];
 
 function getRetDict(code, message, data){
   var retDict = {code : code, message : message};
@@ -28,6 +29,7 @@ function reset(req) {
 	req.session.friends = null;
 }
 
+// for test of create missions
 router.get('/searchTest', function(req, res) {
 	var user = req.session.user;
 	var friends = req.session.friends;
@@ -47,7 +49,7 @@ router.post('/createMission2', function(req, res) {
 	res.send(getRetDict(0, '创建任务成功'));
 	//return res.redirect('/');
 });
-		
+// -------------
 router.get('/',function(req, res) {
 	return res.render('login',{
 		user: req.session.user

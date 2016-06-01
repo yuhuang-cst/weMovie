@@ -98,22 +98,26 @@ io.sockets.on('connection', function(socket) {
 	var username = '';
 
 	// user join in
-	socket.on('join', function (nickname) {
+	socket.on('join', function (nickname, inroom) {
     username = nickname;
-		if (!global.mission_info[mid]) {
-			global.mission_info[mid] = []
-		}
-		var flag = false;
-		for (var i = 0; i < global.mission_info[mid].length; i++) {
-			if (username == global.mission_info[mid][i]) {
-				flag = true; break;
+		if (inroom) {
+			if (!global.mission_info[mid]) {
+				global.mission_info[mid] = []
+			}
+			socket.join(mid);
+			var flag = false;
+			for (var i = 0; i < global.mission_info[mid].length; i++) {
+				if (username == global.mission_info[mid][i]) {
+					flag = true; break;
+				}
+			}
+			if (!flag) {
+				global.mission_info[mid].push(username);
+				io.sockets.to(mid).emit('system', username + '加入了房间', global.mission_info[mid]);
 			}
 		}
-		if (!flag) {
-			global.mission_info[mid].push(username);
+		else {
 		
-			socket.join(mid);
-			io.sockets.to(mid).emit('system', username + '加入了房间', global.mission_info[mid]);
 		}
   });
 	
