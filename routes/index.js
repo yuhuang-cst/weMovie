@@ -21,20 +21,21 @@ function reset(req) {
 	req.session.friends = null;
 }
 
-router.get('/searchTest', checkLogin);
 router.get('/searchTest', function(req, res) {
 	var user = req.session.user;
 	var friends = req.session.friends;
+	console.log(friends);
+	console.log(user);
 	return res.render('searchTest', {
 		user: user,
   	friends: friends
 	});
 });
 
-router.post('/createMission2', checkLogin);
 router.post('/createMission2', function(req, res) {
-	console.log(req.body.startTime);
-	console.log(req.body.members);
+	console.log('233---------');
+	console.log(req.body.startTime.toString());
+	console.log(req.body.members.toString());
 	return res.redirect('/');
 });
 		
@@ -49,7 +50,7 @@ router.get('/login', function(req, res) {
 });
 
 router.get("/u/:user",function(req,res){
-	reset(req);
+	//TODO 为测试删除此句 reset()
 	User.get(req.params.user,function(err,user){
 		if(!user){
 			req.flash('error','用户不存在');
