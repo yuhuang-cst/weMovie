@@ -96,6 +96,9 @@
                         </ul>
 
                         <!-- Tab panes -->
+												<% if (user) { %>
+													<div>Welcome </div>
+												<% } else { %>
                         <div class="tab-content">
                             <!-- Tab Log in -->
                             <form role="tabpanel" class="tab-pane fade in active" id="login" method="post" action="/login">
@@ -130,6 +133,7 @@
 																</div>
                             </form>
                         </div>
+												<% } %>
                     </div>               
                 </div>
             </div>
