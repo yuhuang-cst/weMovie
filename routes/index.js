@@ -425,25 +425,22 @@ router.get('/createMission', function(req, res, next){
 router.post('/createMission', checkLogin);
 router.post('/createMission', function(req, res, next){
 	console.log(req.body);
+	console.log(req.body.members);
 	var currentUser = req.session.user;
-	mission = Mission.postReqToMission(currentUser, req);
+	inviteds = req.body.members.split(',');
+	mission = Mission.postReqToMission(currentUser, inviteds, req);
 	// 对被邀请人员的操作
-	inviteds = req.body.inviteds;
-	if (!inviteds) inviteds = [];
 	User.findAll(inviteds, function(err, friends) {
+		console.log(friends);
 		if (err) {
 			res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
 			//req.flash('error',err);
 			//return res.redirect('/');
 		}
-		mission.member = [];
-		for (var i = 0; i < friends.length; i++) {
-			mission.member.push(friends[i].name);
-		}
 
 		Mission.create(mission, function(err, mid){
 			if (err) {
-			res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
+				res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
   	 		//req.flash('error',err);
 			//return res.redirect('/');
   		}
@@ -456,10 +453,13 @@ router.post('/createMission', function(req, res, next){
 					//req.flash('error',err);
 					//return res.redirect('/');
 				}
-				//req.flash('success', '创建任务成功');
+				//req.flash('success', '创建任务成功')
+				console.log(friends);
 
-				for (var i = 0; i < mission.member.length; i++) {
-					UserAct.add(mission.member[i], usersact.groupsid, function(err, useract) {
+				for (var i = 0; i < friends.length; i++) {
+					console.log('Now invite friend' + friends[i].name);
+					console.log(usersact.groupsid);
+					UserAct.add(friends[i].name, mid, function(err, useract) {
 						if (err) {
 							console.log('err in friends UserAct.add');
 						}

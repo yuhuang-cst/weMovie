@@ -87,7 +87,9 @@ UserAct.add = function add(username, actid, callback) {
     				  return callback('已在邀请列表中',doc);
     				}
   				}
+					console.log(doc);
 					doc.groupsid.push(actid);
+					console.log(doc);
 					collection.save(doc);
 					return callback(err,doc);
 				}

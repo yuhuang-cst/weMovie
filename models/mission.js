@@ -13,7 +13,7 @@ function openColl(callback){
 }
 
 //提取post请求中的任务信息
-function postReqToMission(user, req){
+function postReqToMission(user, members, req){
   mission = {};
   mission['creator'] = user.name;
   mission['videoName'] = req.body.videoName;
@@ -22,7 +22,10 @@ function postReqToMission(user, req){
   mission['endTime'] = new Date(req.body.beginTime);
   mission['endTime'].setSeconds(mission['endTime'].getSeconds() + parseInt(req.body.duration));
   //mission['duration'] = parseInt(req.body.duration);
-  mission['member'] = JSON.parse(req.body.members);
+	mission['member'] = {}
+	for (var i = 0; i < members.length; i++) {
+  	mission.member[members[i]] = "";
+	}
   return mission;
 }
 
