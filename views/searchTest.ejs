@@ -31,6 +31,7 @@
                 members.splice(i,1);
             }
         }
+				document.getElementById('members').value = members;
     }
     function addFri(name)
     {
@@ -276,7 +277,7 @@
 						</div>
 					</div>
 	
-					<input type="submit" value="Submit" />
+					<input type="submit" value="Submit" onclick="alert(members.toString());"/>
 					<!-- <div class="form-actions">
 						<button type="button" class="btn btn-primary">Submit</button>
 						</div> -->
