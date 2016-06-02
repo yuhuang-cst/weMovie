@@ -70,7 +70,7 @@
                                                 <div style="padding: 10px 15px">
                                                     <span class="label label-primary" ><%=videoInfo.status%></span>
                                                 </div> 
-                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upNewModal" onclick="member_clear()">新建观影
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upNewModal" onclick="createMissionOnClick('<%=videoInfo.video_name%>', '<%=videoInfo.video_unique%>', '<%=videoInfo.video_duration%>')">新建观影
                                                 </button>     
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upModifyModal">修改信息
                                                 </button>
@@ -80,40 +80,6 @@
                                         </div>
                                     </li>
                                 <% }); %>
-
-
-                                <li class="list-group-item">
-                                <div class="row">
-                                    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
-                                        <div class="item-avatar">
-                                            <div class="img-responsive" style="background-image: url(/images/logos.png);"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-4 col-sm-6 col-md-8 col-lg-8" style="padding: 15px 0px">
-                                        <div class="item-main">
-                                            <div class="item-name">
-                                            <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5">怦然心动</font></a>
-                                            </div>
-                                            <div class="item-time">
-                                                <font size="2" color="#BEBEBE">上传时间：2016-05-06 10:14:42</font>
-                                            </div>
-                                            <div class="item-text"><font size="2" color="#272727">《怦然心动》是由罗伯·莱纳执导，玛德琳·卡罗尔、卡兰·麦克奥利菲主演影片。该片根据文德琳·范·德拉安南的同名原著小说改编，描述了青春期中男孩女孩之间的有趣战争。于2010年8月6日在美国上映。</font></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
-                                        <div style="padding: 10px 15px">
-                                            <span class="label label-primary" >已通过</span>
-                                        </div> 
-                                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upNewModal" onclick="member_clear()">新建观影
-                                        </button>     
-                                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upModifyModal">修改信息
-                                        </button>
-                                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upDelModal">删除视频
-                                        </button>
-                                    </div>
-                                </div>
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -242,14 +208,20 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" method="post" action="/createMission">
+
+                    <input type="text" id = "videoName" name="videoName" style="display: none">
+                    <input type="text" id = "vu" name="vu" style="display: none">
+                    <input type="text" id = "duration" name="duration" style="display: none">
+
                     <div class="form-group">
                         <label for="labBegint" class="col-sm-3 control-label">开始播放时间</label>
                           <div class="col-sm-9 input-append date form_datetime" id="datetimepicker" data-date="2013-02-21T15:25:00Z">
-                            <input class="col-sm-9" type="text" value="" readonly>
+                            <input class="col-sm-9" id="beginTime" type="text" value="" readonly>
                             <span class="add-on"><i class="icon-remove"></i></span>
                             <span class="add-on"><i class="icon-calendar"></i></span>
                          </div> 
                     </div>
+
                     <div class="form-group">
                         <label for="labFri" class="col-sm-3 control-label">邀请好友</label>
 												<input id="members" name="members" class="col-sm-9" type="text" style="display: none" value="" readonly>
@@ -403,6 +375,31 @@
     <script language="JavaScript" src="../javascripts/bootstrap-datetimepicker.js"></script>
     <script language="JavaScript" src="../javascripts/locales/bootstrap-datetimepicker.fr.js"></script>
     <script type="text/javascript">
+
+        $(document).ready(function(){
+            $("#submitMission").click(function(){
+                console.log($("#beginTime").val());
+                $.post("/createMission",
+                {
+                    videoName: $("#videoName").val(),
+                    vu: $("#vu").val(),
+                    duration: $("#duration").val(),
+                    beginTime: $("#beginTime").val(),
+                    members : $("#members").val()
+                },
+                function(data, status){
+                    alert(data['message']);
+                });
+            });
+        });
+
+        function createMissionOnClick(videoName, vu, duration){
+            member_clear();
+            $("#videoName").val(videoName);
+            $("#vu").val(vu);
+            $("#duration").val(duration);
+        }
+
         $(document).ready(function(){
           $('#test').BootSideMenu({side:"right", autoClose:true});
         });

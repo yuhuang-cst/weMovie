@@ -454,7 +454,7 @@ router.get('/createMission', function(req, res, next){
 
 router.post('/createMission', checkLogin);
 router.post('/createMission', function(req, res, next){
-	console.log(req.body);
+	console.log('hy::body:', req.body);
 	console.log(req.body.members);
 	var currentUser = req.session.user;
 	inviteds = req.body.members.split(',');
