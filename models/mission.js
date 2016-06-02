@@ -20,7 +20,8 @@ function postReqToMission(user, req){
   mission['vu'] = req.body.vu;
   mission['beginTime'] = new Date(req.body.beginTime)
   mission['duration'] = parseInt(req.body.duration);
-  mission['member'] = JSON.parse(req.body.members);
+  mission['member'] = [];
+  // JSON.parse(req.body.members);
   return mission;
 }
 

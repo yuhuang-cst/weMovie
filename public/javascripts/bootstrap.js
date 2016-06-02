@@ -895,7 +895,6 @@ if (typeof jQuery === 'undefined') {
     return this
   }
 
-
   // APPLY TO STANDARD DROPDOWN ELEMENTS
   // ===================================
 

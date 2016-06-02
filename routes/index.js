@@ -50,7 +50,7 @@ router.get('/login', function(req, res) {
 });
 
 router.get("/u/:user",function(req,res){
-	//TODO 为测试删除此句 reset()
+	reset()
 	User.get(req.params.user,function(err,user){
 		if(!user){
 			req.flash('error','用户不存在');
@@ -409,6 +409,7 @@ router.post('/createMission', function(req, res, next){
 			return res.redirect('/');
 		}
 		mission.member = [];
+		if (!friends) friends = [];
 		for (var i = 0; i < friends.length; i++) {
 			mission.member.push(friends[i].name);
 		}
