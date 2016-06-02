@@ -18,8 +18,10 @@ function postReqToMission(user, req){
   mission['creator'] = user.name;
   mission['videoName'] = req.body.videoName;
   mission['vu'] = req.body.vu;
-  mission['beginTime'] = new Date(req.body.beginTime)
-  mission['duration'] = parseInt(req.body.duration);
+  mission['beginTime'] = new Date(req.body.beginTime);
+  mission['endTime'] = new Date(req.body.beginTime);
+  mission['endTime'].setSeconds(mission['endTime'].getSeconds() + parseInt(req.body.duration));
+  //mission['duration'] = parseInt(req.body.duration);
   mission['member'] = JSON.parse(req.body.members);
   return mission;
 }
