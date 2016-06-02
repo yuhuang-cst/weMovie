@@ -93,6 +93,7 @@ router.get("/u/:user",function(req,res){
 				req.session.missions = missions;
 
 				Friends.get(user.name, function(err, friends) {
+					console.log("show friends");
 					console.log(friends);
 					if (err) {
 						req.flash('error', 'In Friends.get: ' + err);
@@ -247,6 +248,7 @@ router.post("/reg",function(req,res){
 				friends.save(function(err,doc) {
 					console.log('注册成功');
 					console.log(doc);
+					console.log(doc);
 					if (err) {
 						req.flash('error',err);
 						console.log("save friends-list err");
@@ -295,6 +297,7 @@ router.get("/logout",function(req,res){
 router.post('/invite', checkLogin);
 router.post('/invite', function(req, res) {
 	var user = req.session.user;
+	console.log('invite start');
 	User.get(req.body.inviteByName, function(err, invitedUser) {
 		if (err) {
 			req.flash('error',err);
@@ -305,15 +308,18 @@ router.post('/invite', function(req, res) {
 			return res.redirect('/u/' + user.name);
 		}
 
+		console.log(user.name + ':' + req.body.inviteByName);
 		Friends.invite(user.name, req.body.inviteByName, function(err, doc) {
+			console.log('try to invite');
 			if (err) {
-				console.log('err in Friends.invite');
+				console.log('err in Friends.invite' + err);
 				req.flash('error',err);
 			}
 			else {
 				reset(req);
 				req.flash('success', '好友邀请已发送');
 			}
+			console.log(doc);
 			return res.redirect('/u/' + user.name);
 		});
 	});
@@ -473,29 +479,33 @@ router.post('/createMission', function(req, res, next){
 });
 
 //更新任务
-router.post('/updateMission/:mid', function(req, res, next){
+router.post('/updateMission', function(req, res, next){
 	var currentUser = req.session.user;
+	console.log(req.body);
 
-	Mission.get(req.params.mid, function(err,mission) {
+	inviteds = req.body.members.split(',');
+	Mission.get(req.body.mid, function(err,mission) {
 		if (err || !mission) {
 			req.flash('error',err);
 			return res.redirect('/');
 		}
-		User.findAll(mission.member, function(err, friends) {
+		User.findAll(inviteds, function(err, friends) {
 			if (err) {
 				req.flash('error',err);
 				return res.redirect('/');
 			}
-			for (var i = 0; i < mission.member.length; i++) {
-				UserAct.del(mission.member[i], req.params.mid, function(err, useract) {
+			for (var i = 0; i < inviteds.length; i++) {
+				UserAct.del(inviteds[i], req.body.mid, function(err, useract) {
+					console.log('remove ' + inviteds[i]);
+					console.log(useract);
 					if (err) {
 						console.log('err in friends UserAct.add');
 					}
 				});	
 			}
 
-			mission = Mission.postReqToMission(req.session.user, req);
-			inviteds = req.body.inviteds;
+			
+			mission = Mission.postReqToMission(req.session.user, inviteds, req);
 			if (!inviteds) inviteds = [];
 			User.findAll(inviteds, function(err, friends) {
 				if (err) {
@@ -507,7 +517,7 @@ router.post('/updateMission/:mid', function(req, res, next){
 					mission.member.push(friends[i].name);
 				}
 
-				Mission.update(req.params.mid, mission, function(err, mid){
+				Mission.update(req.body.mid, mission, function(err, mid){
 					if (err) {
   	 				req.flash('error',err);
 						return res.redirect('/');

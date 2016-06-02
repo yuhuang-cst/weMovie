@@ -42,6 +42,8 @@ Friends.prototype.save = function save(callback){
 			//为name属性添加索引，新版本的ensureIndex方法需要一个回调函数
 			collection.ensureIndex('name',{unique:true},function(err){
 				//写入user文档
+				console.log(friends);
+				console.log('show friends23333');
 				collection.insert(friends, {safe:true}, function(err,doc) {
 					mongodb.close();
 					callback(err,doc);
@@ -124,34 +126,32 @@ Friends.invite = function invite(src, dst, callback) {
       mongodb.close();
       return callback(err);
     }
-    coll.findOne({name: src}, function(err, src_user) {
-			if (err || !src_user) {
-				mongodb.close();
-				return callback(err + ': 用户邀请来源错误');
-			}
+    //coll.findOne({name: src}, function(err, src_user) {
+		//	if (err || !src_user) {
+		//		mongodb.close();
+		//		return callback(err + ': 用户邀请来源错误');
+		//	}
 			coll.findOne({name: dst}, function(err, dst_user) {
 				console.log('Not exist' + dst);
 				if (err || !dst_user) {
+					console.log('yiyiy');
 					mongodb.close();
 					return callback(err + ': 所邀请的用户不存在');
 				}
+				console.log('uuu');
 				for (var i = 0; i < dst_user.invited.length; i++) {
 					if (src == dst_user.invited[i]) {
-						flag = true;
-						dst_user.invited.push(src);
-						coll.update({name: dst}, dst_user, function(err, doc){
-      				mongodb.close();
-      				console.log(doc);
-      				return callback(err, doc);
-    				});
+						mongodb.close();
+						return callback(err + ': 好友邀请重复');
 					}
-				}	
-				if (!flag) {
-					mongodb.close();
-					return callback(err + ': 好友邀请重复');
 				}
+				dst_user.invited.push(src);
+				coll.update({name: dst}, dst_user, function(err, doc){
+					mongodb.close();
+					return callback(err, doc);
+				});
 			});
-    });
+    //});
   });
 }
 
