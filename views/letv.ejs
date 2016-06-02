@@ -170,7 +170,7 @@
       
       // 加入房间
       socket.on('connect', function () {
-        socket.emit('join', document.getElementById("username").innerHTML);
+        socket.emit('join', document.getElementById("username").innerHTML, 1);
       });
 
       // 监听消息

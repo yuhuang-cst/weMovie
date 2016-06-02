@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
 
-    <title><%= title %></title>
     <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
     <!-- Bootstrap -->
     <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
@@ -64,10 +63,10 @@
                 <div class="hidden-xs col-sm-5 col-md-4 col-lg-4">
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav pull-right">
-                            <li id="nav-index"><a href="index.html">首页</a></li>
-                            <li id="nav-course"><a href="movie.html">影片</a></li>
-                            <% if (user) { %>
-															<li><a href="/u/<%= user.name %>">个人中心</a></li>
+                            <li id="nav-index"><a href="/">首页</a></li>
+                            <% if (req.user) { %>
+															<li><a href="/u/<%= req.user.name %>">个人中心</a></li>
+															<li><a href="/logout">登出</a></li>
 														<% } else { %>
                             	<li><a href="/">登录</a></li>
 														<% } %>   
@@ -78,11 +77,11 @@
                     <div class="nav nav-hamburger pull-right">
                         <a href="#ham" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="index.html">首页</a></li>
-                            <li><a href="movie.html">影片</a></li>
+                            <li><a href="/">首页</a></li>
                             <li id="xs-nav-notice"><a href="/announcement">公告</a></li>
-                            <% if (user) { %>
-															<li><a href="/u/<%= user.name %>">个人中心</a></li>
+                            <% if (req.user) { %>
+															<li><a href="/u/<%= req.user.name %>">个人中心</a></li>
+															<li><a href="/logout">登出</a></li>
 														<% } else { %>
                             	<li><a href="/">登录</a></li>
 														<% } %>   
@@ -105,43 +104,36 @@
         <div id="searchForm">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="搜索新的好友……">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                    </button>
-                </span>    
+                <form method="post" action="/invite">
+									添加好友：<input type="text" name="inviteByName"><br>
+									<button type="submit">ok</button>
+								</form>    
             </div>
         </div>
         <div class="list-group">
-          <a href="#" class="list-group-item">
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
-          </a>
-          <a href="#" class="list-group-item">
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
-          </a>
-          <a href="#" class="list-group-item">
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
-          </a>
-          <a href="#" class="list-group-item">
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
-          </a>
-          <a href="#" class="list-group-item">
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
-          </a>
+					<% if (req.friends) { %>
+						<% req.friends.forEach(function(friend, friend_index) { %>
+						<a href="#" class="list-group-item">
+            	<span class="glyphicon glyphicon-user" aria-hidden="true"></span><%= friend %>
+          	</a>
+						<% }) %>
+					<% } %>
+					<% if (req.invited) { %>
+					<p>收到来自以下人的邀请</p>
+						<% req.invited.forEach(function(invitor, invite_index) { %>
+							<p id="invitor<%= invite_index %>" ><%= invitor %></p>
+							<button id="accept<%= invite_index %>" type="button" onclick="friendsAccept('<%= invitor %>')">接受</button>
+							<button id="reject<%= invite_index %>" type="button" onclick="friendsReject('<%= invitor %>')">拒绝</button>
+						<% }) %>
+					<% } %>
+
+					<script>
+						function friendsAccept(src) {
+							window.location.assign("/accept/" + src);
+						}
+						function friendsReject(src) {
+							window.location.assign("/reject/" + src);
+						}
+					</script>
         </div>
       </div> 
-</div>
-    <script src="/javascripts/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/javascripts/bootstrap.min.js"></script>
-    <script src="/javascripts/BootSideMenu.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function(){
-          $('#test').BootSideMenu({side:"right", autoClose:true});
-      });
-      function show(){
-        document.getElementById("searchForm").style.display="block";
-      }
-    </script>
-</body>
-</html>

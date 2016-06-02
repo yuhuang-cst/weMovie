@@ -9,14 +9,78 @@
 
     <!-- Bootstrap -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="../stylesheets/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="../stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
-
+    <script language="JavaScript" src="../javascripts/bootstrap.min.js"></script>
+    <script language="JavaScript" src="../javascripts/jquery.js"></script>  
+    <script language="JavaScript" src="../javascripts/bootstrap-datetimepicker.js"></script>
+    <script language="JavaScript" src="../javascripts/locales/bootstrap-datetimepicker.fr.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script type="text/javascript">
+
+    $(document).ready(function(){
+        $("#submitMission").click(function(){
+            $.post("/createMission",
+            {
+                videoName: $("#videoName").val(),
+                vu: $("#vu").val(),
+                duration: $("#duration").val(),
+                beginTime: $("#beginTime").val(),
+                members : $("#members").val()
+            },
+            function(data, status){
+                alert(data['message']);
+            });
+        });
+    });
+
+    var members = new Array()
+    //var records = JSON.parse('<%=records%>')
+    //console.log(records);
+
+    function removeA(name) 
+    {
+        for (var i=0;i<members.length;i++)
+        {
+            if (members[i] == name) {
+                members.splice(i,1);
+            }
+        }
+    }
+    function addFri(name)
+    {
+        var btn0=document.getElementById(name);
+        if (btn0 == null) {
+            members.push(name);
+            document.getElementById('members').value = members;
+            var mydiv=document.getElementById("friBtns");
+            var btn=document.createElement("input");
+            btn.type="button";
+            btn.value=name;
+            btn.id=name;
+            btn.setAttribute("class","btn btn-primary btn-sm");
+            btn.setAttribute("className","btn btn-primary");
+            mydiv.appendChild(btn);
+            btn.onclick=function() {
+                removeA(btn.id);
+                mydiv.removeChild(btn);
+            };
+        }
+    }
+
+    function createMissionOnClick(videoName, vu, duration){
+        $("#videoName").val(videoName);
+        $("#vu").val(vu);
+        $("#duration").val(duration);
+    }
+
+
+    </script>
   </head>
   <body>
   <header class="header">
@@ -46,9 +110,9 @@
                 </div>
                 <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5">
                     <!--<div class="navbar-search navbar-left">-->
-                        <form class="navbar-form-mc" method="get" action="/search" role="search">
+                        <form class="navbar-form-mc" method="get" action="/course/search" role="search">
                             <div class="input-group input-group-nav">
-                                <input type="text" class="form-control" id="input-search" name="videoName" placeholder="搜索影片...">
+                                <input type="text" class="form-control" id="input-search" name="key" placeholder="搜索影片...">
                                 <span class="input-group-btn">
                                     <a role="button" class="btn" onclick="$(this).closest('form').submit()">
                                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -64,6 +128,7 @@
                             <li id="nav-course"><a href="/course">影片</a></li>
                             <li id="nav-notice"><a href="/announcement">公告</a></li>
                             <li><a href="/">登录</a></li>
+                                
                         </ul>
                     </div>
                 </div>
@@ -83,6 +148,7 @@
         </div>
     </nav>
 </header>
+
 <div class="content">
 <br>
 <br>
@@ -94,64 +160,142 @@
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                 <div class="section">
                     <ul id="water-fall">
-
                         <% records.forEach(function(record, index){ %>
-                            <% tags = record['tag'].split(' ') %>
+                            <% var tags = record['tag'].split(' ') %>
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">
                                         <div class="item-avatar">
-                                                    <div class="img-responsive" style="background-image: url(<%=record['img']%>); height: 60px; ">
-                                                    </div>
+                                            <div class="img-responsive" style="background-image: url(<%=record['img']%>); height: 60px;"></div>
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-sm-11 col-md-11 col-lg-11">
                                         <div class="item-main">
                                             <div class="item-header">
-                                            <a class="f-main f-16" href="/Course/148" target="_blank"><font size="6"><%= record['video_name'] %> </font></a>
-                                            <a href="/Course/148#anchor-comments" class="f-light">
+                                            <a class="f-main f-16"  href="/Course/148" target="_blank"><font size="6"><%= record['video_name'] %></font></a>
+                                            <button type="button" class="btn btn-link">
                                                 <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                                            </a>
-                                            <a href="/Course/148#anchor-comments" class="f-light">
+                                            </button>
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-link">
                                                 <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-                                            </a>
-                                            <a href="/Course/148#anchor-comments" class="f-light">
+                                            </button>
+                                            <button type="button" onclick="createMissionOnClick('<%=record.video_name%>', '<%=record.video_unique%>', '<%=record.video_duration%>')" class="btn btn-link" data-toggle="modal" data-target="#plusModal">
                                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                            </a>
+                                            </button>
                                             </div>
                                             <div class="item-subheader"></div>
 
                                             <div class="item-tags">
-                                            <% tags.forEach(function(tag, index){ %>      
-                                                <button type="button" class="btn btn-info btn-default btn-xs" > <%=tag%> </button>
-                                            <% }); %>
+                                                <% tags.forEach(function(tag, index){ %>      
+                                                    <button type="button" class="btn btn-info btn-default btn-xs" > <%=tag%> </button>
+                                                <% }); %>
                                             </div>
-
-                                            <div class="item-content"> <%= record['video_desc'] %> </div>
-                                            </div>
+                                                <div class="item-content"><%= record['video_desc'] %></div>
                                         </div>
                                     </div>
-                            </li>  
+                                </div>
+                            </li>
                         <% }); %>
                     </ul>
                     <ul id="cache" style="display: none"> </ul>
                 </div>
             </div>
-            
-            </div>
-                <a href="<%=prePage%>">上一页</a>
-                <a href="<%=nextPage%>">下一页</a>
+                </div>
             </div>
         </div>
+ </div> 
 
- </div>  
- <div class="footer">
+
+ <!-- Modal -->
+<div class="modal fade" id="plusModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">新建任务</h4>
+                <% if (user) { %>
+                <p><%= user.name %></p>
+                <% } %>
+            </div>
+
+            <div class="modal-body" id="missionBlock">
+
+                    <!-- @hy @nanacy 
+                            Attributes to add:
+                            视频名称：<input type="text" name="videoName"><br>
+                        视频id：<input type="text" name="vu"><br>
+                        视频时长：<input type="text" name="duration"><br>
+                    -->
+
+                    <input type="text" id = "videoName" name="videoName" style="display: none">
+                    <input type="text" id = "vu" name="vu" style="display: none">
+                    <input type="text" id = "duration" name="duration" style="display: none">
+
+                    <div class="form-group">
+                        <label for="labBegint" class="col-sm-3 control-label">开始播放时间</label>
+                        <div class="col-sm-9 input-append date form_datetime" id="datetimepicker" data-date="2013-02-21T15:25:00Z">
+                            <input class="col-sm-9" id="beginTime" name="startTime" type="text" value="" readonly>
+                            <span class="add-on"><i class="icon-remove"></i></span>
+                            <span class="add-on"><i class="icon-calendar"></i></span>
+                        </div>
+                        <script type="text/javascript">
+                    $(".form_datetime").datetimepicker({
+                        language: "zh-CN",
+                        format: "yyyy-MM-dd hh:ii",
+                        autoclose: true,
+                        todayBtn: true,
+                        startDate: "2013-02-14 10:00",
+                        minuteStep: 10
+                                        });
+                        </script>     
+                    </div>
+
+          
+                    <div class="form-group">
+                        <label for="labFri" class="col-sm-3 control-label">邀请好友</label>
+                        <input id="members" name="members" class="col-sm-9" type="text" style="display: none" value="" readonly>
+                        <div class="col-sm-7">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">我的好友<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <% friends.forEach(function(friend,index) { %>
+                                    <li><a href="javascript:void(0);" onclick="addFri('<%= friend %>')"><%= friend %></a></li>
+                                    <% }) %>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="labFri" class="col-sm-3 control-label"></label>
+                            <div id="friBtns"class="col-sm-7">
+                            </div>            
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+    
+                    <input type="submit" id="submitMission" value="Submit" />
+                    <!-- <div class="form-actions">
+                        <button type="button" class="btn btn-primary">Submit</button>
+                        </div> -->
+
+
+            </div>
+        </div> 
+    </div>
+</div>
+ 
+        <div class="footer">
      
- </div>>  
+ 
+        </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../javascripts/bootstrap.min.js"></script>
-
+    <script src="/javascripts/jquery.js"></script>
   </body>
 </html>

@@ -78,7 +78,7 @@ User.findAll = function findAll(users,callback){
 			}
 
 			//查找name属性为username的文档
-			collection.findOne({name:{$in: users}}, function(err,docs) {
+			collection.find({name:{$in: users}}).sort({time:-1}).toArray(function(err,docs) {
 				mongodb.close();
 				return callback(err,docs);
 			});
