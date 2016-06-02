@@ -65,7 +65,7 @@
                                         <div style="padding: 10px 15px">
                                             <span class="label label-primary" >已通过</span>
                                         </div> 
-                                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upNewModal">新建观影
+                                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upNewModal" onclick="member_clear()">新建观影
                                         </button>     
                                         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upModifyModal">修改信息
                                         </button>
@@ -113,14 +113,14 @@
                                                     <a class="f-main f-16" href="/m/<%= mission._id.toString() %>" target="_blank"><font size="5"><%= mission.videoName %></font></a>
                                                     </div>
                                                     <div class="item-time">
-                                                        <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %></font>
+                                                        <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %><%= mission.creator %></font>
                                                     </div>
                                                     <div class="item-text"><font size="2" color="#BEBEBE">参与人员：<%= mission.member %></font></div>
                                                     <div class="item-text"><font size="2" color="#272727">此处应有影片简介</font></div>
                                                 </div>
                                             </div>
                                             <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
-                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miModifyModal">修改信息
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miModifyModal" onclick="member_clear()">修改信息
                                                 </button>
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miDelModal">删除观影
                                                 </button>
@@ -152,14 +152,14 @@
                                                     <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5">怦然心动</font></a>
                                                     </div>
                                                     <div class="item-time">
-                                                        <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %></font>
+                                                        <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %><%= mission.creator %></font>
                                                     </div>
                                                     <div class="item-text"><font size="2" color="#BEBEBE">参与人员：<%= mission.member %></font></div>
                                                     <div class="item-text"><font size="2" color="#272727">此处应有影片简介</font></div>
                                                 </div>
                                             </div>
                                             <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
-                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miModifyModal">修改信息
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miModifyModal" onclick="member_clear()">修改信息
                                                 </button>
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miDelModal">删除观影
                                                 </button>
@@ -195,7 +195,7 @@
                 <h4 class="modal-title">新建任务</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal">
+                <form class="form-horizontal" method="post" action="/createMission">
                     <div class="form-group">
                         <label for="labBegint" class="col-sm-3 control-label">开始播放时间</label>
                           <div class="col-sm-9 input-append date form_datetime" id="datetimepicker" data-date="2013-02-21T15:25:00Z">
@@ -206,27 +206,31 @@
                     </div>
                     <div class="form-group">
                         <label for="labFri" class="col-sm-3 control-label">邀请好友</label>
+												<input id="members" name="members" class="col-sm-9" type="text" style="display: none" value="" readonly>
                         <div class="col-sm-7">
                             <div class="btn-group">
                               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">我的好友<span class="caret"></span>
                               </button>
                               <ul class="dropdown-menu">
-                                <li><a href="javascript:void(0);" onclick="addFri('Amy')">Amy</a></li>
-                                <li><a href="javascript:void(0);" onclick="addFri('Bob')">Bob</a></li>
-                                <li><a href="javascript:void(0);" onclick="addFri('Cindy')">Cindy</a></li>
-                              </ul>
+                                <% req.friends.forEach(function(friend,index) { %>
+																<li><a href="javascript:void(0);" onclick="addFri('<%= friend %>')"><%= friend %></a></li>
+																<% }) %>
+															</ul>
                             </div>
                         </div>          
                     </div> 
                     <div class="form-group">
                         <div id="friBtns"class="col-sm-7"></div>
                     </div>                  
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="alert(members.toString());">Submit</button>
-            </div>
+									</div>
+            
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<!-- <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="alert(members.toString());">Submit</button> -->
+									</div>
+							<input type="submit" value="Submit"/>
+          	</form>
+
         </div>
       </div>
     </div>
@@ -442,15 +446,12 @@
             }, 1500);
         });
     });
-    $(".form_datetime").datetimepicker({
-        language: "zh-CN",
-        format: "yyyy MM dd - hh:ii",
-        autoclose: true,
-        todayBtn: true,
-        startDate: "2013-02-14 10:00",
-        minuteStep: 10
-    });
-    var members = new Array()
+    
+    var members = new Array();
+		function member_clear() {
+			delete members;
+			members = new Array();
+		}
     function removeA(name) 
     {
         for (var i=0;i<members.length;i++)
@@ -465,6 +466,7 @@
         var btn0=document.getElementById(name);
         if (btn0 == null) {
             members.push(name);
+						document.getElementById('members').value = members;
             var mydiv=document.getElementById("friBtns");
             var btn=document.createElement("input");
             btn.type="button";

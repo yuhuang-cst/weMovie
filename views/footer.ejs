@@ -3,7 +3,17 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/javascripts/bootstrap.min.js"></script>
     <script src="/javascripts/BootSideMenu.js"></script>
+		<script language="JavaScript" src="/javascripts/bootstrap-datetimepicker.js"></script>
+		<script language="JavaScript" src="/javascripts/locales/bootstrap-datetimepicker.fr.js"></script>
     <script type="text/javascript">
+			$(".form_datetime").datetimepicker({
+        language: "zh-CN",
+        format: "yyyy MM dd - hh:ii",
+        autoclose: true,
+        todayBtn: true,
+        startDate: "2013-02-14 10:00",
+        minuteStep: 10
+    	});
       $(document).ready(function(){
           $('#test').BootSideMenu({side:"right", autoClose:true});
       });

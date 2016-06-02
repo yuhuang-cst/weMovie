@@ -1,4 +1,109 @@
-<% include header.ejs %>
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet prefetch" media="screen" type="text/css">
+    <link href="../stylesheets/tab_reset.css" rel="stylesheet prefetch" media="screen" type="text/css">
+    <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="../stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="../stylesheets/BootSideMenu.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="../stylesheets/default.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="../stylesheets/tab_default.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="../stylesheets/tab_styles.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="../stylesheets/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      .user{
+        padding:5px;
+        margin-bottom: 5px;
+      }
+      .modal{
+        top: 20%;
+      }
+      a:hover{text-decoration: none;}
+      #myUpload{display:none;}
+      #myMission{display:none;}
+    </style>
+
+  </head>
+  <body>
+  <header class="header">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="row">
+                <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden-xs visible-sm-block col-sm-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5">
+                    <!--<div class="navbar-search navbar-left">-->
+                        <form class="navbar-form-mc" method="get" action="/course/search" role="search">
+                            <div class="input-group input-group-nav">
+                                <input type="text" class="form-control" id="input-search" name="key" placeholder="搜索影片...">
+                                <span class="input-group-btn">
+                                    <a role="button" class="btn" onclick="$(this).closest('form').submit()">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </a>
+                                </span>
+                            </div>
+                        </form>
+                </div>
+                <div class="hidden-xs col-sm-5 col-md-4 col-lg-4">
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav pull-right">
+                            <li id="nav-index"><a href="/">首页</a></li>
+                            <li id="nav-course"><a href="/course">影片</a></li>
+                            <li id="nav-notice"><a href="/announcement">公告</a></li>
+                            <li><a href="/">登录</a></li>
+                                
+                        </ul>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="nav nav-hamburger pull-right">
+                        <a href="#ham" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="/">首页</a></li>
+                            <li><a href="/course">影片</a></li>
+                            <li id="xs-nav-notice"><a href="/announcement">公告</a></li>
+                            <li><a href="/">登录</a></li>
+                                
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
 <div class="content">
 <br>
 <br>
@@ -119,10 +224,6 @@
                               <div class="tabs-content">
                                 <div tab-id="1" class="tab active">
                                     <ul id="water-fall" >
-	
-																			<% if (req.user) { %>
-																				<% req.mission.forEach(function(mission,index){ %>
-																				<% if (mission.creator == req.user.name) { %>
                                         <li class="list-group-item">
                                         <div class="row">
                                             <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
@@ -136,10 +237,10 @@
                                                     <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5">怦然心动</font></a>
                                                     </div>
                                                     <div class="item-time">
-                                                        <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %></font>
+                                                        <font size="2" color="#BEBEBE">开始播放时间：2016-05-06 10:14:42</font>
                                                     </div>
-                                                    <div class="item-text"><font size="2" color="#BEBEBE">参与人员：<%= mission.member %></font></div>
-                                                    <div class="item-text"><font size="2" color="#272727">此处应有影片简介</font></div>
+                                                    <div class="item-text"><font size="2" color="#BEBEBE">参与人员：Amy，BOb，Nancy</font></div>
+                                                    <div class="item-text"><font size="2" color="#272727">《怦然心动》是由罗伯·莱纳执导，玛德琳·卡罗尔、卡兰·麦克奥利菲主演影片。该片根据文德琳·范·德拉安南的同名原著小说改编，描述了青春期中男孩女孩之间的有趣战争。于2010年8月6日在美国上映。</font></div>
                                                 </div>
                                             </div>
                                             <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
@@ -150,18 +251,10 @@
                                             </div>
                                         </div>
                                         </li>
-																				<% } %>
-																				<% }) %>
-																			<% } %>
-
                                     </ul>   
                                 </div>
                                 <div tab-id="2" class="tab">
                                     <ul id="water-fall" >
-																				
-																			<% if (req.user) { %>
-																				<% req.mission.forEach(function(mission,index){ %>
-																				<% if (mission.creator != req.user.name) { %>
                                         <li class="list-group-item">
                                         <div class="row">
                                             <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
@@ -175,24 +268,35 @@
                                                     <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5">怦然心动</font></a>
                                                     </div>
                                                     <div class="item-time">
-                                                        <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %></font>
+                                                        <font size="2" color="#BEBEBE">开始播放时间：2016-05-06 10:14:42</font>
                                                     </div>
-                                                    <div class="item-text"><font size="2" color="#BEBEBE">参与人员：<%= mission.member %></font></div>
-                                                    <div class="item-text"><font size="2" color="#272727">此处应有影片简介</font></div>
+                                                    <div class="item-text"><font size="2" color="#BEBEBE">参与人员：Amy，BOb，Nancy</font></div>
+                                                    <div class="item-text"><font size="2" color="#272727">《怦然心动》是由罗伯·莱纳执导，玛德琳·卡罗尔、卡兰·麦克奥利菲主演影片。该片根据文德琳·范·德拉安南的同名原著小说改编，描述了青春期中男孩女孩之间的有趣战争。于2010年8月6日在美国上映。</font></div>
                                                 </div>
-                                            </div>
-                                            <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
-                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miModifyModal">修改信息
-                                                </button>
-                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miDelModal">删除观影
-                                                </button>
                                             </div>
                                         </div>
                                         </li>
-																				<% } %>
-																				<% }) %>
-																			<% } %>
-
+                                        <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+                                                <div class="item-avatar">
+                                                    <div class="img-responsive" style="background-image: url(/images/logos.png);"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-6 col-md-8 col-lg-8" style="padding: 15px 0px">
+                                                <div class="item-main">
+                                                    <div class="item-name">
+                                                    <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5">怦然心动</font></a>
+                                                    </div>
+                                                    <div class="item-time">
+                                                        <font size="2" color="#BEBEBE">开始播放时间：2016-05-06 10:14:42</font>
+                                                    </div>
+                                                    <div class="item-text"><font size="2" color="#BEBEBE">参与人员：Amy，BOb，Nancy</font></div>
+                                                    <div class="item-text"><font size="2" color="#272727">《怦然心动》是由罗伯·莱纳执导，玛德琳·卡罗尔、卡兰·麦克奥利菲主演影片。该片根据文德琳·范·德拉安南的同名原著小说改编，描述了青春期中男孩女孩之间的有趣战争。于2010年8月6日在美国上映。</font></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </li>
                                     </ul> 
                                 </div>
                               </div>
@@ -371,6 +475,11 @@
     </div>
 
  </div>    
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../javascripts/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../javascripts/bootstrap.js"></script>
+    <script src="../javascripts/BootSideMenu.js"></script>
     <script src="../javascripts/stopExecutionOnTimeout.js"></script>
     <script language="JavaScript" src="../javascripts/bootstrap-datetimepicker.js"></script>
     <script language="JavaScript" src="../javascripts/locales/bootstrap-datetimepicker.fr.js"></script>
@@ -528,4 +637,5 @@
         });
     });
     </script>
-<% include footer.ejs %>
+  </body>
+</html>
