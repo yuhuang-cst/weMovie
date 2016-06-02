@@ -22,10 +22,12 @@ function postReqToMission(user, members, req){
   mission['endTime'] = new Date(req.body.beginTime);
   mission['endTime'].setSeconds(mission['endTime'].getSeconds() + parseInt(req.body.duration));
   //mission['duration'] = parseInt(req.body.duration);
-	mission['member'] = {}
+	mission.member = members;
+	mission.member_json = '[' + members + ']'
+	/*mission['members'] = {}
 	for (var i = 0; i < members.length; i++) {
   	mission.member[members[i]] = "";
-	}
+	}*/
   return mission;
 }
 
