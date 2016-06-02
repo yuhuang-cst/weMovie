@@ -43,11 +43,11 @@ router.post('/createMission2', function(req, res) {
 // -------------
 router.get('/',function(req, res) {
 	console.log(req.user);
-	return res.render('login', {req:req});
+	return res.render('login', {req:req.session});
 });
 
 router.get("/u/:user",function(req,res){
-	reset();
+	reset(req);
 	User.get(req.params.user,function(err,user){
 		if(!user){
 			req.flash('error','用户不存在');
@@ -62,10 +62,8 @@ router.get("/u/:user",function(req,res){
 			
 			return res.render('user',{
 				title: user.name,
-				user: user,
-				missions: req.session.missions,
-				invited: req.session.missions,
-				friends: req.session.friends
+				req: req.session
+				//invited: req.session.missions, TODO 完善
 			});
 		}		
 
@@ -95,10 +93,8 @@ router.get("/u/:user",function(req,res){
 					req.session.friends = friends.friends;
 					res.render('user',{
 						title: user.name,
-						user: user,
-						missions: missions,
-						invited: friends.invited,
-						friends: friends.friends
+						req: req.session
+				//invited: req.session.missions, TODO 完善
 					});
 				});
 			});
@@ -244,7 +240,9 @@ router.post("/login",function(req,res){
 	var md5 = crypto.createHash('md5');
 	var password = md5.update(req.body.password).digest('base64');
 
+	console.log('name' + req.body.username);
 	User.get(req.body.username,function(err,user){
+		console.log(user);
 		if(!user){
 			req.flash('error','用户不存在');
 			return res.redirect('/login');
@@ -360,6 +358,7 @@ function checkLogin(req,res,next){
 function checkNotLogin(req,res,next){
 	console.log('wqwqwqwq');
 	if(req.session.user){
+		console.log('233333');
 		req.flash("error","已登入");
 		return res.redirect('/');
 	}

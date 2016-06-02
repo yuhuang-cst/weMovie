@@ -1,9 +1,9 @@
 <% include header.ejs %>
 
-<% if(user) {%>
+<% if (req.user) {%>
 	<a href="/createMission" name="title">创建观影任务</a>
 	
-	<% missions.forEach(function(mission,index){ %>
+	<% req.missions.forEach(function(mission,index){ %>
 		<% if(index%3 == 0){ %>
 					<div class="row">
 		<% } %>
@@ -30,21 +30,21 @@
 			</div> <!-- end row -->
 		<% } %>
 	<% }) %>
-	<% if(missions.length % 3 != 0) {%>
+	<% if(req.missions.length % 3 != 0) {%>
 	</div>  <!-- end row -->
 	<% } %>
 
-	<% if (invited.length) { %>
+	<% if (req.invited.length) { %>
 		<p>收到来自以下人的邀请</p>
-		<% invited.forEach(function(invitor, invite_index) { %>
+		<% req.invited.forEach(function(invitor, invite_index) { %>
 			<p id="invitor<%= invite_index %>" ><%= invitor %></p>
 			<button id="accept<%= invite_index %>" type="button" onclick="friendsAccept('<%= invitor %>')">接受</button>
 			<button id="reject<%= invite_index %>" type="button" onclick="friendsReject('<%= invitor %>')">拒绝</button>
 		<% }) %>
 	<% } %>
 
-	<% if (friends) { %>
-		<% friends.forEach(function(friend, friend_index) { %>
+	<% if (req.friends) { %>
+		<% req.friends.forEach(function(friend, friend_index) { %>
 			<p id="friend<%= friend_index %>" ><%= friend %></p>
 		<% }) %>
 	<% } %>
