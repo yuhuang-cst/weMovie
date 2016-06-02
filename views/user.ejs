@@ -41,8 +41,47 @@
                                 </button>
                             </div>
                         </div>
+
+
                         <div class="section">
                             <ul id="water-fall">
+
+                                <% uploadedVideos.forEach(function(videoInfo, index){ %>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+                                                <div class="item-avatar">
+                                                    <div class="img-responsive" style="background-image: url(<%=videoInfo.img%>); height: 60px;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-6 col-md-8 col-lg-8" style="padding: 15px 0px">
+                                                <div class="item-main">
+                                                    <div class="item-name">
+                                                    <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5"><%=videoInfo.video_name%></font></a>
+                                                    </div>
+                                                    <div class="item-time">
+                                                        <font size="2" color="#BEBEBE">上传时间：<%=videoInfo.complete_time%></font>
+                                                    </div>
+                                                    <div class="item-text"><font size="2" color="#272727"><%=videoInfo.video_desc%></font></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
+                                                <div style="padding: 10px 15px">
+                                                    <span class="label label-primary" ><%=videoInfo.status%></span>
+                                                </div> 
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upNewModal" onclick="member_clear()">新建观影
+                                                </button>     
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upModifyModal">修改信息
+                                                </button>
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upDelModal">删除视频
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                <% }); %>
+
+
                                 <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
@@ -61,6 +100,7 @@
                                             <div class="item-text"><font size="2" color="#272727">《怦然心动》是由罗伯·莱纳执导，玛德琳·卡罗尔、卡兰·麦克奥利菲主演影片。该片根据文德琳·范·德拉安南的同名原著小说改编，描述了青春期中男孩女孩之间的有趣战争。于2010年8月6日在美国上映。</font></div>
                                         </div>
                                     </div>
+
                                     <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
                                         <div style="padding: 10px 15px">
                                             <span class="label label-primary" >已通过</span>
@@ -77,6 +117,8 @@
                             </ul>
                         </div>
                     </div>
+
+
                     <div id="myMission">
                         <div class="row">
                             <div class="col-xs-6 col-sm-5 col-md-4 col-lg-4">
@@ -230,7 +272,7 @@
             
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										<!-- <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="alert(members.toString());">Submit</button> -->
+										<!-- <button type="button" id="submitMission" class="btn btn-primary" data-dismiss="modal">Submit</button> -->
 									</div>
 							<input type="submit" value="Submit"/>
           	</form>

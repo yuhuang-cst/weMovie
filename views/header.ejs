@@ -29,6 +29,24 @@
       #myMission{display:none;}
     </style>
 
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#submitMission").click(function(){
+            $.post("/createMission",
+            {
+                videoName: $("#videoName").val(),
+                vu: $("#vu").val(),
+                duration: $("#duration").val(),
+                beginTime: $("#beginTime").val(),
+                members : $("#members").val()
+            },
+            function(data, status){
+                alert(data['message']);
+            });
+        });
+    });
+    </script>
+
 </head>
 <body>
   <header class="header">

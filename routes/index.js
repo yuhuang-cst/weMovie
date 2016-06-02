@@ -11,7 +11,8 @@ var events = require("events");
 var letvSdk = require('../models/letvServerAPI.js');
 var Mission = require('../models/mission.js');
 var Error = require('../models/error.js');
-var Contant = require('../models/constant.js')
+var Contant = require('../models/constant.js');
+var VideoManager = require('../models/videoManager.js');
 
 global.mission_info = {};
 global.user_info = [];
@@ -27,6 +28,21 @@ function reset(req) {
 	req.session.missions = null;
 	req.session.invited = null;
 	req.session.friends = null;
+}
+
+
+function getAllVideoInfo(vids, callback){
+  records = [];
+  for (i in vids){
+    letvSdk.videoGet(vids[i], function(data){
+      var data = JSON.parse(data.toString());
+      //console.log(data);
+      data['data']['status'] = VideoManager.getStatus(data['data']['status']);
+      records.push(data['data']);
+      if (i == vids.length - 1)
+        callback(records);
+    });
+  }
 }
 
 // for test of create missions
@@ -57,6 +73,7 @@ router.get('/',function(req, res) {
 
 router.get("/u/:user",function(req,res){
 	reset(req);
+
 	User.get(req.params.user,function(err,user){
 		if(!user){
 			req.flash('error','用户不存在');
@@ -69,10 +86,16 @@ router.get("/u/:user",function(req,res){
 			console.log('missions in friends');
 			console.log(req.session.friends);
 			
-			return res.render('user',{
-				title: user.name,
-				req: req.session
-				//invited: req.session.missions, TODO 完善
+			VideoManager.findAll(user.name, function(err, vids){
+				vids = [30463731];//用于调试
+			  	getAllVideoInfo(vids, function(uploadedVideos){
+			  		return res.render('user',{
+						title: user.name,
+						req: req.session,
+						uploadedVideos: uploadedVideos
+						//invited: req.session.missions, TODO 完善
+					});
+			  	});
 			});
 		}		
 
@@ -100,15 +123,22 @@ router.get("/u/:user",function(req,res){
 					}
 					req.session.invited = friends.invited;
 					req.session.friends = friends.friends;
-					res.render('user',{
-						title: user.name,
-						req: req.session
-				//invited: req.session.missions, TODO 完善
+					VideoManager.findAll(user.name, function(err, vids){
+						vids = [30463731];
+					  	getAllVideoInfo(vids, function(uploadedVideos){
+					  		return res.render('user',{
+								title: user.name,
+								req: req.session,
+								uploadedVideos: uploadedVideos
+								//invited: req.session.missions, TODO 完善
+							});
+					  	});
 					});
 				});
 			});
 		});
 	});
+	
 });
 
 router.get('/m/:mid',checkLogin);
@@ -600,11 +630,14 @@ router.post('/html5UploadInit', function(req, res, next){
   }
 });
 
-
 //上传视频
 router.get('/upload', function(req, res, next){
-	res.redirect('/html/html5Upload.html');
-})
+  res.redirect('/html/html5Upload.html');
+});
+
+router.get('uploaded', function(req, res, next){
+  //TODO: 插入userName 与 videoID
+});
 
 //更新视频信息
 router.get('/updateVideoInfo', function(req, res, next){

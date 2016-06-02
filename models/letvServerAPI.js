@@ -154,7 +154,7 @@ function videoList(videoName, index, size, callback){
 function videoGet(videoID, callback){
   console.log('call videoGet');
 
-  var params = generateParams('video.get');
+  var params = generateParams('video.get', USER_UNIQUE);
   params['video_id'] = videoID;
   params['sign'] = generateSign(params, SECRET_KEY);
 
@@ -188,6 +188,26 @@ function videoDel(videoID, callback){
   var contents = qs.stringify(params);
   doGet(contents, onErr, callback);
 }
+
+
+/*
+videoGet(30466876, function(data){
+  var data = JSON.parse(data.toString());
+  console.log(data);
+});*/
+
+/*
+videoList('', 1, 10, function(data){
+  var data = JSON.parse(data.toString());
+  console.log(data);
+});*/
+
+/*
+vids = [30466876, 30461747];
+getAllVideoInfo(vids, function(records){
+  console.log(records);
+});*/
+
 
 
 module.exports.uploadInit = uploadInit;

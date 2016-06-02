@@ -25,6 +25,7 @@
 
     $(document).ready(function(){
         $("#submitMission").click(function(){
+            alert(members.toString());
             $.post("/createMission",
             {
                 videoName: $("#videoName").val(),

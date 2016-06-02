@@ -1,6 +1,5 @@
 var mongodb = require('./db');
 var ObjectID = require('mongodb').ObjectID;
-
 var VIDEO_COLL_NAME = 'videos';
 
 function openColl(callback){
@@ -25,7 +24,7 @@ function insert(userName, videoID, callback){
   });
 }
 
-function find(userName, callback){
+function findAll(userName, callback){
   openColl(function(err, coll) {
 	if(err) { mongodb.close(); return callback(err); }
 	coll.find({userName: userName}).toArray(function(err,records) {
@@ -46,6 +45,37 @@ function remove(userName, videoID, callback){
       callback(err, ret);
     });
   })
+}
+
+function getStatus(status){
+  switch(status){
+  case '10':
+    return '已发布';
+  case '20':
+    return '转码失败';
+  case '21':
+    return '审核失败';
+  case '22':
+    return '片源错误';
+  case '23':
+    return '发布失败';
+  case '24':
+    return '上传失败';
+  case '30':
+    return '处理中';
+  case '31':
+    return '审核中';
+  case '32':
+    return '无视频源';
+  case '33':
+    return '上传初始化';
+  case '34':
+    return '视频上传中';
+  case '40':
+    return '停用';
+  default:
+    return '未知状态';
+  }
 }
 
 /*
@@ -72,9 +102,10 @@ remove('hy', '2013届1班毕业视频', function(err, ret){
 });*/
 
 
-
+module.exports.findAll = findAll;
 module.exports.insert = insert;
 module.exports.remove = remove;
+module.exports.getStatus = getStatus;
 
 
 
