@@ -42,17 +42,12 @@ router.post('/createMission2', function(req, res) {
 });
 // -------------
 router.get('/',function(req, res) {
-	return res.render('login',{
-		user: req.session.user
-	});
-});
-
-router.get('/login', function(req, res) {
-	return res.redirect('/');
+	console.log(req.user);
+	return res.render('login', {req:req});
 });
 
 router.get("/u/:user",function(req,res){
-	//TODO 为测试删除此句 reset()
+	reset();
 	User.get(req.params.user,function(err,user){
 		if(!user){
 			req.flash('error','用户不存在');
@@ -245,6 +240,7 @@ router.post("/reg",function(req,res){
 router.post('/login',checkNotLogin);
 router.post("/login",function(req,res){
 	//生成口令的散列值
+	console.log('log in succ');
 	var md5 = crypto.createHash('md5');
 	var password = md5.update(req.body.password).digest('base64');
 
@@ -362,6 +358,7 @@ function checkLogin(req,res,next){
 };
 
 function checkNotLogin(req,res,next){
+	console.log('wqwqwqwq');
 	if(req.session.user){
 		req.flash("error","已登入");
 		return res.redirect('/');

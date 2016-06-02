@@ -1,4 +1,4 @@
-<% include navbar.ejs %>
+<% include header.ejs %>
 
 <% if(user) {%>
 	<a href="/createMission" name="title">创建观影任务</a>
@@ -91,3 +91,6 @@ function friendsReject(src) {
 	window.location.assign("/reject/" + src);
 }
 </script>
+
+<% include footer.ejs %>
+
