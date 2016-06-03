@@ -134,6 +134,7 @@
                                                     <div class="item-time">
                                                         <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %><%= mission.creator %></font>
                                                     </div>
+																										<div class="item-text"><font size="2" color="#BEBEBE">创建者：<%= mission.creator %></font></div>
                                                     <div class="item-text"><font size="2" color="#BEBEBE">参与人员：<%= mission.member.toString() %></font></div>
 																										<div id="members_mission<%= index %>" style="display: none"><%= mission.member.toString() %></div>
 																										<div id="mid_missions<%= index %>" style="display: none"><%= mission._id.toString() %></div>
@@ -174,6 +175,7 @@
                                                     <div class="item-time">
                                                         <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %><%= mission.creator %></font>
                                                     </div>
+																										<div class="item-text"><font size="2" color="#BEBEBE">创建者：<%= mission.creator %></font></div>
                                                     <div class="item-text"><font size="2" color="#BEBEBE">参与人员：
 																										<div id="members_mission<%= index %>"><%= mission.member.toString() %></div>
 																										</font></div>
@@ -590,7 +592,7 @@
 			else {
 				members = new Array();
 			}
-			document.getElementById('members').value = members;
+			document.getElementById('members2').value = members;
 			var mid = document.getElementById(mmid).innerHTML;
 			document.getElementById('mid2modify').value = mid;
 			alert(members + " " + members.length + " " +  mid);
@@ -606,8 +608,8 @@
 				btn.setAttribute("className","btn btn-primary");
 				mydiv.appendChild(btn);
 				btn.onclick=function() {
-					removeA(btn.id);
-					mydiv.removeChild(btn);
+					removeA(this.id);
+					mydiv.removeChild(this);
 				};
 			}
 		}
@@ -624,6 +626,8 @@
         {
             if (members[i] == name) {
                 members.splice(i,1);
+								document.getElementById('members').value = members;
+								document.getElementById('members2').value = members;
             }
         }
     }
