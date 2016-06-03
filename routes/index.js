@@ -606,10 +606,11 @@ router.post('/updateMission', function(req, res, next){
 });
 
 //删除任务
-router.get('/removeMission/:mid', function(req, res, next){
+router.get('/removeMission/:mid', checkLogin);
+router.get('/removeMission/:mid', function(req, res, next) {
 	console.log(req.params.mid);
 	var user = req.session.user;
-	UserAct.get(user.name,function(err,useract) {
+	UserAct.get(user.name, function(err,useract) {
 		console.log("Show useract");
 		console.log(useract);
 		if (err) {
@@ -621,23 +622,30 @@ router.get('/removeMission/:mid', function(req, res, next){
 		for (var i = 0; i < useract.groupsid.length; i++) {
 			if (useract.groupsid[i] == req.params.mid) { //TODO I do not know why object == string
 				count ++;
-				Mission.remove(useract.groupsid[i], function(err) {
-					if (err) {
-						console.log('err in Mission.remove');
-						req.flash('error', err);
-						req.session.missions = null;
-						req.session.friends = null;
-						return res.redirect('/')
+				Mission.get(useract.groupsid[i], function(err, mission) {
+					if (err || !mission) {
+						req.flash('error',err);
+						return res.redirect('/');
 					}
-  				UserAct.del(user.name, useract.groupsid[i], function(err,usersact) {
-						if (err || !usersact) {
-							console.log('err in UserAct.del');
+
+					mission.member.push(user.name);
+					UserAct.delAll(mission.member, req.params.mid, function(err, friends) {
+						console.log('Show friends to del----');
+						console.log(friends);
+						if (err) {
 							req.flash('error',err);
 							return res.redirect('/');
 						}
-						req.session.missions = null;
-						req.session.friends = null;
-						return res.redirect('/u/'+user.name);
+								
+						Mission.remove(req.params.mid, function(err) {
+							if (err) {
+								req.flash('error',err);
+								return res.redirect('/');
+							}
+									
+							console.log(friends);
+							return res.redirect('/u/'+user.name);	
+						});	
 					});
 				});
 			}
