@@ -106,18 +106,20 @@
             <img src="/images/face_japan_01.gif" alt="Esempio" class="img-thumbnail">
             <a href="#" target="_blank" class="navbar-link">我的好友</a>
             <button type="button" class="btn btn-link" onclick="show();">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
             </button>
+            <div id="searchForm">
+                <div class="input-group" style="margin-top: 20px; margin-bottom: -10px">
+                    <form method="post" action="/invite">
+                        <input type="text" name="inviteByName" class="form-control" placeholder="搜索新的好友……" style="display: inline; width: 80%;">
+                        <button type="submit" class="btn btn-primary" style="display: inline; margin-left: 0px">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </button>
+                    </form>    
+                </div>
+            </div>  
         </div>
-        <div id="searchForm">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="搜索新的好友……">
-                <form method="post" action="/invite">
-									添加好友：<input type="text" name="inviteByName"><br>
-									<button type="submit">ok</button>
-								</form>    
-            </div>
-        </div>
+
         <div class="list-group">
 					<% if (req.friends) { %>
 						<% req.friends.forEach(function(friend, friend_index) { %>
