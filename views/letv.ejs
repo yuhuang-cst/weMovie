@@ -28,37 +28,34 @@
                 </div>
                     <div class="wrapper-intro col-xs-1 col-sm-3 col-md-1 col-lg-1"></div>
                     <div class="log-or-sign col-xs-10 col-sm-9 col-md-4 col-lg-5">
-                    <div class="panel panel-primary">
-                    <div class="panel-heading">Panel heading without title</div>
-                    <div class="panel-body">
-                      <div id="convo" class="row" data-from="Sonu Joshi">  
-                        
-                       		用户名: <div id="username"><%= username %></div> <br/>
-  												当前在线人数: <div id="count"></div> <br/>
-  												在线用户: <div id="members"></div> <br/>
-												<ul class="chat-thread" id="msglog">
-												</ul>
+                      <div class="panel panel-primary">
+                      <div class="panel-heading">Chatting Rom : <div id="count" style="display: inline;"></div> 人 </div>
+                      <div class="panel-body">
+                        <div id="convo" class="row" data-from="Sonu Joshi" style="margin-top: -20px">  
+                          
+                         		<div id="username" style="display: none;"><%= username %></div> <br/>
+    												
+  												<ul class="chat-thread" id="msglog">
+  												</ul>
+                        </div>
+<!--                         <div class="row">
+  													<div class="col-xs-1 col-sm-1"></div>
+  													<div class="col-xs-6 col-sm-8"> -->
+  														<input type="text" class="form-control" id="Msg" placeholder="按Enter键发送">
+<!--   													</div> -->
+  													<!-- <div class="col-xs-5 col-sm-3"> -->
+                            <div style="text-align: center; margin-top: 10px;">
+                              <button id="Quit" class="btn btn-primary btn-exit" style="width: 100%">退出房间</button>
+                            </div>
+  													
+                        </div>
                       </div>
-                      <div class="row">
-												<div class="form-group">
-													<div class="col-xs-1 col-sm-1"></div>
-													<div class="col-xs-6 col-sm-8">
-														<input type="text" class="form-control" id="Msg">
-														<br/>
-														按Enter键发送
-													</div>
-													<!-- <div class="col-xs-5 col-sm-3"> -->
-													<button id="Quit" class="btn btn-primary">退出房间</button>
-													<!-- </div> -->
-												</div>
                       </div>
-                    </div>
-                    </div>
                     </div>
    
             </div>
             <!-- 测试mask按钮，整合结束后删掉-->
-              <script>
+<!--               <script>
                 var tvDiv = $("#tvShow");
                         $(function(){
                             tvDiv=$("#tvShow");
@@ -72,7 +69,7 @@
             <button type="button" onclick="tvDiv.openMask('loading');">load</button> 
             <button type="button" onclick="tvDiv.openMask('over');">over</button> 
             <button type="button" onclick="tvDiv.closeMask();">close</button>
-            </div> 
+            </div>  -->
             <!-- 测试mask按钮，整合结束后删掉-->
         </div>
 </div>
@@ -91,17 +88,15 @@
 				var message;
 				if (sender == document.getElementById("username").innerHTML) {
 					message = '' +
-            '<div class="message_right">' +
-						'  <span class="msg">' + msg + ': </span>' +
-            '  <span class="sender">' + sender + '</span>' +
-            '</div>';
+            '<li class="message_right">' +
+						'  <span class="msg">' + msg + '</span>' +
+            '</li>';
 				}
 				else {
         	message = '' +
-            '<div class="message_left">' +
-            '  <span class="sender">' + sender + ': </span>' +
+            '<li class="message_left">' +
             '  <span class="msg">' + msg + '</span>' +
-            '</div>';
+            '</li>';
 				}
         $('#msglog').append(message);
         // 滚动条保持最下方
