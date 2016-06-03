@@ -1,4 +1,5 @@
 var mongodb = require('./db');
+var events = require("events");
 
 function UserAct(user){
 	this.name = user.name;
@@ -52,14 +53,15 @@ UserAct.get = function get(username,callback){
 			//查找name属性为username的文档
 			collection.findOne({name:username},function(err,doc){
 				mongodb.close();
-				if(doc){
+				return callback(err, doc);
+				/*if(doc){
 					//封装文档为User对象
-					var usersact = new UserAct(doc);
+					// var usersact = new UserAct(doc);
 					callback(err,usersact);
 				}
 				else{
 					callback(err,null);
-				}
+				}*/
 			});
 		});
 	});
@@ -128,9 +130,11 @@ UserAct.del = function del(username, val, callback) {
 
 			//查找name属性为username的文档
 			collection.findOne({name:username},function(err,doc){
-				if(doc){
+				if(!err && doc){
 					//封装文档为User对象
 					// doc.groupsid.removeByValue(actid);
+					console.log('original doc');
+					console.log(doc);
 					for (var i = 0; i < doc.groupsid.length; i++) {
     				if (doc.groupsid[i].toString() == val.toString()) {
 							doc.groupsid.splice(i, 1);
@@ -139,10 +143,14 @@ UserAct.del = function del(username, val, callback) {
   				}
 					console.log('UserAct changed to');
 					console.log(doc);
-					collection.save(doc);
-					
-					mongodb.close();
-					callback(err,doc);
+					collection.save(doc, function(err, doc) {
+						collection.findOne({name:username},function(err,doc){
+							console.log("NOW");
+							console.log(doc);
+							mongodb.close();
+							callback(err,doc);
+						});
+					});
 				}
 				else {
 					mongodb.close();
@@ -154,6 +162,7 @@ UserAct.del = function del(username, val, callback) {
 
 }
 
+var emitter = new events.EventEmitter();
 UserAct.addAll = function del(users, val, callback) {
 	mongodb.open(function(err,db){
 		if(err){
@@ -169,6 +178,7 @@ UserAct.addAll = function del(users, val, callback) {
 			//查找name属性为username的文档
 			collection.find({name:{$in: users}}).sort({time:-1}).toArray(function(err,docs) {
 				console.log(docs);
+				var num = 0;
 				if (!err && docs) {
 					//封装文档为User对象
 					var flag;
@@ -182,14 +192,35 @@ UserAct.addAll = function del(users, val, callback) {
     				}
 						if (!flag) {
 							docs[i].groupsid.push(val);
-							collection.save(docs[i]);
+							num++;
+							collection.save(docs[i], function(err, doc) {
+								if (err) {
+									mongodb.close();
+									return callback(err);
+								}
+								console.log(doc);
+								num--;
+								if (i == docs.length && num == 0) {
+									emitter.emit(val.toString());
+								}
+							});
 						}
   				}
-					console.log('UserAct changed to');
-					console.log(docs);
+
+					emitter.on(val.toString(), function() {
+  					collection.find({name:{$in: users}}).sort({time:-1}).toArray(function(err,docs) {
+							if (!err && docs) {
+								mongodb.close();
+								console.log('docs full');
+								callback(err, docs);
+							}
+							else {
+								mongodb.close();
+								return callback(err);
+							}
+						});
+					});
 					
-					mongodb.close();
-					callback(err, docs);
 				}
 				else {
 					mongodb.close();

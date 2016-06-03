@@ -64,6 +64,7 @@ router.get('/',function(req, res) {
 router.get('/u/:user', checkLogin);
 router.get('/u/:user', function(req,res) {
 	reset(req);
+	console.log(req.originalUrl);
 
 	User.get(req.params.user,function(err,user){
 		if(!user || req.session.user.name != req.params.user){
@@ -643,7 +644,8 @@ router.get('/removeMission/:mid', function(req, res, next) {
 						});
 					}
 					else {
-						UserAct.del(user.name, req.params.mid, function(err, friends) {});
+						console.log(user.name);
+						UserAct.del(user.name, req.params.mid, function(err, doc) { console.log('del'); console.log(err); console.log(doc); });
 						for (var j = 0; j < mission.member.length; j++) {
 							if (mission.member[j] == user.name) {
 								mission.member.splice(j, 1);
