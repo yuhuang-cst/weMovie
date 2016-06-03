@@ -18,6 +18,7 @@ function postReqToMission(user, members, req){
   mission['creator'] = user.name;
   mission['videoName'] = req.body.videoName;
   mission['vu'] = req.body.vu;
+	mission['originTime'] = req.body.beginTime;
   mission['beginTime'] = new Date(req.body.beginTime);
   mission['duration'] = parseInt(req.body.duration);
 	mission.member = members;

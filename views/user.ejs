@@ -86,8 +86,10 @@
                                             <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
                                                 <div style="padding: 10px 15px">
                                                     <span class="label label-primary" ><%=videoInfo.status%></span>
-                                                </div> 
+                                                </div>
+																								<% if (videoInfo.status == "已发布") { %>
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upNewModal" onclick="createMissionOnClick('<%=videoInfo.video_name%>', '<%=videoInfo.video_unique%>', '<%=videoInfo.video_duration%>')">新建观影
+																								<% } %>
                                                 </button>     
                                                 <button type="button" onclick="updateVideoInfoOnclick('<%=videoInfo.video_id%>', '<%=videoInfo.video_name%>', '<%=videoInfo.tag%>', '<%=videoInfo.video_desc%>')" class="btn btn-link" data-toggle="modal" data-target="#upModifyModal">修改信息
                                                 </button>
@@ -147,7 +149,7 @@
 																								</div>
                                             </div>
                                             <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
-                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miModifyModal" onclick="member_reset('members_mission<%= index %>', 'mid_missions<%= index %>')">修改信息
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miModifyModal" onclick="member_reset('members_mission<%= index %>', 'mid_missions<%= index %>', '<%= mission.originTime.toString() %>')">修改信息
                                                 </button>
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miDelModal" onclick="set_mid('<%= mission._id.toString() %>')">删除观影
                                                 </button>
@@ -375,7 +377,7 @@
                   <div class="form-group">
                     <label for="labBegint" class="col-sm-3 control-label">开始播放时间</label>
                       <div class="col-sm-9 input-append date form_datetime" id="datetimepicker" data-date="2013-02-21T15:25:00Z">
-                        <input name="beginTime" class="col-sm-9" type="text" value="" readonly>
+                        <input id="modify_time" name="beginTime" class="col-sm-9" type="text" value="" readonly>
                             <span class="add-on"><i class="icon-remove"></i></span>
                             <span class="add-on"><i class="icon-calendar"></i></span>
                      </div>    
@@ -590,7 +592,7 @@
 			delete members;
 			members = new Array();
 		}
-		function member_reset(mm, mmid) {
+		function member_reset(mm, mmid, mclock) {
 			delete members;
 			if (document.getElementById(mm).innerHTML.length) {
 				members = document.getElementById(mm).innerHTML.split(',');
@@ -601,7 +603,6 @@
 			document.getElementById('members2').value = members;
 			var mid = document.getElementById(mmid).innerHTML;
 			document.getElementById('mid2modify').value = mid;
-			alert(members + " " + members.length + " " +  mid);
 			document.getElementById("friBtns2").innerHTML = "";
 			// 这里要清除
 			for (var i = 0; i < members.length; i++) {
@@ -618,6 +619,8 @@
 					mydiv.removeChild(this);
 				};
 			}
+
+			document.getElementById('modify_time').value = mclock;
 		}
 		var mid2del = "";
 		function set_mid(mmid) {

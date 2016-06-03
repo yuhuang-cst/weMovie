@@ -187,11 +187,21 @@
 
       // 监听消息
       socket.on('msg', function (sender, msg) {
-        var message = '' +
-            '<div class="message">' +
+				var message;
+				if (sender == document.getElementById("username").innerHTML) {
+					message = '' +
+            '<div class="message_right">' +
             '  <span class="sender">' + sender + ': </span>' +
             '  <span class="msg">' + msg + '</span>' +
             '</div>';
+				}
+				else {
+        	message = '' +
+            '<div class="message_left">' +
+            '  <span class="msg">' + msg + '</span>' + sender + ': </span>' +
+            '  <span class="sender">' +
+            '</div>';
+				}
         $('#msglog').append(message);
         // 滚动条保持最下方
         $('#msglog').scrollTop($('#msglog')[0].scrollHeight);  
