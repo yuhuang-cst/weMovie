@@ -1,3 +1,5 @@
+var videoID;
+
 window.html5Upload = (function () {
 
     function html5Upload() {
@@ -146,7 +148,7 @@ window.html5Upload = (function () {
             videoUpload.cellStack.starttime = (new Date()).getTime();
             if (res.transferedsize && res.transferedsize == res.totalsize) {
                 //文件上传完成
-                uploadOption.uploadFinish({ code: 0, msg: "上传完成" });
+                uploadOption.uploadFinish({ code: 0, msg: "上传完成", videoID: videoID});
                 uploadCookie.removeCookie(html5Upload.exportObject.selectFile.fileKey);
                 videoUpload.xhrAbort();
             }
@@ -251,6 +253,7 @@ window.html5Upload = (function () {
             try {
                 uploadAjax.post(initUrl, function (data) {
                     if (data.code == 0) {
+                        videoID = data.data.video_id;
                         html5Upload.exportObject.selectFile.video_id = data.data.video_id;
                         html5Upload.exportObject.selectFile.video_unique = data.data.video_unique;
                         tryNum = 0;

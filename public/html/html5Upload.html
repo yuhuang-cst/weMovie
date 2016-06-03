@@ -5,6 +5,7 @@
     <title>上传视频</title>
     <link rel="stylesheet" href="/stylesheets/bootstrap.css" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
+
 </head>
 <body>
 <table class="hrPageTable table table-hover table-bordered">
@@ -42,6 +43,20 @@
       $("#uploadBtn").removeAttr("disabled");
       $("#fileSelecter").removeAttr("disabled");
     }
+    $("#updateVideoInfo").click(function(){
+        $.post("/updateVideoInfo",
+            {
+                videoID: $("#updateVideoInfoVideoID").val(),
+                videoName: $("#videoNameUpdate").val(),
+                videoDesc: $("#videoDesc").val(),
+                tag: $("#tag").val()
+            },
+            function(data, status){
+                alert(data['message']);
+            }
+        );
+    });
+
 
     $(function () {
         //添加视频
@@ -67,9 +82,15 @@
                 disableClick();
             },
             uploadFinish: function (data) { //上传完成回调
+                console.log(data);
                 $("#videoProgress").html("100%");
                 $("#videoSpeed").html("0");
                 $("#videoStatus").html("已上传");
+
+                $.get("/uploaded?videoID=" + data['videoID'], function(data, status){
+                    alert(data['message']);
+                })
+                
                 enableClick();
             },
             uploadError: function (data) { //上传错误回调
