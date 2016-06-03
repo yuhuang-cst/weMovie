@@ -126,7 +126,7 @@
           	</a>
 						<% }) %>
 					<% } %>
-					<% if (req.invited) { %>
+					<% if (req.invited && req.invited.length) { %>
 					<p>收到来自以下人的邀请</p>
 						<% req.invited.forEach(function(invitor, invite_index) { %>
 							<p id="invitor<%= invite_index %>" ><%= invitor %></p>
