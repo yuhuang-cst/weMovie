@@ -33,6 +33,8 @@ function reset(req) {
 
 function getAllVideoInfo(entrys, callback){
   records = [];
+  if (entrys.length == 0)
+  	callback(records);
   for (i in entrys){
     letvSdk.videoGet(entrys[i]['videoID'], function(data){
       var data = JSON.parse(data.toString());
@@ -278,6 +280,7 @@ router.post("/reg",function(req,res){
 		
 	});
 });
+
 
 router.post('/login',checkNotLogin);
 router.post("/login",function(req,res){
