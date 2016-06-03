@@ -46,7 +46,13 @@
                         <div class="section">
                             <ul id="water-fall">
                                 <% uploadedVideos.forEach(function(videoInfo, index){ %>
-                                    <% var tags = videoInfo['tag'].split(' ') %>
+                                    <% var tags; %>
+                                    <% if (videoInfo['tag']){ %>
+                                        <% tags = videoInfo['tag'].split(' '); %>
+                                    <%} else{%>
+                                    <%    tags = [];%>
+                                    <%}%>
+                                    
                                     <li class="list-group-item">
                                         
                                         <div class="row">
