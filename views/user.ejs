@@ -132,11 +132,9 @@
                                                         <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %><%= mission.creator %></font>
                                                     </div>
                                                     <div class="item-text"><font size="2" color="#BEBEBE">参与人员：<%= mission.member.toString() %></font></div>
-                                                    <div class="item-text"><font size="2" color="#272727">此处应有影片简介</font></div>
-													<div id="members_mission<%= index %>" style="display: none"><%= mission.member.toString() %></div>
-													<div id="mid_missions<%= index %>" style="display: none"><%= mission._id.toString() %></div>
-																			
-												</div>
+																										<div id="members_mission<%= index %>" style="display: none"><%= mission.member.toString() %></div>
+																										<div id="mid_missions<%= index %>" style="display: none"><%= mission._id.toString() %></div>
+																								</div>
                                             </div>
                                             <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miModifyModal" onclick="member_reset('members_mission<%= index %>', 'mid_missions<%= index %>')">修改信息
@@ -168,7 +166,7 @@
                                             <div class="col-xs-4 col-sm-6 col-md-8 col-lg-8" style="padding: 15px 0px">
                                                 <div class="item-main">
                                                     <div class="item-name">
-                                                    <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5">怦然心动</font></a>
+                                                    <a class="f-main f-16" href="/m/<%= mission._id.toString() %>" target="_blank"><font size="5"><%= mission.videoName %></font></a>
                                                     </div>
                                                     <div class="item-time">
                                                         <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %><%= mission.creator %></font>
@@ -176,7 +174,6 @@
                                                     <div class="item-text"><font size="2" color="#BEBEBE">参与人员：
 																										<div id="members_mission<%= index %>"><%= mission.member.toString() %></div>
 																										</font></div>
-                                                    <!-- <div name="test "class="item-text"><font size="2" color="#272727">此处应有影片简介</font></div> -->
                                                 </div>
                                             </div>
                                             <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
