@@ -433,8 +433,9 @@ router.get('/search', function(req, res, next){
   	var data = JSON.parse(data.toString());
   	var maxIndex = Math.ceil(data['total'] / Contant.RECORD_NUM);//取上整
   	res.render('searchResult', {
-	  user: req.session.user,
-	  friends: req.session.friends,
+			req: req.session,
+	  	user: req.session.user,
+	  	friends: req.session.friends,
   	  records : data['data'],
   	  prePage : '/search?videoName=' + videoName + '&index=' + (index <= 1 ? 1 : index - 1) ,
   	  nextPage : '/search?videoName=' + videoName + '&index=' + (index >= maxIndex ? maxIndex : index + 1)
