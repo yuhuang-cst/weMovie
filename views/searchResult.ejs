@@ -1,155 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>Bootstrap 101 Template</title>
-
-    <!-- Bootstrap -->
-    <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
-    <link href="../stylesheets/bootstrap-datetimepicker.min.css" rel="stylesheet">
-    <link href="../stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
-    <script language="JavaScript" src="../javascripts/bootstrap.min.js"></script>
-    <script language="JavaScript" src="../javascripts/jquery.js"></script>  
-    <script language="JavaScript" src="../javascripts/bootstrap-datetimepicker.js"></script>
-    <script language="JavaScript" src="../javascripts/locales/bootstrap-datetimepicker.fr.js"></script>
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <script type="text/javascript">
-
-    $(document).ready(function(){
-        $("#submitMission").click(function(){
-            alert(members.toString());
-            $.post("/createMission",
-            {
-                videoName: $("#videoName").val(),
-                vu: $("#vu").val(),
-                duration: $("#duration").val(),
-                beginTime: $("#beginTime").val(),
-                members : $("#members").val()
-            },
-            function(data, status){
-                alert(data['message']);
-            });
-        });
-    });
-
-    var members = new Array()
-    //var records = JSON.parse('<%=records%>')
-    //console.log(records);
-
-    function removeA(name) 
-    {
-        for (var i=0;i<members.length;i++)
-        {
-            if (members[i] == name) {
-                members.splice(i,1);
-            }
-        }
-    }
-    function addFri(name)
-    {
-        var btn0=document.getElementById(name);
-        if (btn0 == null) {
-            members.push(name);
-            document.getElementById('members').value = members;
-            var mydiv=document.getElementById("friBtns");
-            var btn=document.createElement("input");
-            btn.type="button";
-            btn.value=name;
-            btn.id=name;
-            btn.setAttribute("class","btn btn-primary btn-sm");
-            btn.setAttribute("className","btn btn-primary");
-            mydiv.appendChild(btn);
-            btn.onclick=function() {
-                removeA(btn.id);
-                mydiv.removeChild(btn);
-            };
-        }
-    }
-
-    function createMissionOnClick(videoName, vu, duration){
-        $("#videoName").val(videoName);
-        $("#vu").val(vu);
-        $("#duration").val(duration);
-    }
-
-
-    </script>
-  </head>
-  <body>
-  <header class="header">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="row">
-                <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
-                    <div class="navbar-header navbar-left">
-                        <a class="navbar-brand-mc" href="/">
-                            <img src="../images/Brand_S.png" alt="logo"/>
-                        </a>
-                    </div>
-                </div>
-                <div class="hidden-xs visible-sm-block col-sm-2">
-                    <div class="navbar-header navbar-left">
-                        <a class="navbar-brand-mc" href="/">
-                            <img src="../images/Brand_S.png" alt="logo"/>
-                        </a>
-                    </div>
-                </div>
-                <div class="visible-xs-block col-xs-2">
-                    <div class="navbar-header navbar-left">
-                        <a class="navbar-brand-mc" href="/">
-                            <img src="../images/Brand_S.png" alt="logo"/>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5">
-                    <!--<div class="navbar-search navbar-left">-->
-                        <form class="navbar-form-mc" method="get" action="/search" role="search">
-                            <div class="input-group input-group-nav">
-                                <input type="text" class="form-control" id="input-search" name="videoName" placeholder="搜索影片...">
-                                <span class="input-group-btn">
-                                    <a role="button" class="btn" onclick="$(this).closest('form').submit()">
-                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                                    </a>
-                                </span>
-                            </div>
-                        </form>
-                </div>
-                <div class="hidden-xs col-sm-5 col-md-4 col-lg-4">
-                    <div id="navbar" class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav pull-right">
-                            <li id="nav-index"><a href="/">首页</a></li>
-                            <li id="nav-course"><a href="/course">影片</a></li>
-                            <li id="nav-notice"><a href="/announcement">公告</a></li>
-                            <li><a href="/">登录</a></li>
-                                
-                        </ul>
-                    </div>
-                </div>
-                <div class="visible-xs-block col-xs-2">
-                    <div class="nav nav-hamburger pull-right">
-                        <a href="#ham" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a href="/">首页</a></li>
-                            <li><a href="/course">影片</a></li>
-                            <li id="xs-nav-notice"><a href="/announcement">公告</a></li>
-                            <li><a href="/">登录</a></li>
-                                
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-</header>
-
+<% include header.ejs %>
 <div class="content">
 <br>
 <br>
@@ -295,14 +144,69 @@
     </div>
 </div>
  
-        <div class="footer">
+   <div class="footer">
      
- 
-        </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../javascripts/bootstrap.min.js"></script>
-    <script src="/javascripts/jquery.js"></script>
-  </body>
-</html>
+   </div>
+				    
+		<script type="text/javascript">
+
+    $(document).ready(function(){
+        $("#submitMission").click(function(){
+            alert(members.toString());
+            $.post("/createMission",
+            {
+                videoName: $("#videoName").val(),
+                vu: $("#vu").val(),
+                duration: $("#duration").val(),
+                beginTime: $("#beginTime").val(),
+                members : $("#members").val()
+            },
+            function(data, status){
+                alert(data['message']);
+            });
+        });
+    });
+
+    var members = new Array()
+    //var records = JSON.parse('<%=records%>')
+    //console.log(records);
+
+    function removeA(name) 
+    {
+        for (var i=0;i<members.length;i++)
+        {
+            if (members[i] == name) {
+                members.splice(i,1);
+            }
+        }
+    }
+    function addFri(name)
+    {
+        var btn0=document.getElementById(name);
+        if (btn0 == null) {
+            members.push(name);
+            document.getElementById('members').value = members;
+            var mydiv=document.getElementById("friBtns");
+            var btn=document.createElement("input");
+            btn.type="button";
+            btn.value=name;
+            btn.id=name;
+            btn.setAttribute("class","btn btn-primary btn-sm");
+            btn.setAttribute("className","btn btn-primary");
+            mydiv.appendChild(btn);
+            btn.onclick=function() {
+                removeA(btn.id);
+                mydiv.removeChild(btn);
+            };
+        }
+    }
+
+    function createMissionOnClick(videoName, vu, duration){
+        $("#videoName").val(videoName);
+        $("#vu").val(vu);
+        $("#duration").val(duration);
+    }
+
+
+    </script>
+<% include footer.ejs %>

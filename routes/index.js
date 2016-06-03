@@ -61,9 +61,12 @@ router.get('/',function(req, res) {
 	return res.render('login', {req:req.session});
 });
 
+
 router.get('/u/:user', checkLogin);
 router.get('/u/:user', function(req,res) {
+
 	reset(req);
+	console.log(req.originalUrl);
 
 	User.get(req.params.user,function(err,user){
 		if(!user || req.session.user.name != req.params.user){
@@ -130,6 +133,7 @@ router.get('/u/:user', function(req,res) {
 	});
 	
 });
+
 
 router.get('/m/:mid',checkLogin);
 router.get("/m/:mid",function(req,res) {
@@ -436,8 +440,9 @@ router.get('/search', function(req, res, next){
   	var data = JSON.parse(data.toString());
   	var maxIndex = Math.ceil(data['total'] / Contant.RECORD_NUM);//取上整
   	res.render('searchResult', {
-	  user: req.session.user,
-	  friends: req.session.friends,
+			req: req.session,
+	  	user: req.session.user,
+	  	friends: req.session.friends,
   	  records : data['data'],
   	  prePage : '/search?videoName=' + videoName + '&index=' + (index <= 1 ? 1 : index - 1) ,
   	  nextPage : '/search?videoName=' + videoName + '&index=' + (index >= maxIndex ? maxIndex : index + 1)
@@ -642,7 +647,8 @@ router.get('/removeMission/:mid', function(req, res, next) {
 						});
 					}
 					else {
-						UserAct.del(user.name, req.params.mid, function(err, friends) {});
+						console.log(user.name);
+						UserAct.del(user.name, req.params.mid, function(err, doc) { console.log('del'); console.log(err); console.log(doc); });
 						for (var j = 0; j < mission.member.length; j++) {
 							if (mission.member[j] == user.name) {
 								mission.member.splice(j, 1);
@@ -690,13 +696,11 @@ router.get('/upload', function(req, res, next){
   res.redirect('/html/html5Upload.html');
 });
 
+//上传视频结束
 router.get('/uploaded', checkLogin);
 router.get('/uploaded', function(req, res, next){
   VideoManager.insert(req.session.user.name, req.query.videoID, function(err, ret){
-  	if (err)
-  		res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
-  	else
-  		res.send(getRetDict(0, '上传完毕'));
+  	setTimeout(function(){res.redirect('/u/'+req.session.user.name);}, 500);
   });
 });
 
@@ -705,20 +709,16 @@ router.post('/updateVideoInfo', checkLogin);
 router.post('/updateVideoInfo', function(req, res, next){
   letvSdk.videoUpdate(req.body.videoID, req.body.videoName, req.body.videoDesc, req.body.tag, function(data){
     var data = JSON.parse(data.toString());
-    if (data['code'] == 0)
-    	res.send(getRetDict(0, "更新成功"));
-   	else
-   		res.send(getRetDict(data['code'], data['message']));
+    res.redirect('/u/'+req.session.user.name);
+    //setTimeout(function(){res.redirect('/u/'+req.session.user.name);}, 500);
   });
 });
 
 router.post('/deleteVideo', checkLogin);
-router.get('/deleteVideo', function(req, res, next){
-  VideoManager.remove(req.session.user.name, req.query.videoID, function(err, ret){
-  	if (err)
-  		res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
-  	else
-  		res.send(getRetDict(0, '删除成功'));
+router.post('/deleteVideo', function(req, res, next){
+  console.log('deleteVideo::', req.body);
+  VideoManager.remove(req.session.user.name, req.body.videoID, function(err, ret){
+  	res.redirect('/u/'+req.session.user.name);
   });
 });
 
