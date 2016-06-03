@@ -2,9 +2,8 @@
 <div class="content">
         <div class="wrapper">
             <div class="container" style="width: 100%">
-                <div class="row" style="background-image: url(images/index_back.jpg); height: 510px;">
-                    <div class="wrapper-intro col-xs-0 col-sm-6 col-md-8 col-lg-8">
-<!--                         <img src="../images/logo.png"/> -->
+                <div id="picDiv" class="row">
+                    <div class="wrapper-intro col-xs-1 col-sm-6 col-md-8 col-lg-8">
                     </div>
 
                     <!--<div class="wrapper-intro col-xs-0 col-sm-0 col-md-2 col-lg-2"></div>-->
@@ -13,7 +12,7 @@
 										<div>Welcome <%= req.user.name %></div>
 										<div><a href="/logout">退出</a></div>
 										<% } else { %>
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" style="margin-top: 150px">
+                    <div class="col-xs-10 col-sm-5 col-md-3 col-lg-3" style="margin-top: 130px">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" id="tab-sl">
                             <li role="presentation" class="active"><a href="#login" aria-controls="login" role="tab" data-toggle="tab" id="tri-login">登录</a></li>
@@ -27,7 +26,7 @@
                             <form role="tabpanel" class="tab-pane fade in active" id="login" method="post" action="/login">
                                 <div class="tab-info" id="login-info"></div>
                                 <label for="login-email" class="sr-only">邮箱</label>
-                                <input type="email" id="login-email" name="username" class="form-control" placeholder="邮箱" required autofocus>
+                                <input type="email" id="login-email" name="username" class="form-control" style="margin-top: 20px;" placeholder="邮箱" required autofocus>
                                 <br>
                                 <label for="login-password" class="sr-only">密码</label>
                                 <input type="password" id="login-pwd" name="password" class="form-control" placeholder="密码" required>
@@ -46,18 +45,21 @@
                             <form role="tabpanel" class="tab-pane fade" id="register" method="post" action="/reg">
                                 <div class="tab-info" id="register-info"></div>
                                 <label for="register-email" class="sr-only">邮箱</label>
-                                <input type="email" id="register-email" name="username" class="form-control" placeholder="邮箱" required autofocus>
+                                <input type="email" id="register-email" name="username" class="form-control" style="margin-top: 20px;" placeholder="邮箱" required autofocus>
                                 <label for="register-password" class="sr-only">密码</label>
-                                <input type="password" id="register-password" name="password" class="form-control" placeholder="密码" required>
+                                <input type="password" id="register-password" name="password" class="form-control" style="margin-top: 20px;" placeholder="密码" required>
 																<label for="register-password-repeat" class="sr-only">密码</label>
-                                <input type="password" id="register-password-repeat" name="password-repeat" class="form-control" placeholder="再次输入密码" required>
+                                <input type="password" id="register-password-repeat" name="password-repeat" class="form-control" placeholder="再次输入密码" style="margin-top: 20px; margin-bottom: 20px;" required>
 																<div class="form-actions">
-                                	<button class="btn btn-lg btn-primary btn-block register">注册</button>
+                                <button class="btn btn-lg btn-primary btn-block register">注册</button>
 																</div>
                             </form>
                         </div>
                     </div> 
 										<% } %>
+
+                    <div class="wrapper-intro col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    </div>
                 </div>
 						</div>
         </div>
@@ -68,5 +70,5 @@
         $btn.button('reset')
       })
     </script>
-		</div>
+</div>
 <% include footer.ejs %>

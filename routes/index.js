@@ -181,11 +181,11 @@ router.get("/m/:mid",function(req,res) {
 					if (!global.mission_info[req.params.mid]) { global.mission_info[req.params.mid] = []; }
 					
 					/*<---hy----->*/
-					var beginTime = new Date(Date.now());
+					/*var beginTime = new Date(Date.now());
   					var endTime = new Date(beginTime);
   					endTime.setMinutes(endTime.getMinutes() + 40);
   					
-  					/*
+  					
 					return res.render('letv', {
 						title: user.name,
 						user: user,
@@ -196,6 +196,7 @@ router.get("/m/:mid",function(req,res) {
   						beginTime: beginTime,
   						endTime: endTime
 					});*/
+					
 					var endTime = new Date(mission['beginTime']);
 					endTime.setSeconds(endTime.getSeconds() + parseInt(mission['duration']));
 					return res.render('letv', {

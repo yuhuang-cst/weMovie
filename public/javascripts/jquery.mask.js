@@ -12,7 +12,7 @@
 				var loadDiv=$("<div class='_mask_loadDiv' style='position:relative; text-align:center; margin-top:-400px; z-index:10; background:#FFF; border:1px solid #ACE'></div>");			
 				var imgsrc;
 				if(status == "notBegin") {
-					imgsrc="";
+					imgsrc="/images/mask_begin.png";
 				}
 				else if(status == "loading") {
 					imgsrc="/images/mask_loading.gif";
@@ -28,56 +28,7 @@
 				loadDiv.id=status;
 				loadDiv.css("width",loadDiv_width);
 				loadDiv.css("height",loadDiv_height);
-				if (status == "notBegin") {
-					var clockDiv=$("<div id='countdown2' class='ClassyCountdownDemo' style='height:80px'>");
-  clockDiv.ClassyCountdown({
-                                end: '1388468325',
-                                now: '1378441323',
-                                labels: true,
-                                style: {
-                                    element: "",
-                                    textResponsive: .5,
-                                    days: {
-                                        gauge: {
-                                            thickness: .01,
-                                            bgColor: "rgba(0,0,0,0.05)",
-                                            fgColor: "#1abc9c"
-                                        },
-                                        textCSS: 'font-family:\'Microsoft YaHei\'; font-size:25px; font-weight:300; color:#34495e;'
-                                    },
-                                    hours: {
-                                        gauge: {
-                                            thickness: .01,
-                                            bgColor: "rgba(0,0,0,0.05)",
-                                            fgColor: "#2980b9"
-                                        },
-                                        textCSS: 'font-family:\'Microsoft YaHei\'; font-size:25px; font-weight:300; color:#34495e;'
-                                    },
-                                    minutes: {
-                                        gauge: {
-                                            thickness: .01,
-                                            bgColor: "rgba(0,0,0,0.05)",
-                                            fgColor: "#8e44ad"
-                                        },
-                                        textCSS: 'font-family:\'Microsoft YaHei\'; font-size:25px; font-weight:300; color:#34495e;'
-                                    },
-                                    seconds: {
-                                        gauge: {
-                                            thickness: .01,
-                                            bgColor: "rgba(0,0,0,0.05)",
-                                            fgColor: "#f39c12"
-                                        },
-                                        textCSS: 'font-family:\'Microsoft YaHei\'; font-size:25px; font-weight:300; color:#34495e;'
-                                    }
-
-                                },
-                                onEndCallback: function() {
-                                    console.log("Time out!");
-                                }
-                            });
-					contentDiv.append(clockDiv);
-
-				} else if((status != "notBegin") && imgsrc){
+				if(imgsrc){
 					contentDiv.append("<img src='"+imgsrc+"' style='width:80px; height:80px'>");
 				} 
 				this.append(loadDiv.append(contentDiv));
