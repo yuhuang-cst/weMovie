@@ -9,14 +9,8 @@
         <div class="container">
             <div class="row">
                 <div class="btn-group-vertical col-xs-4 col-sm-4 col-md-3 col-lg-3" role="group">
-                      <button type="button" class="btn btn-default btn-lg">
-                          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                      </button>
-<button type="button" class="btn btn-default btn-lg">
-                          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                      </button>
-<button type="button" class="btn btn-default btn-lg">
-                          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                      <button type="button" class="btn btn-default btn-img" style="background-image: url(/images/brand_L.jpg); background-repeat: no-repeat; background-position: center; height: 240px;">
+                          <!-- <span class="glyphicon glyphicon-user" aria-hidden="true"></span> -->
                       </button>
                       <button type="button" class="btn btn-default btn-lg" onclick="addUpload();">
                         <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>   我的上传
@@ -140,7 +134,7 @@
                                                     <a class="f-main f-16" href="/m/<%= mission._id.toString() %>" target="_blank"><font size="5"><%= mission.videoName %></font></a>
                                                     </div>
                                                     <div class="item-time">
-                                                        <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %><%= mission.creator %></font>
+                                                        <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %></font>
                                                     </div>
 																										<div class="item-text"><font size="2" color="#BEBEBE">创建者：<%= mission.creator %></font></div>
                                                     <div class="item-text"><font size="2" color="#BEBEBE">参与人员：<%= mission.member.toString() %></font></div>
@@ -181,7 +175,7 @@
                                                     <a class="f-main f-16" href="/m/<%= mission._id.toString() %>" target="_blank"><font size="5"><%= mission.videoName %></font></a>
                                                     </div>
                                                     <div class="item-time">
-                                                        <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %><%= mission.creator %></font>
+                                                        <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %></font>
                                                     </div>
 																										<div class="item-text"><font size="2" color="#BEBEBE">创建者：<%= mission.creator %></font></div>
                                                     <div class="item-text"><font size="2" color="#BEBEBE">参与人员：
