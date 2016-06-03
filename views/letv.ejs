@@ -199,7 +199,9 @@
       // 监听系统消息
       socket.on('system', function (sysMsg, members) {
         var message = '<div class="sysMsg">' + sysMsg + '</div>';
-        $('#msglog').append(message);
+				if (sysMsg.length) {
+        	$('#msglog').append(message);
+				}
 
         $('#count').text(members.length);
         $('#members').text(members);
