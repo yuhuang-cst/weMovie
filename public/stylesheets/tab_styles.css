@@ -66,7 +66,7 @@ body {
 }
 .tabs-header {
   position: relative;
-  background: #4285F4;
+  background: #0e3f6b;
   overflow: hidden;
 }
 .tabs-header .border {
@@ -113,7 +113,7 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  background: #4285F4;
+  background: #0e3f6b;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -137,7 +137,7 @@ body {
   top: 0;
   left: 0;
   height: 100%;
-  box-shadow: 0 0 20px 10px #4285F4;
+  box-shadow: 0 0 20px 10px #0e3f6b;
 }
 .tabs-nav i {
   border-radius: 100%;
