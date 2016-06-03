@@ -133,9 +133,9 @@
                         </div>
                     </div>
     
-                    <input type="submit" id="submitMission" value="Submit" />
+                    <input type="submit" id="submitMission" data-dismiss="modal" value="Submit" />
                     <!-- <div class="form-actions">
-                        <button type="button" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-primary" >Submit</button>
                         </div> -->
 
 
@@ -152,7 +152,6 @@
 
     $(document).ready(function(){
         $("#submitMission").click(function(){
-            alert(members.toString());
             $.post("/createMission",
             {
                 videoName: $("#videoName").val(),
