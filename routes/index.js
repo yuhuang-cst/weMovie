@@ -196,7 +196,8 @@ router.get("/m/:mid",function(req,res) {
   						beginTime: beginTime,
   						endTime: endTime
 					});*/
-
+					var endTime = new Date(mission['beginTime']);
+					endTime.setSeconds(endTime.getSeconds() + parseInt(mission['duration']));
 					return res.render('letv', {
 						title: user.name,
 						req: req.session,
@@ -206,7 +207,7 @@ router.get("/m/:mid",function(req,res) {
 						title: mission['videoName'],
   						vu: mission['vu'],
   						beginTime: mission['beginTime'],
-  						endTime: mission['endTime']
+  						endTime: endTime
 					});
 
 					/*<---hy----->*/
