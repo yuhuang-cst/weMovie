@@ -19,9 +19,7 @@ function postReqToMission(user, members, req){
   mission['videoName'] = req.body.videoName;
   mission['vu'] = req.body.vu;
   mission['beginTime'] = new Date(req.body.beginTime);
-  mission['endTime'] = new Date(req.body.beginTime);
-  mission['endTime'].setSeconds(mission['endTime'].getSeconds() + parseInt(req.body.duration));
-  //mission['duration'] = parseInt(req.body.duration);
+  mission['duration'] = parseInt(req.body.duration);
 	mission.member = members;
 	mission.member_json = '[' + members + ']'
 	/*mission['members'] = {}
@@ -88,14 +86,27 @@ function remove(mid, callback){
 //更新任务
 function update(mid, mission, callback){
   openColl(function(err, coll){
-    if(err){
+    if (err) {
       mongodb.close();
       return callback(err);
     }
-    coll.update({_id : ObjectID(mid)}, mission, function(err, ret){
-      mongodb.close();
-      callback(err, ret);
-    })
+		coll.findOne({_id : ObjectID(mid)}, function(err, record){
+			if (err) {
+      	mongodb.close();
+      	return callback(err);
+    	}
+			mission.creator = record.creator;
+			mission.videoName = record.videoName;
+			mission.vu = record.vu;
+			mission.duration = record.duration;
+		
+			coll.update({_id : ObjectID(mid)}, mission, function(err, ret) {
+				mongodb.close();
+				callback(err, ret);
+			});
+
+    });
+    
   });
 }
 
