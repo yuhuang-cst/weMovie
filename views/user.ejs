@@ -411,7 +411,20 @@
     <script language="JavaScript" src="/javascripts/locales/bootstrap-datetimepicker.fr.js"></script> -->
 
     <script type="text/javascript">
+        function chooseOpt(option) {
+            if (option == "myUpload") {
+                document.getElementById("myMission").style.display="none";
+                document.getElementById("myUpload").style.display="block";           
+            } else if (option == "myMission"){
+                document.getElementById("myMission").style.display="block";
+                document.getElementById("myUpload").style.display="none";               
+            } else {
+                document.getElementById("myMission").style.display="none";
+                document.getElementById("myUpload").style.display="none"; 
+            }          
+        }
         $(document).ready(function(){
+            chooseOpt();
             $("#submitMission").click(function(){
                 console.log($("#beginTime").val());
                 $.post("/createMission",
