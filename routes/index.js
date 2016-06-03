@@ -31,31 +31,19 @@ function reset(req) {
 }
 
 
-function getAllVideoInfo(vids, callback){
+function getAllVideoInfo(entrys, callback){
   records = [];
-  for (i in vids){
-    letvSdk.videoGet(vids[i], function(data){
+  for (i in entrys){
+    letvSdk.videoGet(entrys[i]['videoID'], function(data){
       var data = JSON.parse(data.toString());
-      //console.log(data);
-      data['data']['status'] = VideoManager.getStatus(data['data']['status']);
+      if (data['data']['status'])
+      	data['data']['status'] = VideoManager.getStatus(data['data']['status']);
       records.push(data['data']);
-      if (i == vids.length - 1)
-        callback(records);
+      if (records.length == entrys.length)
+      	callback(records);
     });
   }
 }
-
-// for test of create missions
-router.get('/searchTest', function(req, res) {
-	var user = req.session.user;
-	var friends = req.session.friends;
-	console.log(friends);
-	console.log(user);
-	return res.render('searchTest', {
-		user: user,
-  	friends: friends
-	});
-});
 
 router.post('/createMission2', function(req, res) {
 	console.log('233---------');
@@ -71,11 +59,12 @@ router.get('/',function(req, res) {
 	return res.render('login', {req:req.session});
 });
 
-router.get("/u/:user",function(req,res){
+router.get('/u/:user', checkLogin);
+router.get('/u/:user', function(req,res) {
 	reset(req);
 
 	User.get(req.params.user,function(err,user){
-		if(!user){
+		if(!user || req.session.user.name != req.params.user){
 			req.flash('error','用户不存在');
 			return res.redirect('/');
 		}
@@ -86,9 +75,8 @@ router.get("/u/:user",function(req,res){
 			console.log('missions in friends');
 			console.log(req.session.friends);
 			
-			VideoManager.findAll(user.name, function(err, vids){
-				vids = [30463731];//用于调试
-			  	getAllVideoInfo(vids, function(uploadedVideos){
+			VideoManager.findAll(user.name, function(err, entrys){
+			  	getAllVideoInfo(entrys, function(uploadedVideos){
 			  		return res.render('user',{
 						title: user.name,
 						req: req.session,
@@ -124,9 +112,8 @@ router.get("/u/:user",function(req,res){
 					}
 					req.session.invited = friends.invited;
 					req.session.friends = friends.friends;
-					VideoManager.findAll(user.name, function(err, vids){
-						vids = [30463731];
-					  	getAllVideoInfo(vids, function(uploadedVideos){
+					VideoManager.findAll(user.name, function(err, entrys){
+					  	getAllVideoInfo(entrys, function(uploadedVideos){
 					  		return res.render('user',{
 								title: user.name,
 								req: req.session,
@@ -460,28 +447,28 @@ router.get('/createMission', function(req, res, next){
 
 router.post('/createMission', checkLogin);
 router.post('/createMission', function(req, res, next){
-	console.log('hy::body:', req.body);
-	console.log(req.body.members);
 	var currentUser = req.session.user;
 	inviteds = req.body.members.split(',');
 	mission = Mission.postReqToMission(currentUser, inviteds, req);
+	console.log('invited' + inviteds.toString());
+	console.log('mission' + mission.toString());
 	// 对被邀请人员的操作
 	User.findAll(inviteds, function(err, friends) {
-		console.log(friends);
+		console.log('users found:' + friends.toString());
 		if (err) {
 			res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
-			//req.flash('error',err);
+			req.flash('error',err);
 			//return res.redirect('/');
 		}
 
 		Mission.create(mission, function(err, mid){
 			if (err) {
 				res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
-  	 		//req.flash('error',err);
-			//return res.redirect('/');
+  	 		req.flash('error',err);
+				//return res.redirect('/');
   		}
 			// 将任务mid加入个人信息
-			console.log('mid='+mid);
+			console.log('create mid=' + mid);
 			UserAct.add(currentUser.name, mid, function(err,usersact) {
 				if (err) {
 					console.log('err in UserAct.add');
@@ -490,7 +477,6 @@ router.post('/createMission', function(req, res, next){
 					//return res.redirect('/');
 				}
 				//req.flash('success', '创建任务成功')
-				console.log(friends);
 
 				for (var i = 0; i < friends.length; i++) {
 					console.log('Now invite friend' + friends[i].name);
@@ -510,73 +496,99 @@ router.post('/createMission', function(req, res, next){
 
 //更新任务
 router.post('/updateMission', function(req, res, next){
-	var currentUser = req.session.user;
+	var user = req.session.user;
+	console.log('Start update mission');
 	console.log(req.body);
 
+	if (!req.session.user || user.name != req.session.user.name) {
+		return res.redirect('/');
+	}
+
 	inviteds = req.body.members.split(',');
-	Mission.get(req.body.mid, function(err,mission) {
-		if (err || !mission) {
+	UserAct.get(user.name, function(err, useract) {
+		console.log("Show useract");
+		console.log(useract);
+		if (err) {
 			req.flash('error',err);
 			return res.redirect('/');
 		}
-		User.findAll(inviteds, function(err, friends) {
-			if (err) {
-				req.flash('error',err);
-				return res.redirect('/');
-			}
-			for (var i = 0; i < inviteds.length; i++) {
-				UserAct.del(inviteds[i], req.body.mid, function(err, useract) {
-					console.log('remove ' + inviteds[i]);
-					console.log(useract);
-					if (err) {
-						console.log('err in friends UserAct.add');
-					}
-				});	
-			}
 
-			
-			mission = Mission.postReqToMission(req.session.user, inviteds, req);
-			if (!inviteds) inviteds = [];
-			User.findAll(inviteds, function(err, friends) {
-				if (err) {
-					req.flash('error',err);
-					return res.redirect('/');
-				}
-				mission.member = [];
-				for (var i = 0; i < friends.length; i++) {
-					mission.member.push(friends[i].name);
-				}
-
-				Mission.update(req.body.mid, mission, function(err, mid){
-					if (err) {
-  	 				req.flash('error',err);
+		var count = 0;
+		for (var t = 0; t < useract.groupsid.length; t++) {
+			if (useract.groupsid[t] == req.body.mid) {
+				count ++;
+				var mmid = useract.groupsid[t];
+				Mission.get(useract.groupsid[t], function(err, mission) {
+					if (err || !mission) {
+						req.flash('error',err);
 						return res.redirect('/');
-  				}
-					// 将任务mid加入个人信息
-					console.log('mid='+mid);
-					UserAct.add(currentUser.name, mid, function(err,usersact) {
+					}
+
+					var toadd = [];
+					var todel = []
+					var flag = false;
+					for (var i = 0; i < inviteds.length; i++) {
+						flag = false;
+						for (var j = 0; j < mission.member.length; j++)	{
+							if (inviteds[i] == mission.member[j]) {
+								flag = true;
+								break;
+							}
+						}
+						if (!flag) toadd.push(inviteds[i]);
+					}
+
+					for (var i = 0; i < mission.member.length; i++) {
+						flag = false;
+						for (var j = 0; j < inviteds.length; j++)	{
+							if (mission.member[i] == inviteds[j]) {
+								flag = true;
+								break;
+							}
+						}
+						if (!flag) todel.push(mission.member[i]);
+					}
+
+					console.log('friends to add:' + toadd.toString());
+					console.log('friends to del:' + todel.toString());
+
+					mission = Mission.postReqToMission(req.session.user, inviteds, req);
+
+					UserAct.delAll(todel, mmid, function(err, friends) {
+						console.log('Show friends to del');
+						console.log(friends);
 						if (err) {
-							console.log('err in UserAct.add');
 							req.flash('error',err);
 							return res.redirect('/');
 						}
-						req.flash('success', '修改任务成功');
+						
+						UserAct.addAll(toadd, mmid, function(err, friends) {
+							console.log('Show friends to add');
+							console.log(friends);
+							if (err) {
+								req.flash('error',err);
+								return res.redirect('/');
+							}
 
-						//TODO 加一个emitter，删除结束后才开始加
-						for (var i = 0; i < mission.member.length; i++) {
-							UserAct.add(mission.member[i], mid, function(err, useract) {
+							Mission.update(mmid, mission, function(err, mid){
 								if (err) {
-									console.log('err in friends UserAct.add');
-								}
-							});	
-						}
-	
-						return res.redirect('/u/'+currentUser.name);
+  	 							req.flash('error',err);
+									return res.redirect('/');
+  							}
+								// 将任务mid加入个人信息
+								console.log('mid='+mid);
+								return res.redirect('/u/'+user.name);	
+							});
+						});
 					});
 				});
-			});
-		});
-  });
+			}
+		}
+		if (!count) {
+			req.flash('error', 'Not permitted');
+			return res.redirect('/');
+		}
+	});
 });
 
 //删除任务
@@ -641,19 +653,40 @@ router.post('/html5UploadInit', function(req, res, next){
 });
 
 //上传视频
+router.get('/upload', checkLogin);
 router.get('/upload', function(req, res, next){
   res.redirect('/html/html5Upload.html');
 });
 
-router.get('uploaded', function(req, res, next){
-  //TODO: 插入userName 与 videoID
+router.get('/uploaded', checkLogin);
+router.get('/uploaded', function(req, res, next){
+  VideoManager.insert(req.session.user.name, req.query.videoID, function(err, ret){
+  	if (err)
+  		res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
+  	else
+  		res.send(getRetDict(0, '上传完毕'));
+  });
 });
 
 //更新视频信息
-router.get('/updateVideoInfo', function(req, res, next){
-  letvSdk.videoUpdate(req.query.videoID, req.query.videoName, req.query.videoDesc, req.query.tag, function(data){
+router.post('/updateVideoInfo', checkLogin);
+router.post('/updateVideoInfo', function(req, res, next){
+  letvSdk.videoUpdate(req.body.videoID, req.body.videoName, req.body.videoDesc, req.body.tag, function(data){
     var data = JSON.parse(data.toString());
-    console.log(data);
+    if (data['code'] == 0)
+    	res.send(getRetDict(0, "更新成功"));
+   	else
+   		res.send(getRetDict(data['code'], data['message']));
+  });
+});
+
+router.post('/deleteVideo', checkLogin);
+router.get('/deleteVideo', function(req, res, next){
+  VideoManager.remove(req.session.user.name, req.query.videoID, function(err, ret){
+  	if (err)
+  		res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
+  	else
+  		res.send(getRetDict(0, '删除成功'));
   });
 });
 
