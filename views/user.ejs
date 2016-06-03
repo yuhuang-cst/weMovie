@@ -36,8 +36,8 @@
                             </div>
                             <div class="col-xs-2 col-sm-4 col-md-6 col-lg-6"></div>
                             <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="padding: 20px 0px;">
-                                <button type="button" class="btn btn-primary">
-                                    继续上传  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newUpModal">
+                                    新的上传  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                 </button>
                             </div>
                         </div>
@@ -56,13 +56,13 @@
                                             </div>
                                             <div class="col-xs-4 col-sm-6 col-md-8 col-lg-8" style="padding: 15px 0px">
                                                 <div class="item-main">
-                                                    <div class="item-name">
+                                                    <div id="uploadedVideoName" class="item-name">
                                                     <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5"><%=videoInfo.video_name%></font></a>
                                                     </div>
                                                     <div class="item-time">
                                                         <font size="2" color="#BEBEBE">上传时间：<%=videoInfo.complete_time%></font>
-                                                    </div>
-                                                    <div class="item-text"><font size="2" color="#272727"><%=videoInfo.video_desc%></font></div>
+                                                    </div>  
+                                                    <div id="uploadedVideoDesc" class="item-text"><font size="2" color="#272727"><%=videoInfo.video_desc%></font></div>
                                                 </div>
                                             </div>
 
@@ -72,7 +72,7 @@
                                                 </div> 
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upNewModal" onclick="createMissionOnClick('<%=videoInfo.video_name%>', '<%=videoInfo.video_unique%>', '<%=videoInfo.video_duration%>')">新建观影
                                                 </button>     
-                                                <button type="button" onclick="updateVideoInfoOnclick('<%=videoInfo.video_id%>')" class="btn btn-link" data-toggle="modal" data-target="#upModifyModal">修改信息
+                                                <button type="button" onclick="updateVideoInfoOnclick('<%=videoInfo.video_id%>', '<%=videoInfo.video_name%>', '<%=videoInfo.video_desc%>')" class="btn btn-link" data-toggle="modal" data-target="#upModifyModal">修改信息
                                                 </button>
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upDelModal">删除视频
                                                 </button>
@@ -125,10 +125,10 @@
                                                     </div>
                                                     <div class="item-text"><font size="2" color="#BEBEBE">参与人员：<%= mission.member.toString() %></font></div>
                                                     <div class="item-text"><font size="2" color="#272727">此处应有影片简介</font></div>
-																										<div id="members_mission<%= index %>" style="display: none"><%= mission.member.toString() %></div>
-																										<div id="mid_missions<%= index %>" style="display: none"><%= mission._id.toString() %></div>
+													<div id="members_mission<%= index %>" style="display: none"><%= mission.member.toString() %></div>
+													<div id="mid_missions<%= index %>" style="display: none"><%= mission._id.toString() %></div>
 																			
-																										</div>
+												</div>
                                             </div>
                                             <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miModifyModal" onclick="member_reset('members_mission<%= index %>', 'mid_missions<%= index %>')">修改信息
@@ -166,8 +166,8 @@
                                                         <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %><%= mission.creator %></font>
                                                     </div>
                                                     <div class="item-text"><font size="2" color="#BEBEBE">参与人员：
-																											<div id="members_mission<%= index %>"><%= mission.member.toString() %></div>
-																										</font></div>
+														<div id="members_mission<%= index %>"><%= mission.member.toString() %></div>
+														</font></div>
                                                     <div name="test "class="item-text"><font size="2" color="#272727">此处应有影片简介</font></div>
                                                 </div>
                                             </div>
@@ -197,6 +197,51 @@
             </div>
         </div>
     </div>
+<!-- newUpload -->
+    <div class="modal fade" id="newUpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">上传视频</h4>
+          </div>
+          <div class="modal-body">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-6">
+                <input class="form-control" id="videoId" type="text" style="width: 100%"></input>
+            </div>
+            <div>
+                <button class="btn btn-info" id="fileSelecter" type="button">添加视频</button>
+            </div>
+            <table class="hrPageTable table table-hover table-bordered">
+    <thead>
+    <tr>
+        <th>视频名称</th>
+        <th>上传进度</th>
+        <th>上传速度</th>
+        <th>上传状态</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td id="videoId2"></td>
+        <td id="videoProgress"></td>
+        <td id="videoSpeed"></td>
+        <td id="videoStatus"></td>
+    </tr>
+    </tbody>
+</table>
+            <div class="col-sm-2"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="uploadBtn">Upload</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
 <!-- upLoad Modal -->
     <div class="modal fade" id="upNewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -207,7 +252,6 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" method="post" action="/createMission">
-
                     <input type="text" id = "videoName" name="videoName" style="display: none">
                     <input type="text" id = "vu" name="vu" style="display: none">
                     <input type="text" id = "duration" name="duration" style="display: none">
@@ -219,6 +263,7 @@
                             <span class="add-on"><i class="icon-remove"></i></span>
                             <span class="add-on"><i class="icon-calendar"></i></span>
                          </div>  
+
                     </div>
 
                     <div class="form-group">
@@ -239,14 +284,13 @@
                     <div class="form-group">
                         <div id="friBtns"class="col-sm-7"></div>
                     </div>                  
-									</div>
-            
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>    
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 										<!-- <button type="button" id="submitMission" class="btn btn-primary" data-dismiss="modal">Submit</button> -->
-									</div>
-							<input type="submit" value="Submit"/>
-          	</form>
+			</div>
+			 <input type="submit" value="Submit"/>
+          	 </form>
 
         </div>
       </div>
@@ -372,13 +416,13 @@
         </div>
     </div>
 
- </div>    
-    <script src="../javascripts/stopExecutionOnTimeout.js"></script>
-    <script language="JavaScript" src="../javascripts/bootstrap-datetimepicker.js"></script>
-    <script language="JavaScript" src="../javascripts/locales/bootstrap-datetimepicker.fr.js"></script>
-    <script language="JavaScript" src="/javascripts/jquery.js"></script>
-    <script type="text/javascript">
+ </div>
+    <script src="/javascripts/jquery.js"></script>    
+    <script src="/javascripts/stopExecutionOnTimeout.js"></script>
+<!--     <script language="JavaScript" src="/javascripts/bootstrap-datetimepicker.js"></script>
+    <script language="JavaScript" src="/javascripts/locales/bootstrap-datetimepicker.fr.js"></script> -->
 
+    <script type="text/javascript">
         $(document).ready(function(){
             $("#updateVideoInfo").click(function(){
                 $.post("/updateVideoInfo",
@@ -395,8 +439,10 @@
             });
         });
 
-        function updateVideoInfoOnclick(videoID){
-            $("#updateVideoInfoVideoID").val(videoID);
+        function updateVideoInfoOnclick(vid, vn, vd){
+            $("#updateVideoInfoVideoID").val(vid);
+            $("#videoNameUpdate").val(vn);
+            $("#videoDesc").val(vd);
         }
 
         $(document).ready(function(){
@@ -596,5 +642,52 @@
             document.getElementById("friBtns2").removeChild(this);         
         });
     });
+    function disableClick(){
+      $("#uploadBtn").attr("disabled", true); 
+      $("#fileSelecter").attr("disabled", true); 
+    }
+    function enableClick(){
+      $("#uploadBtn").removeAttr("disabled");
+      $("#fileSelecter").removeAttr("disabled");
+    }
+    $(function () {
+        //添加视频
+        $("#fileSelecter").addFile({
+            addFile: function (data) { //添加文件时的回调
+                $("#videoId").attr("value", data.data.fileName);
+                $("#videoProgress").html("0");
+                $("#videoSpeed").html("0");
+                $("#videoStatus").html("等待上传");
+            },
+            addFileError: function (data) { //添加文件时发生错误的回调
+                alert("错误码：" + data.code + ";错误消息：" + data.msg);
+            }
+        });
+
+        //开始上传
+        $("#uploadBtn").upload({
+            uploadInitUrl: "/html5UploadInit",//初始化上传地址
+            uploadProgress: function (data) { //进度回调
+                $("#videoProgress").html(data.progress);
+                $("#videoSpeed").html(data.speed);
+                $("#videoStatus").html("上传中");
+                disableClick();
+            },
+            uploadFinish: function (data) { //上传完成回调
+                $("#videoProgress").html("100%");
+                $("#videoSpeed").html("0");
+                $("#videoStatus").html("已上传");
+                enableClick();
+            },
+            uploadError: function (data) { //上传错误回调
+                $("#videoStatus").html("上传错误！错误码：" + data.code + ";错误消息：" + data.msg);
+                enableClick();
+            },
+            uploadAbort:function(data){ //中断
+                enableClick();
+            }
+        });
+    });
+
     </script>
 <% include footer.ejs %>
