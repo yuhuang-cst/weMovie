@@ -107,15 +107,15 @@
 				if (sender == document.getElementById("username").innerHTML) {
 					message = '' +
             '<div class="message_right">' +
-            '  <span class="sender">' + sender + ': </span>' +
-            '  <span class="msg">' + msg + '</span>' +
+						'  <span class="msg">' + msg + ': </span>' +
+            '  <span class="sender">' + sender + '</span>' +
             '</div>';
 				}
 				else {
         	message = '' +
             '<div class="message_left">' +
-            '  <span class="msg">' + msg + '</span>' + sender + ': </span>' +
-            '  <span class="sender">' +
+            '  <span class="sender">' + sender + ': </span>' +
+            '  <span class="msg">' + msg + '</span>' +
             '</div>';
 				}
         $('#msglog').append(message);
