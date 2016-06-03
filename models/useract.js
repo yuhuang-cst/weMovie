@@ -132,12 +132,13 @@ UserAct.del = function del(username, val, callback) {
 					//封装文档为User对象
 					// doc.groupsid.removeByValue(actid);
 					for (var i = 0; i < doc.groupsid.length; i++) {
-    				if (doc.groupsid[i] == val) {
-							this.splice(i, 1);
+    				if (doc.groupsid[i].toString() == val.toString()) {
+							doc.groupsid.splice(i, 1);
     				  break;
     				}
   				}
-
+					console.log('UserAct changed to');
+					console.log(doc);
 					collection.save(doc);
 					
 					mongodb.close();
@@ -146,6 +147,95 @@ UserAct.del = function del(username, val, callback) {
 				else {
 					mongodb.close();
 					callback(err,doc);
+				}
+			});
+		});
+	});
+
+}
+
+UserAct.addAll = function del(users, val, callback) {
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		//读取useract集合
+		db.collection('usersact',function(err,collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+
+			//查找name属性为username的文档
+			collection.find({name:{$in: users}}).sort({time:-1}).toArray(function(err,docs) {
+				console.log(docs);
+				if (!err && docs) {
+					//封装文档为User对象
+					var flag;
+					for (var i = 0; i < docs.length; i++) {
+						flag = false;
+						for (var j = 0; j < docs[i].groupsid.length; j++) {
+    					if (docs[i].groupsid[j].toString() == val.toString()) {
+								flag = true;
+								break;
+							}
+    				}
+						if (!flag) {
+							docs[i].groupsid.push(val);
+							collection.save(docs[i]);
+						}
+  				}
+					console.log('UserAct changed to');
+					console.log(docs);
+					
+					mongodb.close();
+					callback(err, docs);
+				}
+				else {
+					mongodb.close();
+					callback(err, docs);
+				}
+			});
+		});
+	});
+
+}
+
+UserAct.delAll = function del(users, val, callback) {
+	mongodb.open(function(err,db){
+		if(err){
+			return callback(err);
+		}
+		//读取useract集合
+		db.collection('usersact',function(err,collection){
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+
+			//查找name属性为username的文档
+			collection.find({name:{$in: users}}).sort({time:-1}).toArray(function(err,docs) {
+				console.log(docs);
+				if (!err && docs) {
+					//封装文档为User对象
+					for (var i = 0; i < docs.length; i++) {
+						for (var j = 0; j < docs[i].groupsid.length; j++) {
+    					if (docs[i].groupsid[j].toString() == val.toString()) {
+								docs[i].groupsid.splice(j, 1);
+								collection.save(docs[i]);
+    					  break;
+							}
+    				}
+  				}
+					console.log('UserAct changed to');
+					console.log(docs);
+					
+					mongodb.close();
+					return callback(err, docs);
+				}
+				else {
+					mongodb.close();
+					return callback(err, docs);
 				}
 			});
 		});
