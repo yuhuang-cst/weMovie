@@ -213,24 +213,9 @@
             <div>
                 <button class="btn btn-info" id="fileSelecter" type="button">添加视频</button>
             </div>
-            <table class="hrPageTable table table-hover table-bordered">
-    <thead>
-    <tr>
-        <th>视频名称</th>
-        <th>上传进度</th>
-        <th>上传速度</th>
-        <th>上传状态</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td id="videoId2"></td>
-        <td id="videoProgress"></td>
-        <td id="videoSpeed"></td>
-        <td id="videoStatus"></td>
-    </tr>
-    </tbody>
-</table>
+            <div class="progress" style="margin-top: 20px">
+                <div id="videoProgress" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1">0%</div>
+            </div>
             <div class="col-sm-2"></div>
           </div>
           <div class="modal-footer">
@@ -631,9 +616,10 @@
         $("#fileSelecter").addFile({
             addFile: function (data) { //添加文件时的回调
                 $("#videoId").attr("value", data.data.fileName);
-                $("#videoProgress").html("0");
-                $("#videoSpeed").html("0");
-                $("#videoStatus").html("等待上传");
+                $("#videoProgress").css("width", "0%");
+                // $("#videoProgress").html("0");
+                // $("#videoSpeed").html("0");
+                // $("#videoStatus").html("等待上传");
             },
             addFileError: function (data) { //添加文件时发生错误的回调
                 alert("错误码：" + data.code + ";错误消息：" + data.msg);
@@ -644,15 +630,18 @@
         $("#uploadBtn").upload({
             uploadInitUrl: "/html5UploadInit",//初始化上传地址
             uploadProgress: function (data) { //进度回调
+                $("#videoProgress").css("width", data.progress);
                 $("#videoProgress").html(data.progress);
-                $("#videoSpeed").html(data.speed);
-                $("#videoStatus").html("上传中");
+                // $("#videoProgress").html(data.progress);
+                // $("#videoSpeed").html(data.speed);
+                // $("#videoStatus").html("上传中");
                 disableClick();
             },
             uploadFinish: function (data) { //上传完成回调
-                $("#videoProgress").html("100%");
-                $("#videoSpeed").html("0");
-                $("#videoStatus").html("已上传");
+                $("#videoProgress").css("width", "100%");
+                // $("#videoProgress").html("100%");
+                // $("#videoSpeed").html("0");
+                // $("#videoStatus").html("已上传");
                 enableClick();
             },
             uploadError: function (data) { //上传错误回调
