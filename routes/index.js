@@ -160,6 +160,7 @@ router.get("/m/:mid",function(req,res) {
   					var endTime = new Date(beginTime);
   					endTime.setMinutes(endTime.getMinutes() + 40);
   					
+  					/*
 					return res.render('letv', {
 						title: user.name,
 						user: user,
@@ -169,16 +170,18 @@ router.get("/m/:mid",function(req,res) {
   						vu: '86e12dca1b',
   						beginTime: beginTime,
   						endTime: endTime
-					});
-					/*
+					});*/
+
 					return res.render('letv', {
+						title: user.name,
+						user: user,
 						username: user.name,
 						members: global.mission_info[req.params.mid],
 						title: mission['videoName'],
   						vu: mission['vu'],
   						beginTime: mission['beginTime'],
   						endTime: mission['endTime']
-					});*/
+					});
 
 					/*<---hy----->*/
 

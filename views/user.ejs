@@ -46,6 +46,7 @@
                         <div class="section">
                             <ul id="water-fall">
                                 <% uploadedVideos.forEach(function(videoInfo, index){ %>
+                                    <% var tags = videoInfo['tag'].split(' ') %>
                                     <li class="list-group-item">
                                         
                                         <div class="row">
@@ -62,11 +63,13 @@
                                                     <div class="item-time">
                                                         <font size="2" color="#BEBEBE">上传时间：<%=videoInfo.complete_time%></font>
                                                     </div>
+
                                                     <div class="item-tags">
-                                                        <button type="button" class="btn btn-info btn-default btn-xs" >青春</button>
-                                                        <button type="button" class="btn btn-info btn-default btn-xs">爱情</button>
-                                                        <button type="button" class="btn btn-info btn-default btn-xs">喜剧</button>
-                                                    </div>                                                   
+                                                        <% tags.forEach(function(tag, index){ %>      
+                                                            <button type="button" class="btn btn-info btn-default btn-xs" > <%=tag%> </button>
+                                                        <% }); %>
+                                                    </div>
+                                                
                                                     <div id="uploadedVideoDesc" class="item-text"><font size="2" color="#272727"><%=videoInfo.video_desc%></font></div>
                                                 </div>
                                             </div>
@@ -77,7 +80,7 @@
                                                 </div> 
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upNewModal" onclick="createMissionOnClick('<%=videoInfo.video_name%>', '<%=videoInfo.video_unique%>', '<%=videoInfo.video_duration%>')">新建观影
                                                 </button>     
-                                                <button type="button" onclick="updateVideoInfoOnclick('<%=videoInfo.video_id%>', '<%=videoInfo.video_name%>', '<%=videoInfo.video_desc%>')" class="btn btn-link" data-toggle="modal" data-target="#upModifyModal">修改信息
+                                                <button type="button" onclick="updateVideoInfoOnclick('<%=videoInfo.video_id%>', '<%=videoInfo.video_name%>', '<%=videoInfo.tag%>', '<%=videoInfo.video_desc%>')" class="btn btn-link" data-toggle="modal" data-target="#upModifyModal">修改信息
                                                 </button>
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upDelModal">删除视频
                                                 </button>
@@ -213,7 +216,7 @@
           <div class="modal-body">
             <div class="col-sm-2"></div>
             <div class="col-sm-6">
-                <input class="form-control" id="videoId" type="text" style="width: 100%"></input>
+                <input class="form-control" id="uploadintVideoName" type="text" style="width: 100%"></input>
             </div>
             <div>
                 <button class="btn btn-info" id="fileSelecter" type="button">添加视频</button>
@@ -429,9 +432,11 @@
             });
         });
 
-        function updateVideoInfoOnclick(vid, vn, vd){
+        function updateVideoInfoOnclick(vid, vn, tg, vd){
             $("#updateVideoInfoVideoID").val(vid);
             $("#videoNameUpdate").val(vn);
+            if (tg)
+                $("#tag").val(tg);
             $("#videoDesc").val(vd);
         }
 
@@ -644,7 +649,7 @@
         //添加视频
         $("#fileSelecter").addFile({
             addFile: function (data) { //添加文件时的回调
-                $("#videoId").attr("value", data.data.fileName);
+                $("#uploadintVideoName").attr("value", data.data.fileName);
                 $("#videoProgress").css("width", "0%");
                 // $("#videoProgress").html("0");
                 // $("#videoSpeed").html("0");
@@ -667,8 +672,9 @@
                 disableClick();
             },
             uploadFinish: function (data) { //上传完成回调
+                console.log('100%');
                 $("#videoProgress").css("width", "100%");
-                // $("#videoProgress").html("100%");
+                $("#videoProgress").html("100%");
                 // $("#videoSpeed").html("0");
                 // $("#videoStatus").html("已上传");
                 enableClick();
