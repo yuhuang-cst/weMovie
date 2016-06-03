@@ -440,6 +440,20 @@ router.get('/search', function(req, res, next){
   letvSdk.videoList(videoName, index, Contant.RECORD_NUM, function(data){
   	var data = JSON.parse(data.toString());
   	var maxIndex = Math.ceil(data['total'] / Contant.RECORD_NUM);//取上整
+
+  	
+  	records = data['data'];
+  	records.forEach(function(record, index){
+  		var tags = record['tag'].split(' ');
+	  	tags.forEach(function(tag, index){
+	  		if (tag == '')
+	  			return;
+	  		console.log(tag);
+	  	});
+  	});
+
+  	
+
   	res.render('searchResult', {
 			req: req.session,
 	  	user: req.session.user,

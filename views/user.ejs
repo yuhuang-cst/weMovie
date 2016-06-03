@@ -65,7 +65,10 @@
                                                     </div>
 
                                                     <div class="item-tags">
-                                                        <% tags.forEach(function(tag, index){ %>      
+                                                        <% tags.forEach(function(tag, index){ %>    
+                                                            <%if(tag == '') {%>
+                                                                <%return;%>
+                                                            <%}%>  
                                                             <button type="button" class="btn btn-info btn-default btn-xs" > <%=tag%> </button>
                                                         <% }); %>
                                                     </div>
@@ -243,7 +246,7 @@
                 <h4 class="modal-title">新建任务</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" method="post" action="/createMission">
+                
                     <input type="text" id = "videoName" name="videoName" style="display: none">
                     <input type="text" id = "vu" name="vu" style="display: none">
                     <input type="text" id = "duration" name="duration" style="display: none">
@@ -279,10 +282,10 @@
 			</div>    
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										<!-- <button type="button" id="submitMission" class="btn btn-primary" data-dismiss="modal">Submit</button> -->
+										<!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button> -->
 			</div>
-			 <input type="submit" value="Submit"/>
-          	 </form>
+			 <input type="submit" id="submitMission" data-dismiss="modal" value="Submit"/>
+          	 
 
         </div>
       </div>
