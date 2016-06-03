@@ -102,9 +102,9 @@ var isSynchronizing = false;
 var startUp = false; //视频刚刚从开头开始播放
 
 function getTimeStatus(){
-  if (Date.now() < beginTime)
+  if (getBeijingTime() < beginTime)
     return BEFORE_PLAYING;
-  else if (Date.now() > endTime)
+  else if (getBeijingTime() > endTime)
     return AFTER_PLAYING;
   else
     return PLAYING;
@@ -123,7 +123,7 @@ function secondsToDD_HH_MM_SS(seconds){
 }
 
 function beginTimeMonitor(){
-  var timeDict = secondsToDD_HH_MM_SS( (beginTime.getTime() - Date.now()) / 1000);
+  var timeDict = secondsToDD_HH_MM_SS( (beginTime.getTime() - getBeijingTime()) / 1000);
   console.log('距离播放还有：%d天%d时%d分%d秒', timeDict['days'], timeDict['hours'], timeDict['minutes'], timeDict['seconds']);
   if (getTimeStatus() == PLAYING){
     player.sdk.resumeVideo();
@@ -136,7 +136,7 @@ function beginTimeMonitor(){
 
 //播放同步
 function synchronize(){
-  var elapsed = ( Date.now() - beginTime.getTime() ) / 1000;
+  var elapsed = ( getBeijingTime() - beginTime.getTime() ) / 1000;
   player.sdk.seekTo(elapsed);
   var synJudge = setTimeout(function(){//由于seekTo似乎为非阻塞，导致有时getVideoTime所得为seekTo之前的时间，故设置延迟函数
     var seekTotime = getVideoTime();
@@ -166,6 +166,10 @@ function synchro(){
   synchronized = false;
   player.sdk.setVolume(0);
   synchroCounter = setInterval(synchronize, 600);
+}
+
+function getBeijingTime(){
+  return Date.now() + 28800;
 }
 
 //播放的回调函数
