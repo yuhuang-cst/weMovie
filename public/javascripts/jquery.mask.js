@@ -12,15 +12,15 @@
 				var loadDiv=$("<div class='_mask_loadDiv' style='position:relative; text-align:center; margin-top:-400px; z-index:10; background:#FFF; border:1px solid #ACE'></div>");			
 				var imgsrc;
 				if(status == "notBegin") {
-					imgsrc="/images/mask_begin.png";
+					imgsrc="/images/mask_begin.jpg";
 				}
 				else if(status == "loading") {
 					imgsrc="/images/mask_loading.gif";
 				}
 				else {
-					imgsrc="/images/mask_over.png";
+					imgsrc="/images/mask_over.jpg";
 				} 
-				var contentDiv=$("<div class='_mask_content' style='position:relative;text-align:center;margin-top:140px;' >");
+				var contentDiv=$("<div class='_mask_content' style='position:relative;text-align:center;margin-top:100px;' >");
 				//loadDiv的宽度= msg的宽度+img的宽度
 				var loadDiv_width=590;
 				var loadDiv_height=400;
@@ -29,7 +29,15 @@
 				loadDiv.css("width",loadDiv_width);
 				loadDiv.css("height",loadDiv_height);
 				if(imgsrc){
-					contentDiv.append("<img src='"+imgsrc+"' style='width:80px; height:80px'>");
+					if (status == "notBegin") {
+						// contentDiv.css("margin-top",40px);
+						contentDiv.append("<img src='"+imgsrc+"' style='width:300px; height:200px'>");
+					} else if(status == "loading"){
+						contentDiv.append("<img src='"+imgsrc+"' style='width:130px; height:130px'>");
+					} else {
+						contentDiv.append("<img src='"+imgsrc+"' style='width:300px; height:200px'>");
+					}
+					
 				} 
 				this.append(loadDiv.append(contentDiv));
 			}

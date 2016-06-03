@@ -50,9 +50,9 @@
                                     <li class="list-group-item">
                                         
                                         <div class="row">
-                                            <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+                                            <div class="col-xs-5 col-sm-5 col-md-3 col-lg-3">
                                                 <div class="item-avatar">
-                                                    <div class="img-responsive" style="background-image: url(<%=videoInfo.img%>); height: 60px;"></div>
+                                                    <div class="img-responsive" style="background-image: url(<%=videoInfo.img%>); height: 90px; width: 120px;"></div>
                                                 </div>
                                             </div>
                                             <div class="col-xs-4 col-sm-6 col-md-8 col-lg-8" style="padding: 15px 0px">
@@ -248,7 +248,6 @@
                 <h4 class="modal-title">新建任务</h4>
             </div>
             <div class="modal-body">
-                
                     <input type="text" id = "videoName" name="videoName" style="display: none">
                     <input type="text" id = "vu" name="vu" style="display: none">
                     <input type="text" id = "duration" name="duration" style="display: none">
@@ -263,7 +262,8 @@
 
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" style="padding-top: 30px;">
+                        <div class="col-sm-1"></div>
                         <label for="labFri" class="col-sm-3 control-label">邀请好友</label>
 												<input id="members" name="members" class="col-sm-9" type="text" style="display: none" value="" readonly>
                         <div class="col-sm-7">
@@ -283,10 +283,12 @@
                     </div>                  
 			</div>    
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<!-- 		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
 										<!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button> -->
 			</div>
-			 <input type="submit" id="submitMission" data-dismiss="modal" value="Submit"/>
+            <div class="row">
+			 <input type="submit" id="submitMission" class="btn btn-primary col-sm-2" style="display: inline; margin-right: 10px;" data-dismiss="modal" data-dismiss="modal" value="Submit"/>
+             </div>
           	 
 
         </div>
@@ -395,14 +397,17 @@
                         <div id="friBtns2"class="col-sm-7">
                         </div>
                     </div>                              
-            		</div>
+            	</div>
             		<div class="modal-footer">
-              	  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              	  <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+ <!--              	  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              	  <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button> -->
             		</div>
-							<input id="mid2modify" name='mid' type="text" style="display: none" value="" readonly>
-							<input type="submit" value="Submit"/>
-						</form>
+                    <div style="text-align: right;">
+                    <input id="mid2modify" name='mid' type="text" style="display: none" value="" readonly>
+                    <input type="submit" class="btn btn-primary" value="Submit" style="margin:-15px 40px 20px auto;" />                       
+                    </div>
+
+				</form>
 
         </div>
       </div>
@@ -440,23 +445,6 @@
                 document.getElementById("myUpload").style.display="none"; 
             }          
         }
-
-        /*
-        $(document).ready(function(){
-            $("#updateVideoInfo").click(function(){
-                $.post("/updateVideoInfo",
-                    {
-                        videoID: $("#updateVideoInfoVideoID").val(),
-                        videoName: $("#videoNameUpdate").val(),
-                        videoDesc: $("#videoDesc").val(),
-                        tag: $("#tag").val()
-                    },
-                    function(data, status){
-                        alert(data['message']);
-                    }
-                );
-            });
-        });*/
 
         function updateVideoInfoOnclick(vid, vn, tg, vd){
             $("#updateVideoInfoVideoID").val(vid);
