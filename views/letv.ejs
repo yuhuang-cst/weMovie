@@ -32,26 +32,13 @@
                     <div class="wrapper-intro col-xs-1 col-sm-3 col-md-1 col-lg-1"></div>
                     <div class="log-or-sign col-xs-10 col-sm-9 col-md-4 col-lg-5">
                     <div class="panel panel-primary">
-                    <div class="panel-heading">Chatting Rom</div>
+                    <div class="panel-heading">Chatting Rom : <div id="count" style="display: inline;"></div> 人 </div>
                     <div class="panel-body">
-                      <div id="convo" class="row" data-from="Sonu Joshi">  
+                      <div id="convo" class="row" data-from="Sonu Joshi" style="margin-top: -20px">  
                         
-                       		用户名: <div id="username"><%= username %></div> <br/>
-  												当前在线人数: <div id="count"></div> <br/>
-  												在线用户: <div id="members"></div> <br/>
+                       		<div id="username" style="display: none;"><%= username %></div> <br/>
+  												
 												<ul class="chat-thread" id="msglog">
-                    <li>Are we meeting today?</li>
-  <li>yes, what time suits you?</li>
-  <li>I was thinking after lunch, I have a meeting in the morning</li>
-    <li>Are we meeting today?</li>
-  <li>yes, what time suits you?</li>
-  <li>I was thinking after lunch, I have a meeting in the morning</li>
-    <li>Are we meeting today?</li>
-  <li>yes, what time suits you?</li>
-  <li>I was thinking after lunch, I have a meeting in the morning</li>
-    <li>Are we meeting today?</li>
-  <li>yes, what time suits you?</li>
-  <li>I was thinking after lunch, I have a meeting in the morning</li>
 												</ul>
                       </div>
                       <div class="row">
@@ -106,17 +93,15 @@
 				var message;
 				if (sender == document.getElementById("username").innerHTML) {
 					message = '' +
-            '<div class="message_right">' +
-						'  <span class="msg">' + msg + ': </span>' +
-            '  <span class="sender">' + sender + '</span>' +
-            '</div>';
+            '<li class="message_right">' +
+						'  <span class="msg">' + msg + '</span>' +
+            '</li>';
 				}
 				else {
         	message = '' +
-            '<div class="message_left">' +
-            '  <span class="sender">' + sender + ': </span>' +
-            '  <span class="msg">' + msg + '</span>' +
-            '</div>';
+            '<li class="message_left">' +
+            '  <span class="sender">' + sender + '</span>' +
+            '</li>';
 				}
         $('#msglog').append(message);
         // 滚动条保持最下方

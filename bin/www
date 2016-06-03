@@ -117,7 +117,7 @@ io.sockets.on('connection', function(socket) {
 			if (!flag) {
 				global.mission_info[mid].push(username);
 				mission_member_num[username] = 1;
-				io.sockets.to(mid).emit('system', username + '加入了房间', global.mission_info[mid]);
+				io.sockets.to(mid).emit('system', '<p class="text-primary" style="text-align: center;">'+username+'加入了房间</p>', global.mission_info[mid]);
 			}
 		}
 		else {
@@ -135,8 +135,8 @@ io.sockets.on('connection', function(socket) {
     	if (index !== -1) {
     	  global.mission_info[mid].splice(index, 1);
     	}
-      // 退出房间
-    	io.sockets.to(mid).emit('system', username + '退出了房间', global.mission_info[mid]);
+      // 退出房间username + '退出了房间'
+    	io.sockets.to(mid).emit('system', '<p class="text-muted">退出了房间</p>', global.mission_info[mid]);
 		}
 	});
  
