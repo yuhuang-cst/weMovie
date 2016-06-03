@@ -65,7 +65,10 @@
                                                     </div>
 
                                                     <div class="item-tags">
-                                                        <% tags.forEach(function(tag, index){ %>      
+                                                        <% tags.forEach(function(tag, index){ %>    
+                                                            <%if(tag == '') {%>
+                                                                <%return;%>
+                                                            <%}%>  
                                                             <button type="button" class="btn btn-info btn-default btn-xs" > <%=tag%> </button>
                                                         <% }); %>
                                                     </div>
