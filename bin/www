@@ -92,6 +92,7 @@ function onListening() {
 
 //handle the socket
 
+var mission_member_num = {}
 io.sockets.on('connection', function(socket) {
 	var url_splited = socket.request.headers.referer.split('/');
 	var mid = url_splited[url_splited.length - 1];
@@ -108,11 +109,13 @@ io.sockets.on('connection', function(socket) {
 			var flag = false;
 			for (var i = 0; i < global.mission_info[mid].length; i++) {
 				if (username == global.mission_info[mid][i]) {
+					mission_member_num[username]++;
 					flag = true; break;
 				}
 			}
 			if (!flag) {
 				global.mission_info[mid].push(username);
+				mission_member_num[username] = 1;
 				io.sockets.to(mid).emit('system', username + '加入了房间', global.mission_info[mid]);
 			}
 		}
@@ -123,13 +126,17 @@ io.sockets.on('connection', function(socket) {
 	
 	//user leaves
 	socket.on('disconnect', function() {
-		var index = global.mission_info[mid].indexOf(username);
-    if (index !== -1) {
-      global.mission_info[mid].splice(index, 1);
-    }
+		socket.leave(mid);
+		mission_member_num[username]--;
 
-    socket.leave(mid);    // 退出房间
-    io.sockets.to(mid).emit('system', username + '退出了房间', global.mission_info[mid]);
+		if (mission_member_num[username] <= 0) {
+			var index = global.mission_info[mid].indexOf(username);
+    	if (index !== -1) {
+    	  global.mission_info[mid].splice(index, 1);
+    	}
+      // 退出房间
+    	io.sockets.to(mid).emit('system', username + '退出了房间', global.mission_info[mid]);
+		}
 	});
  
 	//send message

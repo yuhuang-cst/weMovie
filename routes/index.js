@@ -178,6 +178,7 @@ router.get("/m/:mid",function(req,res) {
 
 					return res.render('letv', {
 						title: user.name,
+						req: req.session,
 						user: user,
 						username: user.name,
 						members: global.mission_info[req.params.mid],
@@ -301,11 +302,11 @@ router.post("/login",function(req,res){
 		console.log(user);
 		if(!user){
 			req.flash('error','用户不存在');
-			return res.redirect('/login');
+			return res.redirect('/');
 		}
 		if(user.password!=password){
 			req.flash('error','用户口令错误');
-			return res.redirect('/login');
+			return res.redirect('/');
 		}
 		req.session.user = user;
 		req.flash('success','登入成功');

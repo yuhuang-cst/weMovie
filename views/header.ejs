@@ -135,6 +135,20 @@
 						<% }) %>
 					<% } %>
 
+					<div id="container" class="container">
+						<% if (success) { %>
+						<div class="alert alert-success">
+						<%= success %>
+						</div>
+						<% } %>
+						<% if (error) { %>
+						<div class="alert alert-danger">
+							<%= error %>
+						</div>
+						<% } %>
+					</div>
+
+
 					<script>
 						function friendsAccept(src) {
 							window.location.assign("/accept/" + src);
