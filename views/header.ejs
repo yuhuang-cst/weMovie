@@ -10,13 +10,13 @@
     <!-- Bootstrap -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet prefetch" media="screen" type="text/css">
     <link href="/stylesheets/tab_reset.css" rel="stylesheet prefetch" media="screen" type="text/css">
-    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
-    <link href="/stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="/stylesheets/bootstrap.css" rel="stylesheet">
     <link href="/stylesheets/BootSideMenu.css" rel="stylesheet" media="screen" type="text/css">
     <link href="/stylesheets/default.css" rel="stylesheet" media="screen" type="text/css">
     <link href="/stylesheets/tab_default.css" rel="stylesheet" media="screen" type="text/css">
     <link href="/stylesheets/tab_styles.css" rel="stylesheet" media="screen" type="text/css">
     <link href="/stylesheets/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
 
     <style type="text/css">
       .user{
@@ -25,14 +25,14 @@
       }
       a:hover{text-decoration: none;}
       #searchForm{display:none;}
-			#myUpload{display:none;}
+	  #myUpload{display:none;}
       #myMission{display:none;}
     </style>
 
 </head>
 <body>
   <header class="header">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="row">
                 <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
@@ -56,11 +56,11 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5" style="position: relative;">
+                <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5" style="margin-top: 8px">
                         <form class="navbar-form-mc center-vertical" method="get" action="/search" role="search">
                             <div class="input-group input-group-nav">
                                 <input type="text" class="form-control" id="input-search" name="videoName" placeholder="搜索影片...">
-                                <span class="input-group-btn">
+                                <span class="input-group-btn" style="color: rgb(255, 255, 255);">
                                     <a role="button" class="btn" onclick="$(this).closest('form').submit()">
                                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                     </a>

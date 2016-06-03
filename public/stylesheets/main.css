@@ -1,32 +1,13 @@
-.chat-thread li {
-  position: relative;
-  clear: both;
-  display: inline-block;
-  padding: 16px 40px 16px 20px;
-  margin: 0 0 20px 0;
-  font: 16px/20px 'Noto Sans', sans-serif;
-  border-radius: 10px;
-  background-color: rgba(25, 147, 147, 0.2);
-}
-.center-vertical {
-  position: absolute;
-  top: 14px;
-  bottom: 0;
-  height: 30%;
-  margin: auto;
-}
-/* Medium and large screens */
-@media all and (min-width: 768px) {
-  .chat-thread {
-    width: 50%;
-    height: 320px;
-  }
-
-  .chat-window {
-    left: 25%;
-    width: 50%;
-  }
-}
 body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 , label{ 
   font-family: Microsoft YaHei,'宋体' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;
+}
+body {
+  background: #BDD8FF;
+}
+.navbar {
+  background: #0e3f6b;
+  color: #FFF;
+}
+.navbar-nav li {
+  color: #FFF;
 }
