@@ -66,6 +66,7 @@ router.get('/u/:user', checkLogin);
 router.get('/u/:user', function(req,res) {
 
 	reset(req);
+	console.log(req.originalUrl);
 
 	User.get(req.params.user,function(err,user){
 		if(!user || req.session.user.name != req.params.user){
@@ -439,8 +440,9 @@ router.get('/search', function(req, res, next){
   	var data = JSON.parse(data.toString());
   	var maxIndex = Math.ceil(data['total'] / Contant.RECORD_NUM);//取上整
   	res.render('searchResult', {
-	  user: req.session.user,
-	  friends: req.session.friends,
+			req: req.session,
+	  	user: req.session.user,
+	  	friends: req.session.friends,
   	  records : data['data'],
   	  prePage : '/search?videoName=' + videoName + '&index=' + (index <= 1 ? 1 : index - 1) ,
   	  nextPage : '/search?videoName=' + videoName + '&index=' + (index >= maxIndex ? maxIndex : index + 1)
@@ -645,7 +647,8 @@ router.get('/removeMission/:mid', function(req, res, next) {
 						});
 					}
 					else {
-						UserAct.del(user.name, req.params.mid, function(err, friends) {});
+						console.log(user.name);
+						UserAct.del(user.name, req.params.mid, function(err, doc) { console.log('del'); console.log(err); console.log(doc); });
 						for (var j = 0; j < mission.member.length; j++) {
 							if (mission.member[j] == user.name) {
 								mission.member.splice(j, 1);

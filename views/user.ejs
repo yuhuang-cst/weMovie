@@ -174,9 +174,9 @@
                                                         <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %><%= mission.creator %></font>
                                                     </div>
                                                     <div class="item-text"><font size="2" color="#BEBEBE">参与人员：
-														<div id="members_mission<%= index %>"><%= mission.member.toString() %></div>
-														</font></div>
-                                                    <div name="test "class="item-text"><font size="2" color="#272727">此处应有影片简介</font></div>
+																										<div id="members_mission<%= index %>"><%= mission.member.toString() %></div>
+																										</font></div>
+                                                    <!-- <div name="test "class="item-text"><font size="2" color="#272727">此处应有影片简介</font></div> -->
                                                 </div>
                                             </div>
                                             <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
@@ -588,12 +588,17 @@
 		}
 		function member_reset(mm, mmid) {
 			delete members;
-			members = document.getElementById(mm).innerHTML.split(',');
+			if (document.getElementById(mm).innerHTML.length) {
+				members = document.getElementById(mm).innerHTML.split(',');
+			}
+			else {
+				members = new Array();
+			}
 			document.getElementById('members').value = members;
 			var mid = document.getElementById(mmid).innerHTML;
 			document.getElementById('mid2modify').value = mid;
 			alert(members + " " + members.length + " " +  mid);
-			//document.getElementById("friBtns2").innerHTML = "";
+			document.getElementById("friBtns2").innerHTML = "";
 			// 这里要清除
 			for (var i = 0; i < members.length; i++) {
 				var mydiv=document.getElementById("friBtns2");
