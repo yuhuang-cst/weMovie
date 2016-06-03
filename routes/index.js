@@ -246,7 +246,7 @@ router.post("/reg",function(req,res){
 	//检验用户两次输入口令是否一致
 	if(req.body['password-repeat']!=req.body['password']){
 		req.flash('error','两次输入的口令不一致');
-		return res.redirect('/reg');
+		return res.redirect('/');
 	}
 
 	//生成口令的散列值
@@ -277,7 +277,7 @@ router.post("/reg",function(req,res){
 		if(err){
 			req.flash('error',err);
 			console.log("err");
-			return res.redirect('/reg');
+			return res.redirect('/');
 		}
 		console.log("save");
 		//如果不存在则新增用户
@@ -286,7 +286,7 @@ router.post("/reg",function(req,res){
 				req.flash('error',err);
 				console.log("save err");
 				console.log(err);
-				return res.redirect('/reg');
+				return res.redirect('/');
 			}
 			req.session.user = newUser;
 			useract.save(function(err){
