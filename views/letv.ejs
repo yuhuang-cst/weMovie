@@ -11,28 +11,8 @@
     <!-- Bootstrap -->
     <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
     <link href="/stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
-    <link href="/stylesheets/style.css" rel="stylesheet" media="screen" type="text/css">
-    <link href="/stylesheets/jquery.classycountdown.min.css" rel="stylesheet" type="text/css">
-        <style>
-            .ClassyCountdownDemo { margin:0 auto 30px auto; max-width:800px; width:calc(100%); padding:30px; display:block }
-             #countdown2 { background:#000 } 
-        </style>
-    <script language="JavaScript" src="/javascripts/jquery.js"></script>
-    <script language="JavaScript" src="/javascripts/jquery.mask.js"></script>
-    <script language="JavaScript" src="/javascripts/jquery.classycountdown.min.js"></script>
-    <script language="JavaScript" src="/javascripts/jquery.knob.js"></script>
-    <script language="JavaScript" src="/javascripts/jquery.throttle.js"></script>
-    <script type="text/javascript" src="http://yuntv.letv.com/bcloud.js"></script>
-    <script type = "text/javascript" src="/javascripts/letv.js"> </script>
-        <script type="text/javascript">
-         var tvDiv = $("#tvShow");
-            $(function(){
-                tvDiv=$("#tvShow");
-                //tvDiv.openMask();
-                //tvDiv.openMask("loading");
+    <link href="/stylesheets/style.css" rel="stylesheet" media="screen" type="text/css">      
 
-            });
-        </script>
 </head>
 <body>
   <header class="header">
@@ -111,6 +91,8 @@
             <div class="row">
                 <div id="tvShow" class="wrapper-intro col-xs-10 col-sm-9 col-md-7 col-lg-6">
                 <!-- 直播html代码-->
+                    <script type="text/javascript" src="http://yuntv.letv.com/bcloud.js"></script>
+                    <script type ="text/javascript" src="/javascripts/letv.js"> </script>
                     <script> 
 
                       //var beginTime = new Date('2016-5-6 15:40:00')
@@ -173,9 +155,17 @@
         </div>
 </div>
 </div>
-
-	<script src="/socket.io/socket.io.js"></script>
+    <script language="JavaScript" src="/javascripts/jquery.js"></script>
+    <script language="JavaScript" src="/javascripts/jquery.mask.js"></script>
+	  <script src="/socket.io/socket.io.js"></script>
   <script>
+    var tvDiv = $("#tvShow");
+            $(function(){
+                tvDiv=$("#tvShow");
+                //tvDiv.openMask();
+                //tvDiv.openMask("loading");
+
+    });
 		$(function () {
 			var socket = io.connect();
       
