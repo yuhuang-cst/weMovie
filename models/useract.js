@@ -229,9 +229,12 @@ UserAct.delAll = function del(users, val, callback) {
   				}
 					console.log('UserAct changed to');
 					console.log(docs);
-					
-					mongodb.close();
-					return callback(err, docs);
+				
+					collection.find({name:{$in: users}}).sort({time:-1}).toArray(function(err,docs) {
+						console.log(docs);
+						mongodb.close();
+						return callback(err, docs);
+					});
 				}
 				else {
 					mongodb.close();

@@ -313,7 +313,7 @@ router.post("/login",function(req,res){
 		}
 		req.session.user = user;
 		req.flash('success','登入成功');
-		res.redirect('/');
+		res.redirect('/u/' + user.name);
 	});
 });
 
@@ -628,25 +628,43 @@ router.get('/removeMission/:mid', function(req, res, next) {
 						return res.redirect('/');
 					}
 
-					mission.member.push(user.name);
-					UserAct.delAll(mission.member, req.params.mid, function(err, friends) {
-						console.log('Show friends to del----');
-						console.log(friends);
-						if (err) {
-							req.flash('error',err);
-							return res.redirect('/');
-						}
-								
-						Mission.remove(req.params.mid, function(err) {
+					if (mission.creator == user.name) {
+						mission.member.push(user.name);
+						UserAct.delAll(mission.member, req.params.mid, function(err, friends) {
+							console.log('Show friends to del----');
+							console.log(friends);
 							if (err) {
 								req.flash('error',err);
 								return res.redirect('/');
 							}
+								
+							Mission.remove(req.params.mid, function(err) {
+								if (err) {
+									req.flash('error',err);
+									return res.redirect('/');
+								}
 									
-							console.log(friends);
-							return res.redirect('/u/'+user.name);	
-						});	
-					});
+								console.log(friends);
+								return res.redirect('/u/'+user.name);	
+							});	
+						});
+					}
+					else {
+						UserAct.del(user.name, req.params.mid, function(err, friends) {});
+						for (var j = 0; j < mission.member.length; j++) {
+							if (mission.member[j] == user.name) {
+								mission.member.splice(j, 1);
+								Mission.update(mission._id, mission, function(err, doc) {
+									if (err) {
+										req.flash('error',err);
+										return res.redirect('/');
+									}
+									console.log(doc);
+									return res.redirect('/u/'+user.name);
+								});
+							}
+						}
+					}
 				});
 			}
 		}
