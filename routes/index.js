@@ -31,31 +31,19 @@ function reset(req) {
 }
 
 
-function getAllVideoInfo(vids, callback){
+function getAllVideoInfo(entrys, callback){
   records = [];
-  for (i in vids){
-    letvSdk.videoGet(vids[i], function(data){
+  for (i in entrys){
+    letvSdk.videoGet(entrys[i]['videoID'], function(data){
       var data = JSON.parse(data.toString());
-      //console.log(data);
-      data['data']['status'] = VideoManager.getStatus(data['data']['status']);
+      if (data['data']['status'])
+      	data['data']['status'] = VideoManager.getStatus(data['data']['status']);
       records.push(data['data']);
-      if (i == vids.length - 1)
-        callback(records);
+      if (records.length == entrys.length)
+      	callback(records);
     });
   }
 }
-
-// for test of create missions
-router.get('/searchTest', function(req, res) {
-	var user = req.session.user;
-	var friends = req.session.friends;
-	console.log(friends);
-	console.log(user);
-	return res.render('searchTest', {
-		user: user,
-  	friends: friends
-	});
-});
 
 router.post('/createMission2', function(req, res) {
 	console.log('233---------');
@@ -86,9 +74,8 @@ router.get("/u/:user",function(req,res){
 			console.log('missions in friends');
 			console.log(req.session.friends);
 			
-			VideoManager.findAll(user.name, function(err, vids){
-				vids = [30463731];//用于调试
-			  	getAllVideoInfo(vids, function(uploadedVideos){
+			VideoManager.findAll(user.name, function(err, entrys){
+			  	getAllVideoInfo(entrys, function(uploadedVideos){
 			  		return res.render('user',{
 						title: user.name,
 						req: req.session,
@@ -124,9 +111,8 @@ router.get("/u/:user",function(req,res){
 					}
 					req.session.invited = friends.invited;
 					req.session.friends = friends.friends;
-					VideoManager.findAll(user.name, function(err, vids){
-						vids = [30463731];
-					  	getAllVideoInfo(vids, function(uploadedVideos){
+					VideoManager.findAll(user.name, function(err, entrys){
+					  	getAllVideoInfo(entrys, function(uploadedVideos){
 					  		return res.render('user',{
 								title: user.name,
 								req: req.session,
@@ -641,19 +627,40 @@ router.post('/html5UploadInit', function(req, res, next){
 });
 
 //上传视频
+router.get('/upload', checkLogin);
 router.get('/upload', function(req, res, next){
   res.redirect('/html/html5Upload.html');
 });
 
-router.get('uploaded', function(req, res, next){
-  //TODO: 插入userName 与 videoID
+router.get('/uploaded', checkLogin);
+router.get('/uploaded', function(req, res, next){
+  VideoManager.insert(req.session.user.name, req.query.videoID, function(err, ret){
+  	if (err)
+  		res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
+  	else
+  		res.send(getRetDict(0, '上传完毕'));
+  });
 });
 
 //更新视频信息
-router.get('/updateVideoInfo', function(req, res, next){
-  letvSdk.videoUpdate(req.query.videoID, req.query.videoName, req.query.videoDesc, req.query.tag, function(data){
+router.post('/updateVideoInfo', checkLogin);
+router.post('/updateVideoInfo', function(req, res, next){
+  letvSdk.videoUpdate(req.body.videoID, req.body.videoName, req.body.videoDesc, req.body.tag, function(data){
     var data = JSON.parse(data.toString());
-    console.log(data);
+    if (data['code'] == 0)
+    	res.send(getRetDict(0, "更新成功"));
+   	else
+   		res.send(getRetDict(data['code'], data['message']));
+  });
+});
+
+router.post('/deleteVideo', checkLogin);
+router.get('/deleteVideo', function(req, res, next){
+  VideoManager.remove(req.session.user.name, req.query.videoID, function(err, ret){
+  	if (err)
+  		res.send(getRetDict(Error.DB_ERROR, Error.DB_ERROR_MESSAGE));
+  	else
+  		res.send(getRetDict(0, '删除成功'));
   });
 });
 
