@@ -65,7 +65,6 @@ function findAll(mids,callback) {
 		if(err) { mongodb.close(); return callback(err); }
 		coll.find({_id : {$in: mids}}).sort({time:-1}).toArray(function(err,records) {
 			mongodb.close();
-			console.log(records);
 			callback(err, records); 
 		});
 	});
@@ -95,7 +94,6 @@ function update(mid, mission, callback){
     }
     coll.update({_id : ObjectID(mid)}, mission, function(err, ret){
       mongodb.close();
-      console.log(ret);
       callback(err, ret);
     })
   });

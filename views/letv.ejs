@@ -115,11 +115,12 @@
                       var beginTime = new Date('<%=beginTime%>');   
                       var endTime = new Date('<%=endTime%>');
 
-                      var player = new CloudVodPlayer();
+                      var player = new CloudVodPlayer();   
 
-                      //var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:"86e12dca1b", "auto_play":1,"gpcflag":1,"width":640,"height":360, start : 13, callbackJs : "playCallBack"};    
+                      /*
+                      var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":590,"height":400, start : 13, callbackJs : "playCallBack"};*/
 
-                      var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":590,"height":400, start : 13, callbackJs : "playCallBack"};
+                      var letvcloud_player_conf = {uu : "m9rv3asjdc", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":590,"height":400, start : 13, callbackJs : "playCallBack"};
 
                       player.init(letvcloud_player_conf);
 

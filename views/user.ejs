@@ -45,9 +45,10 @@
 
                         <div class="section">
                             <ul id="water-fall">
-
                                 <% uploadedVideos.forEach(function(videoInfo, index){ %>
+                                    <% var tags = videoInfo['tag'].split(' ') %>
                                     <li class="list-group-item">
+                                        
                                         <div class="row">
                                             <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
                                                 <div class="item-avatar">
@@ -56,18 +57,20 @@
                                             </div>
                                             <div class="col-xs-4 col-sm-6 col-md-8 col-lg-8" style="padding: 15px 0px">
                                                 <div class="item-main">
-                                                    <div class="item-name">
+                                                    <div id="uploadedVideoName" class="item-name">
                                                     <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5"><%=videoInfo.video_name%></font></a>
                                                     </div>
                                                     <div class="item-time">
                                                         <font size="2" color="#BEBEBE">上传时间：<%=videoInfo.complete_time%></font>
                                                     </div>
+
                                                     <div class="item-tags">
-                                                        <button type="button" class="btn btn-info btn-default btn-xs" >青春</button>
-                                                        <button type="button" class="btn btn-info btn-default btn-xs">爱情</button>
-                                                        <button type="button" class="btn btn-info btn-default btn-xs">喜剧</button>
-                                                    </div>                                                   
-                                                    <div class="item-text"><font size="2" color="#272727"><%=videoInfo.video_desc%></font></div>
+                                                        <% tags.forEach(function(tag, index){ %>      
+                                                            <button type="button" class="btn btn-info btn-default btn-xs" > <%=tag%> </button>
+                                                        <% }); %>
+                                                    </div>
+                                                
+                                                    <div id="uploadedVideoDesc" class="item-text"><font size="2" color="#272727"><%=videoInfo.video_desc%></font></div>
                                                 </div>
                                             </div>
 
@@ -77,7 +80,7 @@
                                                 </div> 
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upNewModal" onclick="createMissionOnClick('<%=videoInfo.video_name%>', '<%=videoInfo.video_unique%>', '<%=videoInfo.video_duration%>')">新建观影
                                                 </button>     
-                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upModifyModal">修改信息
+                                                <button type="button" onclick="updateVideoInfoOnclick('<%=videoInfo.video_id%>', '<%=videoInfo.video_name%>', '<%=videoInfo.tag%>', '<%=videoInfo.video_desc%>')" class="btn btn-link" data-toggle="modal" data-target="#upModifyModal">修改信息
                                                 </button>
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upDelModal">删除视频
                                                 </button>
@@ -138,7 +141,7 @@
                                             <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
                                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miModifyModal" onclick="member_reset('members_mission<%= index %>', 'mid_missions<%= index %>')">修改信息
                                                 </button>
-                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miDelModal">删除观影
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miDelModal" onclick="set_mid('<%= mission._id.toString() %>')">删除观影
                                                 </button>
                                             </div>
                                         </div>
@@ -177,7 +180,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
-                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miDelModal">删除观影
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miDelModal" onclick="set_mid('<%= mission._id.toString() %>')">删除观影
                                                 </button>
                                             </div>
                                         </div>
@@ -213,7 +216,7 @@
           <div class="modal-body">
             <div class="col-sm-2"></div>
             <div class="col-sm-6">
-                <input class="form-control" id="videoId" type="text" style="width: 100%"></input>
+                <input class="form-control" id="uploadintVideoName" type="text" style="width: 100%"></input>
             </div>
             <div>
                 <button class="btn btn-info" id="fileSelecter" type="button">添加视频</button>
@@ -252,7 +255,8 @@
                             <input name="beginTime" id="beginTime" class="col-sm-9" type="text" value="" readonly>
                             <span class="add-on"><i class="icon-remove"></i></span>
                             <span class="add-on"><i class="icon-calendar"></i></span>
-                         </div> 
+                         </div>  
+
                     </div>
 
                     <div class="form-group">
@@ -294,11 +298,12 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
+                    <input type="text" id = "updateVideoInfoVideoID" style="display: none">
                     <div class="form-group">
                         <div class="col-sm-1"></div>
                         <label for="videoName" class="col-sm-2 control-label">视频名称</label>
                         <div class="col-sm-7">
-                          <input type="text" class="form-control" id="videoName" placeholder="视频名称">
+                          <input type="text" class="form-control" id="videoNameUpdate" placeholder="视频名称">
                         </div>
                         <div class="col-sm-2"></div>
                     </div>
@@ -306,15 +311,15 @@
                         <div class="col-sm-1"></div>
                         <label for="videolabel" class="col-sm-2 control-label">视频标签</label>
                         <div class="col-sm-7">
-                          <input type="text" class="form-control" id="videoName" placeholder="空格表示分隔符，例：青春 热血">
+                          <input type="text" class="form-control" id="tag" placeholder="空格表示分隔符，例：青春 热血">
                         </div>
                         <div class="col-sm-2"></div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-1"></div>
-                        <label for="videoText" class="col-sm-2 control-label">视频简介</label>
+                        <label for="videoDesc" class="col-sm-2 control-label">视频简介</label>
                         <div class="col-sm-7">
-                          <textarea class="form-control" id="videoText"></textarea>
+                          <textarea class="form-control" id="videoDesc"></textarea>
                         </div>
                         <div class="col-sm-2"></div>
                     </div>                   
@@ -322,7 +327,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                <button type="button" id="updateVideoInfo" class="btn btn-primary" data-dismiss="modal">Save changes</button>
             </div>
         </div>
       </div>
@@ -398,7 +403,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="remove_mission()">Delete</button>
                 </div>             
             </div>
         </div>
@@ -424,7 +429,30 @@
             }          
         }
         $(document).ready(function(){
-            chooseOpt();
+            $("#updateVideoInfo").click(function(){
+                $.post("/updateVideoInfo",
+                    {
+                        videoID: $("#updateVideoInfoVideoID").val(),
+                        videoName: $("#videoNameUpdate").val(),
+                        videoDesc: $("#videoDesc").val(),
+                        tag: $("#tag").val()
+                    },
+                    function(data, status){
+                        alert(data['message']);
+                    }
+                );
+            });
+        });
+
+        function updateVideoInfoOnclick(vid, vn, tg, vd){
+            $("#updateVideoInfoVideoID").val(vid);
+            $("#videoNameUpdate").val(vn);
+            if (tg)
+                $("#tag").val(tg);
+            $("#videoDesc").val(vd);
+        }
+
+        $(document).ready(function(){
             $("#submitMission").click(function(){
                 console.log($("#beginTime").val());
                 $.post("/createMission",
@@ -547,10 +575,12 @@
 		function member_reset(mm, mmid) {
 			delete members;
 			members = document.getElementById(mm).innerHTML.split(',');
+			document.getElementById('members').value = members;
 			var mid = document.getElementById(mmid).innerHTML;
 			document.getElementById('mid2modify').value = mid;
 			alert(members + " " + members.length + " " +  mid);
-			document.getElementById("friBtns2") = null;
+			//document.getElementById("friBtns2").innerHTML = "";
+			// 这里要清除
 			for (var i = 0; i < members.length; i++) {
 				var mydiv=document.getElementById("friBtns2");
 				var btn=document.createElement("input");
@@ -565,6 +595,13 @@
 					mydiv.removeChild(btn);
 				};
 			}
+		}
+		var mid2del = "";
+		function set_mid(mmid) {
+			mid2del = mmid;
+		}
+		function remove_mission(mmid) {	
+			window.location.assign('/removeMission/' + mid2del)
 		}
     function removeA(name) 
     {
@@ -633,7 +670,7 @@
         //添加视频
         $("#fileSelecter").addFile({
             addFile: function (data) { //添加文件时的回调
-                $("#videoId").attr("value", data.data.fileName);
+                $("#uploadintVideoName").attr("value", data.data.fileName);
                 $("#videoProgress").css("width", "0%");
                 // $("#videoProgress").html("0");
                 // $("#videoSpeed").html("0");
@@ -656,8 +693,9 @@
                 disableClick();
             },
             uploadFinish: function (data) { //上传完成回调
+                console.log('100%');
                 $("#videoProgress").css("width", "100%");
-                // $("#videoProgress").html("100%");
+                $("#videoProgress").html("100%");
                 // $("#videoSpeed").html("0");
                 // $("#videoStatus").html("已上传");
                 enableClick();
