@@ -11,7 +11,7 @@
                 <div class="section">
                     <ul id="water-fall">
                         <% records.forEach(function(record, index){ %>
-                            <% var tags = record['tag'].split(' ') %>
+                            <% var tags = record['tag'].split(' '); %>
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">
@@ -37,7 +37,7 @@
                                             <div class="item-subheader"></div>
 
                                             <div class="item-tags">
-                                                <% tags.forEach(function(tag, index){ %>      
+                                                <% tags.forEach(function(tag, index){ %>    
                                                     <button type="button" class="btn btn-info btn-default btn-xs" > <%=tag%> </button>
                                                 <% }); %>
                                             </div>
