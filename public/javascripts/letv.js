@@ -169,8 +169,6 @@ function synchro(){
 }
 
 function getBeijingTime(){
-  console.log('Date.now() = ', Date.now());
-  console.log('Date.now() + 28800 = ', Date.now() + 28800);
   return Date.now() + 28800;
 }
 

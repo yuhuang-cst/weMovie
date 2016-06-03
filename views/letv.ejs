@@ -15,15 +15,12 @@
                       var beginTime = new Date('<%=beginTime%>');
                       var endTime = new Date('<%=endTime%>');
 
-                      console.log('b = ', beginTime);
-                      console.log('e = ', endTime);
-
                       var player = new CloudVodPlayer();   
 
                       /*
                       var letvcloud_player_conf = {uu : "1wnmvkv1dr", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":590,"height":400, start : 13, callbackJs : "playCallBack"};*/
 
-                      var letvcloud_player_conf = {uu : "m9rv3asjdc", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":590,"height":400, start : 13, callbackJs : "playCallBack"};
+                      var letvcloud_player_conf = {uu : "m9rv3asjdc", vu:'<%=vu%>', "auto_play":1,"gpcflag":1,"width":590,"height":400, start : 1, callbackJs : "playCallBack"};
 
                       player.init(letvcloud_player_conf);
 
