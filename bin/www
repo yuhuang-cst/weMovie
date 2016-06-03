@@ -136,7 +136,7 @@ io.sockets.on('connection', function(socket) {
     	  global.mission_info[mid].splice(index, 1);
     	}
       // 退出房间username + '退出了房间'
-    	io.sockets.to(mid).emit('system', '<p class="text-muted">退出了房间</p>', global.mission_info[mid]);
+    	io.sockets.to(mid).emit('system', '<p class="text-primary" style="text-align: center;">'+username+'退出了房间</p>', global.mission_info[mid]);
 		}
 	});
  
