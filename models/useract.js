@@ -117,6 +117,9 @@ Array.prototype.removeByValue = function(val) {
 */
 
 UserAct.del = function del(username, val, callback) {
+	if (username.length == 0) {
+		return callback(null, null);
+	}
 	mongodb.open(function(err,db){
 		if(err){
 			return callback(err);
@@ -163,7 +166,10 @@ UserAct.del = function del(username, val, callback) {
 }
 
 var emitter = new events.EventEmitter();
-UserAct.addAll = function del(users, val, callback) {
+UserAct.addAll = function addAll(users, val, callback) {
+	if (users.length == 0) {
+		return callback(null, null);
+	}
 	mongodb.open(function(err,db){
 		if(err){
 			return callback(err);
@@ -179,7 +185,8 @@ UserAct.addAll = function del(users, val, callback) {
 			collection.find({name:{$in: users}}).sort({time:-1}).toArray(function(err,docs) {
 				console.log(docs);
 				var num = 0;
-				if (!err && docs) {
+				console.log('len=' + docs.length);
+				if (!err && docs.length) {
 					//封装文档为User对象
 					var flag;
 					for (var i = 0; i < docs.length; i++) {
@@ -193,6 +200,7 @@ UserAct.addAll = function del(users, val, callback) {
 						if (!flag) {
 							docs[i].groupsid.push(val);
 							num++;
+							console.log('num=' + num);
 							collection.save(docs[i], function(err, doc) {
 								if (err) {
 									mongodb.close();
@@ -200,6 +208,7 @@ UserAct.addAll = function del(users, val, callback) {
 								}
 								console.log(doc);
 								num--;
+							console.log('num=' + num);
 								if (i == docs.length && num == 0) {
 									emitter.emit(val.toString());
 								}

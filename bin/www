@@ -110,6 +110,7 @@ io.sockets.on('connection', function(socket) {
 			for (var i = 0; i < global.mission_info[mid].length; i++) {
 				if (username == global.mission_info[mid][i]) {
 					mission_member_num[username]++;
+					io.sockets.to(mid).emit('system', '', global.mission_info[mid]);
 					flag = true; break;
 				}
 			}

@@ -24,6 +24,27 @@ function getRetDict(code, message, data){
   return retDict;
 }
 
+function getPreFileName(fullName){
+  var li = fullName.split('.');
+  li.pop();
+  var fileName = '';
+  for (i in li){
+  	fileName += li[i];
+  }
+  return fileName;
+}
+
+
+function searchFilter(records){
+  var newRecords = [];
+  for (i in records){
+  	if (records[i]['status'] == '10'){
+  	  newRecords.push(records[i]);
+  	}
+  }
+  return newRecords;
+}
+
 function reset(req) {
 	req.session.missions = null;
 	req.session.invited = null;
@@ -440,23 +461,11 @@ router.get('/search', function(req, res, next){
   letvSdk.videoList(videoName, index, Contant.RECORD_NUM, function(data){
   	var data = JSON.parse(data.toString());
   	var maxIndex = Math.ceil(data['total'] / Contant.RECORD_NUM);//取上整
-
-  	/*
-  	records = data['data'];
-  	records.forEach(function(record, index){
-  		var tags = record['tag'].split(' ');
-	  	tags.forEach(function(tag, index){
-	  		console.log(tag);
-	  	});
-  	});*/
-
-  	
-
   	res.render('searchResult', {
 			req: req.session,
 	  	user: req.session.user,
 	  	friends: req.session.friends,
-  	  records : data['data'],
+  	  records : searchFilter(data['data']),
   	  prePage : '/search?videoName=' + videoName + '&index=' + (index <= 1 ? 1 : index - 1) ,
   	  nextPage : '/search?videoName=' + videoName + '&index=' + (index >= maxIndex ? maxIndex : index + 1)
   	});
@@ -696,7 +705,8 @@ router.post('/html5UploadInit', function(req, res, next){
       res.send(data);
     });
   }else{//从头开始传输
-    letvSdk.uploadInit(req.query.video_name, parseInt(req.query.file_size), parseInt(req.query.uploadtype), function(data){
+  	var videoName = getPreFileName(req.query.video_name);
+    letvSdk.uploadInit(videoName, parseInt(req.query.file_size), parseInt(req.query.uploadtype), function(data){
       data = JSON.parse(data.toString());
       res.send(data);
     });
@@ -713,7 +723,7 @@ router.get('/upload', function(req, res, next){
 router.get('/uploaded', checkLogin);
 router.get('/uploaded', function(req, res, next){
   VideoManager.insert(req.session.user.name, req.query.videoID, function(err, ret){
-  	setTimeout(function(){res.redirect('/u/'+req.session.user.name);}, 500);
+  	setTimeout(function(){res.redirect('/u/'+req.session.user.name);}, 1000);
   });
 });
 
