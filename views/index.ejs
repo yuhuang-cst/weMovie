@@ -1,0 +1,41 @@
+<% include layout.ejs %>
+
+<% if(!user) {%>
+<div class="jumbotron">
+    <h1>Welcome to WeMovie!</h1>
+    <p>Watch movies with your friends :)</p>
+    <p>
+        <a class="btn btn-primary btn-large" href="/login">登录</a>
+	<a class="btn btn-large" href="/reg">立即注册</a>
+    </p>
+</div>
+<% } %>
+
+
+<% if(user) {%>
+	<a href="/createMission">创建观影任务</a>
+	
+	<% missions.forEach(function(mission,index){ %>
+		<% if(index%3 == 0){ %>
+					<div class="row">
+		<% } %>
+		<div class="col-sm-4">
+			<h2>
+				Movie: <a href="/m/<%= mission._id.toString() %>"><%= mission.videoName %></a>
+			</h2>
+			<h4>
+				by: <a href="/u/<%= mission.creator %>"><%= mission.creator %></a>
+			</h4>
+			<p><small><%= mission.vu %></small></p>
+			<p><small><%= mission.beginTime %></small></p>
+			<p><small><%= mission.duration %></small></p>
+			<p><small><%= mission.member %></small></p>
+		</div>
+		<% if(index%3 == 2) {%>
+			</div> <!-- end row -->
+		<% } %>
+	<% }) %>
+	<% if(missions.length % 3 != 0) {%>
+	</div>  <!-- end row -->
+	<% } %>
+<% } %>

@@ -1,0 +1,730 @@
+<% include header.ejs %>
+<div class="content">
+<br>
+<br>
+<br>
+<br>
+    <div class="wrapper">
+
+        <div class="container">
+            <div class="row">
+                <div class="btn-group-vertical col-xs-4 col-sm-4 col-md-3 col-lg-3" role="group">
+                      <button type="button" class="btn btn-default btn-img" style="background-image: url(/images/brand_L.jpg); background-repeat: no-repeat; background-position: center; height: 240px;">
+                          <!-- <span class="glyphicon glyphicon-user" aria-hidden="true"></span> -->
+                      </button>
+                      <button type="button" class="btn btn-default btn-lg" onclick="addUpload();">
+                        <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>   我的上传
+                        </button>
+                      <!-- 点击出现我已上传的视频，可进行修改信息，并增加“上传视频”按钮，以及影片状态 -->
+                      <button type="button" class="btn btn-default btn-lg" onclick="addMission();">
+                        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>   观影之约</button>
+                      <!-- 我发起——可修改时间，并增加好友，我被约——时间，影片 -->
+                      <button type="button" class="btn btn-default btn-lg">
+                      <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>   消息提醒</button>             
+                </div>
+                <div id="mainText" class="col-xs-8 col-sm-8 col-md-9 col-lg-9">
+                    <div id="myUpload">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-5 col-md-4 col-lg-4">
+                                <h2>我的上传</h2>
+                            </div>
+                            <div class="col-xs-2 col-sm-4 col-md-6 col-lg-6"></div>
+                            <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="padding: 20px 0px;">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newUpModal">
+                                    新的上传  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div class="section">
+                            <ul id="water-fall">
+                                <% uploadedVideos.forEach(function(videoInfo, index){ %>
+                                    <% var tags; %>
+                                    <% if (videoInfo['tag']){ %>
+                                        <% tags = videoInfo['tag'].split(' '); %>
+                                    <%} else{%>
+                                    <%    tags = [];%>
+                                    <%}%>
+                                    
+                                    <li class="list-group-item">
+                                        
+                                        <div class="row">
+                                            <div class="col-xs-5 col-sm-5 col-md-3 col-lg-3">
+                                                <div class="item-avatar">
+                                                    <div class="img-responsive" style="background-image: url(<%=videoInfo.img%>); height: 90px; width: 120px;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-4 col-md-7 col-lg-7" style="padding: 15px 0px">
+                                                <div class="item-main">
+                                                    <div id="uploadedVideoName" class="item-name">
+                                                    <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5"><%=videoInfo.video_name%></font></a>
+                                                    </div>
+                                                    <div class="item-time">
+                                                        <font size="2" color="#BEBEBE">上传时间：<%=videoInfo.complete_time%></font>
+                                                    </div>
+
+                                                    <div class="item-tags">
+                                                        <% tags.forEach(function(tag, index){ %>    
+                                                            <%if(tag == '') {%>
+                                                                <%return;%>
+                                                            <%}%>  
+                                                            <button type="button" class="btn btn-info btn-default btn-xs" > <%=tag%> </button>
+                                                        <% }); %>
+                                                    </div>
+                                                
+                                                    <div id="uploadedVideoDesc" class="item-text"><font size="2" color="#272727"><%=videoInfo.video_desc%></font></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
+                                                <div style="padding: 10px 15px">
+                                                    <span class="label label-primary" ><%=videoInfo.status%></span>
+                                                </div>
+																								<% if (videoInfo.status == "已发布") { %>
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upNewModal" onclick="createMissionOnClick('<%=videoInfo.video_name%>', '<%=videoInfo.video_unique%>', '<%=videoInfo.video_duration%>')">新建观影
+																								<% } %>
+                                                </button>     
+                                                <button type="button" onclick="updateVideoInfoOnclick('<%=videoInfo.video_id%>', '<%=videoInfo.video_name%>', '<%=videoInfo.tag%>', '<%=videoInfo.video_desc%>')" class="btn btn-link" data-toggle="modal" data-target="#upModifyModal">修改信息
+                                                </button>
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upDelModal" onclick="deleteVideo('<%=videoInfo.video_id%>')">删除视频
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                <% }); %>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div id="myMission">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-5 col-md-4 col-lg-4">
+                                <h2>观影之约</h2>
+                            </div>
+                        </div>
+                        <div class="section">
+                            <div class="tabs">
+                              <div class="tabs-header">
+                                <div class="border"></div>
+                                <ul>
+                                  <li class="active"><a href="#tab-1" tab-id="1" ripple="ripple" ripple-color="#FFF">我发起的</a></li>
+                                  <li><a href="#tab-2" tab-id="2" ripple="ripple" ripple-color="#FFF">我应邀的</a></li>
+                                </ul>
+                                <nav class="tabs-nav"><i id="prev" ripple="ripple" ripple-color="#FFF" class="material-icons">&#xE314;</i><i id="next" ripple="ripple" ripple-color="#FFF" class="material-icons">&#xE315;</i></nav>
+                              </div>
+                              <div class="tabs-content">
+                                <div tab-id="1" class="tab active">
+                                    <ul id="water-fall" >
+	
+																			<% if (req.user) { %>
+																				<% req.missions.forEach(function(mission,index){ %>
+																				<% if (mission.creator == req.user.name) { %>
+                                        <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+                                                <div class="item-avatar">
+                                                    <div class="img-responsive" style="background-image: url(/images/logos.png);"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-6 col-md-8 col-lg-8" style="padding: 15px 0px">
+                                                <div class="item-main">
+                                                    <div class="item-name">
+                                                    <a class="f-main f-16" href="/m/<%= mission._id.toString() %>" target="_blank"><font size="5"><%= mission.videoName %></font></a>
+                                                    </div>
+                                                    <div class="item-time">
+                                                        <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %></font>
+                                                    </div>
+																										<div class="item-text"><font size="2" color="#BEBEBE">创建者：<%= mission.creator %></font></div>
+                                                    <div class="item-text"><font size="2" color="#BEBEBE">参与人员：<%= mission.member.toString() %></font></div>
+																										<div id="members_mission<%= index %>" style="display: none"><%= mission.member.toString() %></div>
+																										<div id="mid_missions<%= index %>" style="display: none"><%= mission._id.toString() %></div>
+																								</div>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miModifyModal" onclick="member_reset('members_mission<%= index %>', 'mid_missions<%= index %>', '<%= mission.originTime.toString() %>')">修改信息
+                                                </button>
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miDelModal" onclick="set_mid('<%= mission._id.toString() %>')">删除观影
+                                                </button>
+                                            </div>
+                                        </div>
+                                        </li>
+																				<% } %>
+																				<% }) %>
+																			<% } %>
+
+                                    </ul>   
+                                </div>
+                                <div tab-id="2" class="tab">
+                                    <ul id="water-fall" >
+																				
+																			<% if (req.user) { %>
+																				<% req.missions.forEach(function(mission,index){ %>
+																				<% if (mission.creator != req.user.name) { %>
+                                        <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+                                                <div class="item-avatar">
+                                                    <div class="img-responsive" style="background-image: url(/images/logos.png);"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-6 col-md-8 col-lg-8" style="padding: 15px 0px">
+                                                <div class="item-main">
+                                                    <div class="item-name">
+                                                    <a class="f-main f-16" href="/m/<%= mission._id.toString() %>" target="_blank"><font size="5"><%= mission.videoName %></font></a>
+                                                    </div>
+                                                    <div class="item-time">
+                                                        <font size="2" color="#BEBEBE">开始播放时间：<%= mission.beginTime %></font>
+                                                    </div>
+																										<div class="item-text"><font size="2" color="#BEBEBE">创建者：<%= mission.creator %></font></div>
+                                                    <div class="item-text"><font size="2" color="#BEBEBE">参与人员：
+																										<div id="members_mission<%= index %>"><%= mission.member.toString() %></div>
+																										</font></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miDelModal" onclick="set_mid('<%= mission._id.toString() %>')">删除观影
+                                                </button>
+                                            </div>
+                                        </div>
+                                        </li>
+																				<% } %>
+																				<% }) %>
+																			<% } %>
+
+                                    </ul> 
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                 <!--   <div class="col-xs-0 col-sm-1 col-md-0 col-lg-1"></div> -->
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- newUpload -->
+    <div class="modal fade" id="newUpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">上传视频</h4>
+          </div>
+          <div class="modal-body">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-6">
+                <input class="form-control" id="uploadintVideoName" type="text" style="width: 100%"></input>
+            </div>
+            <div>
+                <button class="btn btn-info" id="fileSelecter" type="button">添加视频</button>
+            </div>
+            <div class="progress" style="margin-top: 20px">
+                <div id="videoProgress" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1">0%</div>
+            </div>
+            <div class="col-sm-2"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="uploadBtn">Upload</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+<!-- upLoad Modal -->
+    <div class="modal fade" id="upNewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">新建任务</h4>
+            </div>
+            <div class="modal-body">
+                    <input type="text" id = "videoName" name="videoName" style="display: none">
+                    <input type="text" id = "vu" name="vu" style="display: none">
+                    <input type="text" id = "duration" name="duration" style="display: none">
+
+                    <div class="form-group">
+                        <div class="col-sm-1"></div>
+                        <label for="labBegint" class="col-sm-3 control-label">开始播放时间</label>
+                          <div class="col-sm-8 input-append date form_datetime" id="datetimepicker" data-date="2013-02-21T15:25:00Z">
+                            <input name="beginTime" id="beginTime" type="text" value="" readonly>
+                            <span class="add-on"><i class="icon-remove"></i></span>
+                            <span class="add-on"><i class="icon-calendar"></i></span>
+                         </div>  
+
+                    </div>
+
+                    <div class="form-group" style="padding-top: 30px;">
+                        <div class="col-sm-1"></div>
+                        <label for="labFri" class="col-sm-3 control-label">邀请好友</label>
+							<input id="members" name="members" class="col-sm-9" type="text" style="display: none" value="" readonly>
+                        <div class="col-sm-8">
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">我的好友<span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu">
+                                <% req.friends.forEach(function(friend,index) { %>
+																<li><a href="javascript:void(0);" onclick="addFri('<%= friend %>')"><%= friend %></a></li>
+																<% }) %>
+															</ul>
+                            </div>
+                        </div>          
+                    </div> 
+                    <div class="form-group" style="padding-bottom: 20px;margin-left: 50px;">
+                        <div id="friBtns"class="col-sm-7"></div>
+                    </div>                  
+			</div>    
+			<div class="modal-footer"  style="margin-top:20px;">
+		<!-- 		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+										<!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button> -->
+			</div>
+            <div class="row" style="text-align:right;">
+			 <input type="submit" id="submitMission" class="btn btn-primary" style="display:inline; margin-right: 40px; margin-bottom: 20px;" data-dismiss="modal" value="Submit"/>
+             </div>
+          	 
+
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="upModifyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改视频信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" method="post" action="/updateVideoInfo">
+                    <input type="text" id = "updateVideoInfoVideoID" name="videoID" style="display: none">
+                    <div class="form-group">
+                        <div class="col-sm-1"></div>
+                        <label for="videoName" class="col-sm-2 control-label">视频名称</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" id="videoNameUpdate" name="videoName" placeholder="视频名称">
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-1"></div>
+                        <label for="videolabel" class="col-sm-2 control-label">视频标签</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" id="tag" name="tag" placeholder="空格表示分隔符，例：青春 热血">
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-1"></div>
+                        <label for="videoDesc" class="col-sm-2 control-label">视频简介</label>
+                        <div class="col-sm-7">
+                          <textarea class="form-control" id="videoDesc" name="videoDesc"></textarea>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>                   
+            </div>
+                <div class="modal-footer">
+ <!--                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="updateVideoInfo" class="btn btn-primary" data-dismiss="modal">提交</button> -->
+                </div>
+                <div style="text-align:right;"> 
+                <input type="submit" value="Submit" class="btn btn-primary" value="Submit" style="margin:-15px 40px 20px auto;" />
+                </div>
+
+            </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade bs-example-modal-sm" id="upDelModal" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body" style="margin: 10px">
+                    <font size="4" color="#272727">确定删除该视频？</font>
+                    <form method="post" action="/deleteVideo"> 
+                        <div class="form-group" style="display:none">
+                            <input type="text" id="deleteVideoID" name="videoID">
+                        </div>
+                    
+                </div>
+                <div class="modal-footer">
+ <!--                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button> -->
+                </div> 
+                <div style="text-align:right;"> 
+                <input type="submit" value="Submit" class="btn btn-primary" value="Submit" style="margin:-15px 40px 20px auto;" />
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<!-- Mission Modal -->
+    <div class="modal fade" id="miModifyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改观影约定</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal"  method="post" action="/updateMission">
+                  <div class="form-group">
+                    <label for="labBegint" class="col-sm-3 control-label">开始播放时间</label>
+                      <div class="col-sm-9 input-append date form_datetime" id="datetimepicker" data-date="2013-02-21T15:25:00Z">
+                        <input id="modify_time" name="beginTime" class="col-sm-9" type="text" value="" readonly>
+                            <span class="add-on"><i class="icon-remove"></i></span>
+                            <span class="add-on"><i class="icon-calendar"></i></span>
+                     </div>    
+                  </div>  
+                    <div class="form-group">
+                        <label for="labFri" class="col-sm-3 control-label">继续邀请好友</label>
+                        <input id="members2" name="members" class="col-sm-9" type="text" style="display: none" value="" readonly>
+												<div class="col-sm-7">
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">我的好友<span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu">
+                                <% req.friends.forEach(function(friend,index) { %>
+																<li><a href="javascript:void(0);" onclick="addFri2('<%= friend %>')"><%= friend %></a></li>
+																<% }) %>
+															</ul>
+                            </div>
+                        </div>          
+                    </div> 
+                    <div class="form-group">
+                        <div id="friBtns2"class="col-sm-7">
+                        </div>
+                    </div>                              
+            	</div>
+            		<div class="modal-footer">
+ <!--              	  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              	  <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button> -->
+            		</div>
+                    <div style="text-align: right;">
+                    <input id="mid2modify" name='mid' type="text" style="display: none" value="" readonly>
+                    <input type="submit" class="btn btn-primary" value="Submit" style="margin:-15px 40px 20px auto;" />                       
+                    </div>
+
+				</form>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal fade bs-example-modal-sm" id="miDelModal" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body" style="margin: 10px">
+                    <font size="4" color="#272727">确定删除此次观影约定？</font>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="remove_mission()">Delete</button>
+                </div>             
+            </div>
+        </div>
+    </div>
+
+ </div>
+      
+    
+<!--     <script language="JavaScript" src="/javascripts/bootstrap-datetimepicker.js"></script>
+    <script language="JavaScript" src="/javascripts/locales/bootstrap-datetimepicker.fr.js"></script> -->
+
+    <script type="text/javascript">
+        function chooseOpt(option) {
+            if (option == "myUpload") {
+                document.getElementById("myMission").style.display="none";
+                document.getElementById("myUpload").style.display="block";           
+            } else if (option == "myMission"){
+                document.getElementById("myMission").style.display="block";
+                document.getElementById("myUpload").style.display="none";               
+            } else {
+                document.getElementById("myMission").style.display="none";
+                document.getElementById("myUpload").style.display="none"; 
+            }          
+        }
+
+        function updateVideoInfoOnclick(vid, vn, tg, vd){
+            $("#updateVideoInfoVideoID").val(vid);
+            $("#videoNameUpdate").val(vn);
+            if (tg)
+                $("#tag").val(tg);
+            $("#videoDesc").val(vd);
+        }
+
+        $(document).ready(function(){
+            $("#submitMission").click(function(){
+                console.log($("#beginTime").val());
+                $.post("/createMission",
+                {
+                    videoName: $("#videoName").val(),
+                    vu: $("#vu").val(),
+                    duration: $("#duration").val(),
+                    beginTime: $("#beginTime").val(),
+                    members : $("#members").val()
+                },
+                function(data, status){
+                    alert(data['message']);
+                });
+            });
+        });
+
+        function createMissionOnClick(videoName, vu, duration){
+            member_clear();
+            $("#videoName").val(videoName);
+            $("#vu").val(vu);
+            $("#duration").val(duration);
+        }
+
+        function deleteVideo(vid){
+            $("#deleteVideoID").val(vid);
+        }
+        function addUpload() {
+        document.getElementById("myMission").style.display="none";
+        document.getElementById("myUpload").style.display="block";  
+        }
+        function addMission() {
+        document.getElementById("myUpload").style.display="none";
+        document.getElementById("myMission").style.display="block";  
+        }
+        $(document).ready(function () {
+        var activePos = $('.tabs-header .active').position();
+        function changePos() {
+            activePos = $('.tabs-header .active').position();
+            $('.border').stop().css({
+                left: activePos.left,
+                width: $('.tabs-header .active').width()
+            });
+        }
+        changePos();
+        var tabHeight = $('.tab.active').height();
+        function animateTabHeight() {
+            tabHeight = $('.tab.active').height();
+            $('.tabs-content').stop().css({ height: tabHeight + 'px' });
+        }
+        animateTabHeight();
+        function changeTab() {
+            var getTabId = $('.tabs-header .active a').attr('tab-id');
+            $('.tab').stop().fadeOut(300, function () {
+                $(this).removeClass('active');
+            }).hide();
+            $('.tab[tab-id=' + getTabId + ']').stop().fadeIn(300, function () {
+                $(this).addClass('active');
+                animateTabHeight();
+            });
+        }
+        $('.tabs-header a').on('click', function (e) {
+            e.preventDefault();
+            var tabId = $(this).attr('tab-id');
+            $('.tabs-header a').stop().parent().removeClass('active');
+            $(this).stop().parent().addClass('active');
+            changePos();
+            tabCurrentItem = tabItems.filter('.active');
+            $('.tab').stop().fadeOut(300, function () {
+                $(this).removeClass('active');
+            }).hide();
+            $('.tab[tab-id="' + tabId + '"]').stop().fadeIn(300, function () {
+                $(this).addClass('active');
+                animateTabHeight();
+            });
+        });
+        var tabItems = $('.tabs-header ul li');
+        var tabCurrentItem = tabItems.filter('.active');
+        $('#next').on('click', function (e) {
+            e.preventDefault();
+            var nextItem = tabCurrentItem.next();
+            tabCurrentItem.removeClass('active');
+            if (nextItem.length) {
+                tabCurrentItem = nextItem.addClass('active');
+            } else {
+                tabCurrentItem = tabItems.first().addClass('active');
+            }
+            changePos();
+            changeTab();
+        });
+        $('#prev').on('click', function (e) {
+            e.preventDefault();
+            var prevItem = tabCurrentItem.prev();
+            tabCurrentItem.removeClass('active');
+            if (prevItem.length) {
+                tabCurrentItem = prevItem.addClass('active');
+            } else {
+                tabCurrentItem = tabItems.last().addClass('active');
+            }
+            changePos();
+            changeTab();
+        });
+        $('[ripple]').on('click', function (e) {
+            var rippleDiv = $('<div class="ripple" />'), rippleOffset = $(this).offset(), rippleY = e.pageY - rippleOffset.top, rippleX = e.pageX - rippleOffset.left, ripple = $('.ripple');
+            rippleDiv.css({
+                top: rippleY - ripple.height() / 2,
+                left: rippleX - ripple.width() / 2,
+                background: $(this).attr('ripple-color')
+            }).appendTo($(this));
+            window.setTimeout(function () {
+                rippleDiv.remove();
+            }, 1500);
+        });
+    });
+    
+    var members = new Array();
+		function member_clear() {
+			delete members;
+			members = new Array();
+		}
+		function member_reset(mm, mmid, mclock) {
+			delete members;
+			if (document.getElementById(mm).innerHTML.length) {
+				members = document.getElementById(mm).innerHTML.split(',');
+			}
+			else {
+				members = new Array();
+			}
+			document.getElementById('members2').value = members;
+			var mid = document.getElementById(mmid).innerHTML;
+			document.getElementById('mid2modify').value = mid;
+			document.getElementById("friBtns2").innerHTML = "";
+			// 这里要清除
+			for (var i = 0; i < members.length; i++) {
+				var mydiv=document.getElementById("friBtns2");
+				var btn=document.createElement("input");
+				btn.type="button";
+				btn.value=members[i];
+				btn.id=members[i];
+				btn.setAttribute("class","btn btn-primary btn-sm");
+				btn.setAttribute("className","btn btn-primary");
+				mydiv.appendChild(btn);
+				btn.onclick=function() {
+					removeA(this.id);
+					mydiv.removeChild(this);
+				};
+			}
+
+			document.getElementById('modify_time').value = mclock;
+		}
+		var mid2del = "";
+		function set_mid(mmid) {
+			mid2del = mmid;
+		}
+		function remove_mission(mmid) {	
+			window.location.assign('/removeMission/' + mid2del)
+		}
+    function removeA(name) 
+    {
+        for (var i=0;i<members.length;i++)
+        {
+            if (members[i] == name) {
+                members.splice(i,1);
+								document.getElementById('members').value = members;
+								document.getElementById('members2').value = members;
+            }
+        }
+    }
+    function addFri(name)
+    {
+        var btn0=document.getElementById(name);
+        if (btn0 == null) {
+            members.push(name);
+						document.getElementById('members').value = members;
+            var mydiv=document.getElementById("friBtns");
+            var btn=document.createElement("input");
+            btn.type="button";
+            btn.value=name;
+            btn.id=name;
+            btn.setAttribute("class","btn btn-primary btn-sm");
+            btn.setAttribute("className","btn btn-primary");
+            mydiv.appendChild(btn);
+            btn.onclick=function() {
+                removeA(btn.id);
+                mydiv.removeChild(btn);
+            };
+        }
+    }
+    function addFri2(name)
+    {
+        var btn0=document.getElementById(name);
+        if (btn0 == null) {
+            members.push(name);
+						document.getElementById('members2').value = members;
+            var mydiv=document.getElementById("friBtns2");
+            var btn=document.createElement("input");
+            btn.type="button";
+            btn.value=name;
+            btn.id=name+'2';
+            btn.setAttribute("class","btn btn-primary btn-sm");
+            btn.setAttribute("className","btn btn-primary");
+            mydiv.appendChild(btn);
+            btn.onclick=function() {
+                removeA(btn.id);
+                mydiv.removeChild(btn);
+            };
+        }
+    }
+    $(document).ready(function(){
+        $('.add2').click(function(){
+            removeA(this.id);
+            document.getElementById("friBtns2").removeChild(this);         
+        });
+    });
+    function disableClick(){
+      $("#uploadBtn").attr("disabled", true); 
+      $("#fileSelecter").attr("disabled", true); 
+    }
+    function enableClick(){
+      $("#uploadBtn").removeAttr("disabled");
+      $("#fileSelecter").removeAttr("disabled");
+    }
+    $(function () {
+        //添加视频
+        $("#fileSelecter").addFile({
+            addFile: function (data) { //添加文件时的回调
+                $("#uploadintVideoName").attr("value", data.data.fileName);
+                $("#videoProgress").css("width", "0%");
+                // $("#videoProgress").html("0");
+                // $("#videoSpeed").html("0");
+                // $("#videoStatus").html("等待上传");
+            },
+            addFileError: function (data) { //添加文件时发生错误的回调
+                alert("错误码：" + data.code + ";错误消息：" + data.msg);
+            }
+        });
+
+        //开始上传
+        $("#uploadBtn").upload({
+            uploadInitUrl: "/html5UploadInit",//初始化上传地址
+            uploadProgress: function (data) { //进度回调
+                $("#videoProgress").css("width", data.progress);
+                $("#videoProgress").html(data.progress);
+                // $("#videoProgress").html(data.progress);
+                // $("#videoSpeed").html(data.speed);
+                // $("#videoStatus").html("上传中");
+                disableClick();
+            },
+            uploadFinish: function (data) { //上传完成回调
+                $("#videoProgress").css("width", "100%");
+                $("#videoProgress").html("100%");
+                // $("#videoSpeed").html("0");
+                // $("#videoStatus").html("已上传");
+                window.location.assign('/uploaded?videoID='+data['videoID']);
+                enableClick();
+            },
+            uploadError: function (data) { //上传错误回调
+                $("#videoStatus").html("上传错误！错误码：" + data.code + ";错误消息：" + data.msg);
+                enableClick();
+            },
+            uploadAbort:function(data){ //中断
+                enableClick();
+            }
+        });
+    });
+
+    </script>
+<% include footer.ejs %>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+    <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
+    <!-- Bootstrap -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet prefetch" media="screen" type="text/css">
+    <link href="/stylesheets/tab_reset.css" rel="stylesheet prefetch" media="screen" type="text/css">
+    <link href="/stylesheets/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/style.css" rel="stylesheet" media="screen" type="text/css"> 
+    <link href="/stylesheets/BootSideMenu.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="/stylesheets/default.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="/stylesheets/tab_default.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="/stylesheets/tab_styles.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="/stylesheets/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+
+
+    <style type="text/css">
+      .user{
+        padding:10px;
+        margin-bottom: 5px;
+      }
+      a:hover{text-decoration: none;}
+      #searchForm{display:none;}
+	  #myUpload{display:none;}
+      #myMission{display:none;}
+    </style>
+
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="row">
+                <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="/images/brand.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden-xs visible-sm-block col-sm-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="/images/brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="/images/brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5" style="margin-top: 8px">
+                        <form class="navbar-form-mc center-vertical" method="get" action="/search" role="search">
+                            <div class="input-group input-group-nav">
+                                <input type="text" class="form-control" id="input-search" name="videoName" placeholder="搜索影片...">
+                                <span class="input-group-btn" style="color: rgb(255, 255, 255);">
+                                    <a role="button" class="btn" onclick="$(this).closest('form').submit()">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </a>
+                                </span>
+                            </div>
+                        </form>
+                </div>
+                <div class="hidden-xs col-sm-5 col-md-4 col-lg-4">
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav pull-right">
+                            <li id="nav-index"><a href="/">首页</a></li>
+                            <% if (req.user) { %>
+															<li><a href="/u/<%= req.user.name %>">个人中心</a></li>
+															<li><a href="/logout">登出</a></li>
+														<% } else { %>
+                            	<li><a href="/">登录</a></li>
+														<% } %>   
+                        </ul>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="nav nav-hamburger pull-right">
+                        <a href="#ham" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="/">首页</a></li>
+                            <li id="xs-nav-notice"><a href="/announcement">公告</a></li>
+                            <% if (req.user) { %>
+															<li><a href="/u/<%= req.user.name %>">个人中心</a></li>
+															<li><a href="/logout">登出</a></li>
+														<% } else { %>
+                            	<li><a href="/">登录</a></li>
+														<% } %>   
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="content">
+    <div id="test">
+        <div class="user">
+            <img src="/images/face_japan_01.gif" alt="Esempio" class="img-thumbnail">
+            <a href="#" target="_blank" class="navbar-link">我的好友</a>
+            <button type="button" class="btn btn-link" onclick="show();">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
+            <div id="searchForm">
+                <div class="input-group" style="margin-top: 20px; margin-bottom: -10px">
+                    <form method="post" action="/invite">
+                        <input type="text" name="inviteByName" class="form-control" placeholder="搜索新的好友……" style="display: inline; width: 80%;">
+                        <button type="submit" class="btn btn-primary" style="display: inline; margin-left: 0px">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </button>
+                    </form>    
+                </div>
+            </div>  
+        </div>
+
+        <div class="list-group">
+					<% if (req.friends) { %>
+						<% req.friends.forEach(function(friend, friend_index) { %>
+						<a href="#" class="list-group-item">
+            	<span class="glyphicon glyphicon-user" aria-hidden="true"></span><%= friend %>
+          	</a>
+						<% }) %>
+					<% } %>
+					<% if (req.invited && req.invited.length) { %>
+					<p>收到来自以下人的邀请</p>
+						<% req.invited.forEach(function(invitor, invite_index) { %>
+							<p id="invitor<%= invite_index %>" ><%= invitor %></p>
+							<button id="accept<%= invite_index %>" type="button" onclick="friendsAccept('<%= invitor %>')">接受</button>
+							<button id="reject<%= invite_index %>" type="button" onclick="friendsReject('<%= invitor %>')">拒绝</button>
+						<% }) %>
+					<% } %>
+
+					<div id="container" class="container">
+						<% if (success) { %>
+						<div class="alert alert-success" style="margin: 10px;">
+						<%= success %>
+						</div>
+						<% } %>
+						<% if (error) { %>
+						<div class="alert alert-danger">
+							<%= error %>
+						</div>
+						<% } %>
+					</div>
+
+
+					<script>
+						function friendsAccept(src) {
+							window.location.assign("/accept/" + src);
+						}
+						function friendsReject(src) {
+							window.location.assign("/reject/" + src);
+						}
+					</script>
+					<script src="/javascripts/jquery.js"></script>
+        </div>
+      </div> 

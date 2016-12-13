@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+    <link href="../stylesheets/style.css" rel="stylesheet" media="screen" type="text/css" />
+    <link href="../stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+    <script src="http://vjs.zencdn.net/c/video.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  <header class="header">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="row">
+                <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden-xs visible-sm-block col-sm-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-5 col-sm- col-md-5 col-lg-5">
+                    <!--<div class="navbar-search navbar-left">-->
+                        <form class="navbar-form-mc" method="get" action="/course/search" role="search">
+                            <div class="input-group input-group-nav">
+                                <input type="text" class="form-control" id="input-search" name="key" placeholder="搜索影片...">
+                                <span class="input-group-btn">
+                                    <a role="button" class="btn" onclick="$(this).closest('form').submit()">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </a>
+                                </span>
+                            </div>
+                        </form>
+                </div>
+                <div class="hidden-xs col-sm-5 col-md-4 col-lg-4">
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav pull-right">
+                            <li id="nav-index"><a href="/">首页</a></li>
+                            <li id="nav-course"><a href="/course">影片</a></li>
+                            <li id="nav-notice"><a href="/announcement">公告</a></li>
+                            <li><a href="/">登录</a></li>
+                                
+                        </ul>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="nav nav-hamburger pull-right">
+                        <a href="#ham" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="/">首页</a></li>
+                            <li><a href="/course">影片</a></li>
+                            <li id="xs-nav-notice"><a href="/announcement">公告</a></li>
+                            <li><a href="/">登录</a></li>
+                                
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="content">
+<br>
+<br>
+<br>
+<br>
+        <div class="wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="wrapper-intro col-xs-0 col-sm-6 col-md-4 col-lg-5">
+                        <video id="main_video" class="video-js vjs-default-skin" controls preload="auto" width="500" height="350" poster="img/logo.png" data-setup="{}">
+                        <source src="mov/gift.mp4" type='video/mp4'>
+                        </video>
+                    </div>
+                    <div class="wrapper-intro col-xs-0 col-sm-0 col-md-3 col-lg-1"></div>
+                    <div class="log-or-sign col-xs-12 col-sm-6 col-md-5 col-lg-6">
+                    <div class="panel panel-default">
+                    <div class="panel-heading">Panel heading without title</div>
+                    <div class="panel-body">
+                      <div id="convo" data-from="Sonu Joshi">  
+                        <ul class="chat-thread">
+                            <li>Are we meeting today?</li>
+                            <li>yes, what time suits you?</li>
+                            <li>I was thinking after lunch, I have a meeting in the morning</li>
+                            <li>Are we meeting today?</li>
+                            <li>yes, what time suits you?</li>
+                            <li>I was thinking after lunch, I have a meeting in the morning</li>
+                            <li>Are we meeting today?</li>
+                            <li>yes, what time suits you?</li>
+                            <li>I was thinking after lunch, I have a meeting in the morning</li>
+                            <li>Are we meeting today?</li>
+                            <li>yes, what time suits you?</li>
+                            <li>I was thinking after lunch, I have a meeting in the morning</li>
+                        </ul>
+                      </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                 <!--   <div class="col-xs-0 col-sm-1 col-md-0 col-lg-1"></div> -->
+                   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <!--       <input type="text" class="form-control" placeholder="say something……" style="position:absolute;left:20px;"> -->
+                      <form>
+                          <div class="form-group">  
+                            <div class="col-xs-6 col-sm-6 col-md-10 col-lg-9">                        
+                              <input type="text" class="form-control" id="send_info" placeholder="say something……">
+                            </div> 
+                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-3">                      
+                          <button type="submit" class="btn btn-primary">Send</button>
+                          </div>
+                            </div> 
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+ </div>    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../javascripts/bootstrap.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet prefetch" media="screen" type="text/css">
+    <link href="../stylesheets/tab_reset.css" rel="stylesheet prefetch" media="screen" type="text/css">
+    <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="../stylesheets/main.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="../stylesheets/BootSideMenu.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="../stylesheets/default.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="../stylesheets/tab_default.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="../stylesheets/tab_styles.css" rel="stylesheet" media="screen" type="text/css">
+    <link href="../stylesheets/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      .user{
+        padding:5px;
+        margin-bottom: 5px;
+      }
+      .modal{
+        top: 20%;
+      }
+      a:hover{text-decoration: none;}
+      #myUpload{display:none;}
+      #myMission{display:none;}
+    </style>
+
+  </head>
+  <body>
+  <header class="header">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="row">
+                <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden-xs visible-sm-block col-sm-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand-mc" href="/">
+                            <img src="../images/Brand_S.png" alt="logo"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5">
+                    <!--<div class="navbar-search navbar-left">-->
+                        <form class="navbar-form-mc" method="get" action="/course/search" role="search">
+                            <div class="input-group input-group-nav">
+                                <input type="text" class="form-control" id="input-search" name="key" placeholder="搜索影片...">
+                                <span class="input-group-btn">
+                                    <a role="button" class="btn" onclick="$(this).closest('form').submit()">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </a>
+                                </span>
+                            </div>
+                        </form>
+                </div>
+                <div class="hidden-xs col-sm-5 col-md-4 col-lg-4">
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav pull-right">
+                            <li id="nav-index"><a href="/">首页</a></li>
+                            <li id="nav-course"><a href="/course">影片</a></li>
+                            <li id="nav-notice"><a href="/announcement">公告</a></li>
+                            <li><a href="/">登录</a></li>
+                                
+                        </ul>
+                    </div>
+                </div>
+                <div class="visible-xs-block col-xs-2">
+                    <div class="nav nav-hamburger pull-right">
+                        <a href="#ham" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="/">首页</a></li>
+                            <li><a href="/course">影片</a></li>
+                            <li id="xs-nav-notice"><a href="/announcement">公告</a></li>
+                            <li><a href="/">登录</a></li>
+                                
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="content">
+<br>
+<br>
+<br>
+<br>
+    <div class="wrapper">
+        <!--Test -->
+      <div id="test">
+        <div class="user">
+          <img src="../images/face_japan_01.gif" alt="Esempio" class="img-thumbnail">
+          <a href="http://www.htmleaf.com" target="_blank" class="navbar-link">我的好友</a>
+        </div>
+        <div class="list-group">
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+          <a href="#" class="list-group-item">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  Cras justo odio
+          </a>
+        </div>
+      </div>
+        <div class="container">
+            <div class="row">
+                <div class="btn-group-vertical col-xs-4 col-sm-4 col-md-3 col-lg-3" role="group">
+                      <button type="button" class="btn btn-default btn-lg">
+                          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                      </button>
+<button type="button" class="btn btn-default btn-lg">
+                          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                      </button>
+<button type="button" class="btn btn-default btn-lg">
+                          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                      </button>
+                      <button type="button" class="btn btn-default btn-lg" onclick="addUpload();">
+                        <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>   我的上传
+                        </button>
+                      <!-- 点击出现我已上传的视频，可进行修改信息，并增加“上传视频”按钮，以及影片状态 -->
+                      <button type="button" class="btn btn-default btn-lg" onclick="addMission();">
+                        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>   观影之约</button>
+                      <!-- 我发起——可修改时间，并增加好友，我被约——时间，影片 -->
+                      <button type="button" class="btn btn-default btn-lg">
+                      <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>   消息提醒</button>             
+                </div>
+                <div id="mainText" class="col-xs-8 col-sm-8 col-md-9 col-lg-9">
+                    <div id="myUpload">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-5 col-md-4 col-lg-4">
+                                <h2>我的上传</h2>
+                            </div>
+                            <div class="col-xs-2 col-sm-4 col-md-6 col-lg-6"></div>
+                            <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="padding: 20px 0px;">
+                                <button type="button" class="btn btn-primary">
+                                    继续上传  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="section">
+                            <ul id="water-fall">
+                                <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+                                        <div class="item-avatar">
+                                            <div class="img-responsive" style="background-image: url(/images/logos.png);"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-6 col-md-8 col-lg-8" style="padding: 15px 0px">
+                                        <div class="item-main">
+                                            <div class="item-name">
+                                            <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5">怦然心动</font></a>
+                                            </div>
+                                            <div class="item-time">
+                                                <font size="2" color="#BEBEBE">上传时间：2016-05-06 10:14:42</font>
+                                            </div>
+                                            <div class="item-text"><font size="2" color="#272727">《怦然心动》是由罗伯·莱纳执导，玛德琳·卡罗尔、卡兰·麦克奥利菲主演影片。该片根据文德琳·范·德拉安南的同名原著小说改编，描述了青春期中男孩女孩之间的有趣战争。于2010年8月6日在美国上映。</font></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
+                                        <div style="padding: 10px 15px">
+                                            <span class="label label-primary" >已通过</span>
+                                        </div> 
+                                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upNewModal">新建观影
+                                        </button>     
+                                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upModifyModal">修改信息
+                                        </button>
+                                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#upDelModal">删除视频
+                                        </button>
+                                    </div>
+                                </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="myMission">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-5 col-md-4 col-lg-4">
+                                <h2>观影之约</h2>
+                            </div>
+                        </div>
+                        <div class="section">
+                            <div class="tabs">
+                              <div class="tabs-header">
+                                <div class="border"></div>
+                                <ul>
+                                  <li class="active"><a href="#tab-1" tab-id="1" ripple="ripple" ripple-color="#FFF">我发起的</a></li>
+                                  <li><a href="#tab-2" tab-id="2" ripple="ripple" ripple-color="#FFF">我应邀的</a></li>
+                                </ul>
+                                <nav class="tabs-nav"><i id="prev" ripple="ripple" ripple-color="#FFF" class="material-icons">&#xE314;</i><i id="next" ripple="ripple" ripple-color="#FFF" class="material-icons">&#xE315;</i></nav>
+                              </div>
+                              <div class="tabs-content">
+                                <div tab-id="1" class="tab active">
+                                    <ul id="water-fall" >
+                                        <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+                                                <div class="item-avatar">
+                                                    <div class="img-responsive" style="background-image: url(/images/logos.png);"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-6 col-md-8 col-lg-8" style="padding: 15px 0px">
+                                                <div class="item-main">
+                                                    <div class="item-name">
+                                                    <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5">怦然心动</font></a>
+                                                    </div>
+                                                    <div class="item-time">
+                                                        <font size="2" color="#BEBEBE">开始播放时间：2016-05-06 10:14:42</font>
+                                                    </div>
+                                                    <div class="item-text"><font size="2" color="#BEBEBE">参与人员：Amy，BOb，Nancy</font></div>
+                                                    <div class="item-text"><font size="2" color="#272727">《怦然心动》是由罗伯·莱纳执导，玛德琳·卡罗尔、卡兰·麦克奥利菲主演影片。该片根据文德琳·范·德拉安南的同名原著小说改编，描述了青春期中男孩女孩之间的有趣战争。于2010年8月6日在美国上映。</font></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="margin: 30px 0 15px 0">   
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miModifyModal">修改信息
+                                                </button>
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#miDelModal">删除观影
+                                                </button>
+                                            </div>
+                                        </div>
+                                        </li>
+                                    </ul>   
+                                </div>
+                                <div tab-id="2" class="tab">
+                                    <ul id="water-fall" >
+                                        <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+                                                <div class="item-avatar">
+                                                    <div class="img-responsive" style="background-image: url(/images/logos.png);"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-6 col-md-8 col-lg-8" style="padding: 15px 0px">
+                                                <div class="item-main">
+                                                    <div class="item-name">
+                                                    <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5">怦然心动</font></a>
+                                                    </div>
+                                                    <div class="item-time">
+                                                        <font size="2" color="#BEBEBE">开始播放时间：2016-05-06 10:14:42</font>
+                                                    </div>
+                                                    <div class="item-text"><font size="2" color="#BEBEBE">参与人员：Amy，BOb，Nancy</font></div>
+                                                    <div class="item-text"><font size="2" color="#272727">《怦然心动》是由罗伯·莱纳执导，玛德琳·卡罗尔、卡兰·麦克奥利菲主演影片。该片根据文德琳·范·德拉安南的同名原著小说改编，描述了青春期中男孩女孩之间的有趣战争。于2010年8月6日在美国上映。</font></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+                                                <div class="item-avatar">
+                                                    <div class="img-responsive" style="background-image: url(/images/logos.png);"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-6 col-md-8 col-lg-8" style="padding: 15px 0px">
+                                                <div class="item-main">
+                                                    <div class="item-name">
+                                                    <a class="f-main f-16" href="/Course/148" target="_blank"><font size="5">怦然心动</font></a>
+                                                    </div>
+                                                    <div class="item-time">
+                                                        <font size="2" color="#BEBEBE">开始播放时间：2016-05-06 10:14:42</font>
+                                                    </div>
+                                                    <div class="item-text"><font size="2" color="#BEBEBE">参与人员：Amy，BOb，Nancy</font></div>
+                                                    <div class="item-text"><font size="2" color="#272727">《怦然心动》是由罗伯·莱纳执导，玛德琳·卡罗尔、卡兰·麦克奥利菲主演影片。该片根据文德琳·范·德拉安南的同名原著小说改编，描述了青春期中男孩女孩之间的有趣战争。于2010年8月6日在美国上映。</font></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </li>
+                                    </ul> 
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                 <!--   <div class="col-xs-0 col-sm-1 col-md-0 col-lg-1"></div> -->
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- upLoad Modal -->
+    <div class="modal fade" id="upNewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">新建任务</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="labBegint" class="col-sm-3 control-label">开始播放时间</label>
+                          <div class="col-sm-9 input-append date form_datetime" id="datetimepicker" data-date="2013-02-21T15:25:00Z">
+                            <input class="col-sm-9" type="text" value="" readonly>
+                            <span class="add-on"><i class="icon-remove"></i></span>
+                            <span class="add-on"><i class="icon-calendar"></i></span>
+                         </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="labFri" class="col-sm-3 control-label">邀请好友</label>
+                        <div class="col-sm-7">
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">我的好友<span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu">
+                                <li><a href="javascript:void(0);" onclick="addFri('Amy')">Amy</a></li>
+                                <li><a href="javascript:void(0);" onclick="addFri('Bob')">Bob</a></li>
+                                <li><a href="javascript:void(0);" onclick="addFri('Cindy')">Cindy</a></li>
+                              </ul>
+                            </div>
+                        </div>          
+                    </div> 
+                    <div class="form-group">
+                        <div id="friBtns"class="col-sm-7"></div>
+                    </div>                  
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="alert(members.toString());">Submit</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="upModifyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改视频信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-1"></div>
+                        <label for="videoName" class="col-sm-2 control-label">视频名称</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" id="videoName" placeholder="视频名称">
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-1"></div>
+                        <label for="videolabel" class="col-sm-2 control-label">视频标签</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" id="videoName" placeholder="空格表示分隔符，例：青春 热血">
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-1"></div>
+                        <label for="videoText" class="col-sm-2 control-label">视频简介</label>
+                        <div class="col-sm-7">
+                          <textarea class="form-control" id="videoText"></textarea>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>                   
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade bs-example-modal-sm" id="upDelModal" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body" style="margin: 10px">
+                    <font size="4" color="#272727">确定删除该视频？</font>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+                </div>             
+            </div>
+        </div>
+    </div>
+
+<!-- Mission Modal -->
+    <div class="modal fade" id="miModifyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改观影约定</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                  <div class="form-group">
+                    <label for="labBegint" class="col-sm-3 control-label">开始播放时间</label>
+                      <div class="col-sm-9 input-append date form_datetime" id="datetimepicker" data-date="2013-02-21T15:25:00Z">
+                        <input class="col-sm-9" type="text" value="" readonly>
+                            <span class="add-on"><i class="icon-remove"></i></span>
+                            <span class="add-on"><i class="icon-calendar"></i></span>
+                     </div>    
+                  </div>  
+                    <div class="form-group">
+                        <label for="labFri" class="col-sm-3 control-label">继续邀请好友</label>
+                        <div class="col-sm-7">
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">我的好友<span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu">
+                                <li><a href="javascript:void(0);" onclick="addFri2('Amy')">Amy</a></li>
+                                <li><a href="javascript:void(0);" onclick="addFri2('Bob')">Bob</a></li>
+                                <li><a href="javascript:void(0);" onclick="addFri2('Cindy')">Cindy</a></li>
+                              </ul>
+                            </div>
+                        </div>          
+                    </div> 
+                    <div class="form-group">
+                        <div id="friBtns2"class="col-sm-7">
+                           <button id="Amy2" type="button" class="btn btn-primary btn-sm add2">Amy</button> 
+                        </div>
+                    </div>                              
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade bs-example-modal-sm" id="miDelModal" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body" style="margin: 10px">
+                    <font size="4" color="#272727">确定删除此次观影约定？</font>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+                </div>             
+            </div>
+        </div>
+    </div>
+
+ </div>    
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../javascripts/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../javascripts/bootstrap.js"></script>
+    <script src="../javascripts/BootSideMenu.js"></script>
+    <script src="../javascripts/stopExecutionOnTimeout.js"></script>
+    <script language="JavaScript" src="../javascripts/bootstrap-datetimepicker.js"></script>
+    <script language="JavaScript" src="../javascripts/locales/bootstrap-datetimepicker.fr.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+          $('#test').BootSideMenu({side:"right", autoClose:true});
+        });
+        function addUpload() {
+        document.getElementById("myMission").style.display="none";
+        document.getElementById("myUpload").style.display="block";  
+        }
+        function addMission() {
+        document.getElementById("myUpload").style.display="none";
+        document.getElementById("myMission").style.display="block";  
+        }
+        $(document).ready(function () {
+        var activePos = $('.tabs-header .active').position();
+        function changePos() {
+            activePos = $('.tabs-header .active').position();
+            $('.border').stop().css({
+                left: activePos.left,
+                width: $('.tabs-header .active').width()
+            });
+        }
+        changePos();
+        var tabHeight = $('.tab.active').height();
+        function animateTabHeight() {
+            tabHeight = $('.tab.active').height();
+            $('.tabs-content').stop().css({ height: tabHeight + 'px' });
+        }
+        animateTabHeight();
+        function changeTab() {
+            var getTabId = $('.tabs-header .active a').attr('tab-id');
+            $('.tab').stop().fadeOut(300, function () {
+                $(this).removeClass('active');
+            }).hide();
+            $('.tab[tab-id=' + getTabId + ']').stop().fadeIn(300, function () {
+                $(this).addClass('active');
+                animateTabHeight();
+            });
+        }
+        $('.tabs-header a').on('click', function (e) {
+            e.preventDefault();
+            var tabId = $(this).attr('tab-id');
+            $('.tabs-header a').stop().parent().removeClass('active');
+            $(this).stop().parent().addClass('active');
+            changePos();
+            tabCurrentItem = tabItems.filter('.active');
+            $('.tab').stop().fadeOut(300, function () {
+                $(this).removeClass('active');
+            }).hide();
+            $('.tab[tab-id="' + tabId + '"]').stop().fadeIn(300, function () {
+                $(this).addClass('active');
+                animateTabHeight();
+            });
+        });
+        var tabItems = $('.tabs-header ul li');
+        var tabCurrentItem = tabItems.filter('.active');
+        $('#next').on('click', function (e) {
+            e.preventDefault();
+            var nextItem = tabCurrentItem.next();
+            tabCurrentItem.removeClass('active');
+            if (nextItem.length) {
+                tabCurrentItem = nextItem.addClass('active');
+            } else {
+                tabCurrentItem = tabItems.first().addClass('active');
+            }
+            changePos();
+            changeTab();
+        });
+        $('#prev').on('click', function (e) {
+            e.preventDefault();
+            var prevItem = tabCurrentItem.prev();
+            tabCurrentItem.removeClass('active');
+            if (prevItem.length) {
+                tabCurrentItem = prevItem.addClass('active');
+            } else {
+                tabCurrentItem = tabItems.last().addClass('active');
+            }
+            changePos();
+            changeTab();
+        });
+        $('[ripple]').on('click', function (e) {
+            var rippleDiv = $('<div class="ripple" />'), rippleOffset = $(this).offset(), rippleY = e.pageY - rippleOffset.top, rippleX = e.pageX - rippleOffset.left, ripple = $('.ripple');
+            rippleDiv.css({
+                top: rippleY - ripple.height() / 2,
+                left: rippleX - ripple.width() / 2,
+                background: $(this).attr('ripple-color')
+            }).appendTo($(this));
+            window.setTimeout(function () {
+                rippleDiv.remove();
+            }, 1500);
+        });
+    });
+    $(".form_datetime").datetimepicker({
+        language: "zh-CN",
+        format: "yyyy MM dd - hh:ii",
+        autoclose: true,
+        todayBtn: true,
+        startDate: "2013-02-14 10:00",
+        minuteStep: 10
+    });
+    var members = new Array()
+    function removeA(name) 
+    {
+        for (var i=0;i<members.length;i++)
+        {
+            if (members[i] == name) {
+                members.splice(i,1);
+            }
+        }
+    }
+    function addFri(name)
+    {
+        var btn0=document.getElementById(name);
+        if (btn0 == null) {
+            members.push(name);
+            var mydiv=document.getElementById("friBtns");
+            var btn=document.createElement("input");
+            btn.type="button";
+            btn.value=name;
+            btn.id=name;
+            btn.setAttribute("class","btn btn-primary btn-sm");
+            btn.setAttribute("className","btn btn-primary");
+            mydiv.appendChild(btn);
+            btn.onclick=function() {
+                removeA(btn.id);
+                mydiv.removeChild(btn);
+            };
+        }
+    }
+    function addFri2(name)
+    {
+        var btn0=document.getElementById(name+'2');
+        if (btn0 == null) {
+            members.push(name);
+            var mydiv=document.getElementById("friBtns2");
+            var btn=document.createElement("input");
+            btn.type="button";
+            btn.value=name;
+            btn.id=name+'2';
+            btn.setAttribute("class","btn btn-primary btn-sm");
+            btn.setAttribute("className","btn btn-primary");
+            mydiv.appendChild(btn);
+            btn.onclick=function() {
+                removeA(btn.id);
+                mydiv.removeChild(btn);
+            };
+        }
+    }
+    $(document).ready(function(){
+        $('.add2').click(function(){
+            removeA(this.id);
+            document.getElementById("friBtns2").removeChild(this);         
+        });
+    });
+    </script>
+  </body>
+</html>

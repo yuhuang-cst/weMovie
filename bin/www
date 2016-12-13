@@ -1,0 +1,153 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('wemovie:server');
+var http = require('http');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '80');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+var io = require('socket.io').listen(server);
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+//handle the socket
+
+var mission_member_num = {}
+io.sockets.on('connection', function(socket) {
+	var url_splited = socket.request.headers.referer.split('/');
+	var mid = url_splited[url_splited.length - 1];
+	var username = '';
+
+	// user join in
+	socket.on('join', function (nickname, inroom) {
+    username = nickname;
+		if (inroom) {
+			if (!global.mission_info[mid]) {
+				global.mission_info[mid] = []
+			}
+			socket.join(mid);
+			var flag = false;
+			for (var i = 0; i < global.mission_info[mid].length; i++) {
+				if (username == global.mission_info[mid][i]) {
+					mission_member_num[username]++;
+					io.sockets.to(mid).emit('system', '', global.mission_info[mid]);
+					flag = true; break;
+				}
+			}
+			if (!flag) {
+				global.mission_info[mid].push(username);
+				mission_member_num[username] = 1;
+				io.sockets.to(mid).emit('system', '<p class="text-primary" style="text-align: center;">'+username+'加入了房间</p>', global.mission_info[mid]);
+			}
+		}
+		else {
+		
+		}
+  });
+	
+	//user leaves
+	socket.on('disconnect', function() {
+		socket.leave(mid);
+		mission_member_num[username]--;
+
+		if (mission_member_num[username] <= 0) {
+			var index = global.mission_info[mid].indexOf(username);
+    	if (index !== -1) {
+    	  global.mission_info[mid].splice(index, 1);
+    	}
+      // 退出房间username + '退出了房间'
+    	io.sockets.to(mid).emit('system', '<p class="text-primary" style="text-align: center;">'+username+'退出了房间</p>', global.mission_info[mid]);
+		}
+	});
+ 
+	//send message
+	socket.on('message', function (msg) {
+    if (global.mission_info[mid].indexOf(username) === -1) {  
+      return false;
+    }
+    io.sockets.to(mid).emit('msg', username, msg);
+  });
+});
+
+
+module.exports = io;
